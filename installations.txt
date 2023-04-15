@@ -1,0 +1,15 @@
+npm i react-router-dom --save
+npm i @material-ui/core --save
+npm i @material-ui/icons
+npm i @mui/material
+npm i --save moment
+npm i @types/highcharts
+npm i @mui/icons-material
+npm i @material-ui/lab
+npm i highcharts highcharts-react-official
+npm i @emotion/styled
+npm i @emotion/react
+npm install @mui/x-date-pickers
+npm install date-fns --save
+npm install dayjs --save
+npm install --save react-swipeable-views
