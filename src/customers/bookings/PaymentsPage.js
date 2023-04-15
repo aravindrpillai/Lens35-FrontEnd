@@ -22,7 +22,7 @@ export default function PaymentsPage({handleProcessCompletion}) {
       },
       prefill:{
         name: paymentInformation.customer_name,
-        email:paymentInformation.customer_email ?? "info@serviceapp.com",
+        email:paymentInformation.customer_email == null ? "info@serviceapp.com" : paymentInformation.customer_email,
         contact:paymentInformation.customer_mobile
       },
       notes:{

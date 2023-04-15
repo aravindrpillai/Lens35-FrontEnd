@@ -70,7 +70,7 @@ export default function BookingDateAndTime() {
             <TextField
               fullWidth 
               label="Describe the event"
-              value={eventDescription??""}
+              value={eventDescription == null ? "" : eventDescription}
               onChange={e=>{setEventDescription(e.target.value)}}
             />
         </Grid>
