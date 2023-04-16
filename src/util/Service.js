@@ -26,9 +26,11 @@ export async function post(url, requestBody = {}, auth_req=true) {
         //Unauthorised
         if(response.status === 401){
             if(usertype === "employees"){
-                window.location.assign("http://localhost:3000/emp/login?message="+SESSION_EXPIRED_MESSAGE)
+                console.log("--------> Un authorised || REdirection supressed")
+                //window.location.assign("http://localhost:3000/emp/login?message="+SESSION_EXPIRED_MESSAGE)
             }else{
-                window.location.assign("http://localhost:3000/cust/login?message="+SESSION_EXPIRED_MESSAGE)
+                console.log("--------> Un authorised || REdirection supressed")
+                //window.location.assign("http://localhost:3000/cust/login?message="+SESSION_EXPIRED_MESSAGE)
             }
         }
 
@@ -54,8 +56,8 @@ export async function post(url, requestBody = {}, auth_req=true) {
         const requestOptions = {
             method: 'GET',
             headers: await getHeaders(usertype)
-        };
-        console.log("GET URL is : ", url)
+        }
+        console.log("GET URL and Headers is : ", url, requestOptions)
         const response = await fetch(url, requestOptions);
         
         let json_response = await response.json()
@@ -64,13 +66,13 @@ export async function post(url, requestBody = {}, auth_req=true) {
         //Unauthorised
         if(response.status === 401){
             if(usertype === "employees"){
-                window.location.assign("http://localhost:3000/emp/login?message="+SESSION_EXPIRED_MESSAGE)
+                console.log("--------> Un authorised || REdirection supressed")
+                //window.location.assign("http://localhost:3000/emp/login?message="+SESSION_EXPIRED_MESSAGE)
             }else{
-                window.location.assign("http://localhost:3000/cust/login?message="+SESSION_EXPIRED_MESSAGE)
+                console.log("--------> Un authorised || REdirection supressed")
+                //window.location.assign("http://localhost:3000/cust/login?message="+SESSION_EXPIRED_MESSAGE)
             }
-        }
-        
-        
+        }        
         return json_response
     }catch(e){
         console.log("Service Failed: ", e)
@@ -111,7 +113,6 @@ async function getHeaders(usertype){
     let token = null
     let identifier = null
     let device_id = null
-
     if(usertype === "customers"){
         token = window.sessionStorage.getItem("Customer-Token");
         identifier = window.sessionStorage.getItem("Customer-Identifier");
@@ -136,6 +137,7 @@ async function getHeaders(usertype){
 async function getUserType(url){
     let url_after_domain = url.split(BASE_URL)
     let uri = url_after_domain[1].split("/")
-    console.log(uri[1])
-    return uri[1]
+    let app_user = uri[1] == "bookings" ? uri[3] : url[1]
+    console.log("App User :: ", app_user)
+    return app_user
 }

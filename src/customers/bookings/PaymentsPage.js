@@ -4,14 +4,14 @@ import { Stack } from '@mui/system';
 import { BookingContext } from '../../contexts/BookingContextProvider';
 
 export default function PaymentsPage({handleProcessCompletion}) {  
-  const { paymentInformation, postalCode, city, address } = React.useContext(BookingContext)
+  const { invoice , postalCode, city, address } = React.useContext(BookingContext)
 
 
   function makePayment(){
     var options = {
       key:"rzp_test_c4w59vSC1YHIcl",
       key_secret:"9sRizYLMgqyKnzfueelu3kg4",
-      amount:(paymentInformation.total*100),
+      amount:(invoice.outstanding_amount*100),
       currency:"INR",
       name:"Service App",
       description:"",
@@ -21,9 +21,9 @@ export default function PaymentsPage({handleProcessCompletion}) {
         //alert(response.razorpay_payment_id)
       },
       prefill:{
-        name: paymentInformation.customer_name,
-        email:paymentInformation.customer_email == null ? "info@serviceapp.com" : paymentInformation.customer_email,
-        contact:paymentInformation.customer_mobile
+        name: "Deepu Chandran",
+        email: "info@serviceapp.com",
+        contact: "9447020535"
       },
       notes:{
         address:(address+", "+city+", "+postalCode)
@@ -35,72 +35,23 @@ export default function PaymentsPage({handleProcessCompletion}) {
     
     var pay = new window.Razorpay(options);
     pay.open()
-
   }
-
+ 
   return (
     <Grid container spacing={2}>
         <Grid item xs={12} md={12} lg={12}>
             <br/>
             <Table>
               <TableBody>
-                
-                {/* PHOTOGRAPHY */}
-                { paymentInformation.items.PHOTOGRAPHY !== undefined &&
-                  <>
-                  <TableRow key={"photo"}><TableCell>Photography</TableCell> <TableCell></TableCell><TableCell></TableCell><TableCell></TableCell></TableRow>
-                  {
-                  paymentInformation.items.PHOTOGRAPHY.map(row=>(
-                    <TableRow key={"ph_"+row}> 
-                    <TableCell></TableCell>
-                    { row.map(col=>( <TableCell>{col}</TableCell> )) } 
+                { 
+                  invoice["invoice_items"] && invoice["invoice_items"].map(row=>(
+                    <TableRow key={"ph_"+row["service"]}> 
+                      <TableCell>{row["service"]}</TableCell>
+                      <TableCell>Rs.{row["total_cost"]}/-</TableCell>
                     </TableRow>
                   ))
-                  }
-                  </>
+                  
                 }
-    
-                {/* VIDEOGRAPHY */}
-                { paymentInformation.items.VIDEOGRAPHY !== undefined &&
-                  <>
-                  <TableRow key={"video"}><TableCell>Videography</TableCell> <TableCell></TableCell><TableCell></TableCell><TableCell></TableCell></TableRow>
-                  {
-                  paymentInformation.items.VIDEOGRAPHY.map(row=>(
-                    <TableRow key={"vd_"+row}> 
-                    <TableCell></TableCell>
-                    { row.map(col=>( <TableCell>{col}</TableCell> )) } 
-                    </TableRow>
-                  ))
-                  }
-                  </>
-                }
-
-                {/* DRONE */}
-                { paymentInformation.items.DRONE !== undefined &&
-                  <>
-                  <TableRow key={"drone"}><TableCell>Drone</TableCell> <TableCell></TableCell><TableCell></TableCell><TableCell></TableCell></TableRow>
-                  {
-                  paymentInformation.items.DRONE.map(row=>(
-                    <TableRow key={"dr_"+row}> 
-                    <TableCell></TableCell>
-                    { row.map(col=>( <TableCell>{col}</TableCell> )) } 
-                    </TableRow>
-                  ))
-                  }
-                  </>
-                }
-
-                
-                {/* DRONE */}
-                { (paymentInformation.items.PHOTOGRAPHY !== undefined || paymentInformation.items.VIDEOGRAPHY !== undefined || paymentInformation.items.DRONE !== undefined) &&
-                  <>
-                  <TableRow key={"drone"}><TableCell></TableCell> <TableCell></TableCell><TableCell>Total</TableCell><TableCell><b>{paymentInformation.total}</b></TableCell></TableRow>
-                  </>
-                }
-
-                
-
-
               </TableBody>
 
             </Table>
@@ -109,7 +60,7 @@ export default function PaymentsPage({handleProcessCompletion}) {
             <br/>
             <Stack direction="row" justifyContent={"space-around"}>
               <span></span>
-              <Button variant='outlined' onClick={makePayment}>Pay Rs.{paymentInformation.total}</Button>
+              <Button variant='outlined' onClick={makePayment}>Pay Rs.{invoice.outstanding_amount}</Button>
               
             </Stack>
             

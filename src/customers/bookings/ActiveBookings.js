@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,13 +10,23 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 import { Stack } from '@mui/system';
+import { BOOKING_APIS } from '../../util/Properties';
+import { get } from '../../util/Service';
 
 
-async function fetchBookings(){
-  
-}
+
 
 export default function ActiveBookings() {
+
+  const [bookings, setBookings] = useState([])
+
+  async function fetchBookings(){
+    var response = await get(BOOKING_APIS.FETCH_BOOKINGS)
+    console.log("BOOKING RESPONSEc--- > ", response)
+    if(response["status"] === true){
+      setBookings(response["data"])
+    }
+  }
 
   useEffect(e=>{
     fetchBookings()
@@ -26,35 +36,25 @@ export default function ActiveBookings() {
     <React.Fragment>
       <Table size="small">
         <TableBody>
-        <TableRow key={1}>
-           <TableCell>
-            <Stack direction="row" spacing={2} justifyContent={"space-between"}>
-              <Typography >Birthday Function <br/><font size="2">21st Dec from 7pm to 10pm</font></Typography>
-              <IconButton disabled={true}>
-                <FlipCameraAndroidIcon/><VideocamIcon /><CameraAltIcon/>
-              </IconButton>
-              <ButtonGroup>
-                <IconButton><EditIcon/></IconButton>
-                <IconButton><DeleteIcon/></IconButton>
-              </ButtonGroup>
-            </Stack>
-           </TableCell>
-         </TableRow>
-         
-         <TableRow key={2}>
-           <TableCell>
-            <Stack direction="row" spacing={2} justifyContent={"space-between"}>
-              <Typography >Portait <br/><font size="2">21st Dec from 7pm to 10pm</font></Typography>
-              <IconButton disabled={true}>
-                <FlipCameraAndroidIcon/><VideocamIcon /><CameraAltIcon/>
-              </IconButton>
-              <ButtonGroup>
-                <IconButton><EditIcon/></IconButton>
-                <IconButton><DeleteIcon/></IconButton>
-              </ButtonGroup>
-            </Stack>
-           </TableCell>
-         </TableRow>
+
+        {  
+         bookings.map(booking=>(
+          <TableRow key={booking.booking_id}>
+            <TableCell>
+              <Stack direction="row" spacing={2} justifyContent={"space-between"}>
+                <Typography >{booking.event} <br/><font size="2">{booking.event_date} : {booking.event_start_time}</font></Typography>
+                <IconButton disabled={true}>
+                  <FlipCameraAndroidIcon/><VideocamIcon /><CameraAltIcon/>
+                </IconButton>
+                <ButtonGroup>
+                  <IconButton><EditIcon/></IconButton>
+                  <IconButton><DeleteIcon/></IconButton>
+                </ButtonGroup>
+              </Stack>
+            </TableCell>
+          </TableRow>
+          ))
+        } 
         </TableBody>
       </Table>
     </React.Fragment>

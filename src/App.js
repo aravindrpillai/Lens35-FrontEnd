@@ -49,12 +49,13 @@ export default function App() {
                 <Router>
                     <Routes>
                       <Route path="/cust/login" element={<CustomerSignIn />} />
-                      
-                      <Route path="/cust/profile" element={<CustomerProfile />} />
+                      <Route path="/cust/home" element={<CustomerHome />} />
                       <Route path="/cust/bookings" element={<CustomerNewBooking />} />
+                      
+
+                      <Route path="/cust/profile" element={<CustomerProfile />} />
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
-                      <Route path="/cust/home" element={<CustomerHome />} />
                       
                     </Routes>
                 </Router>

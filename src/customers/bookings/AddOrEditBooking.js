@@ -15,7 +15,7 @@ export default function AddOrEditBooking({handleProcessCompletion}) {
   const theme = useTheme();
   const { saveData, message, validate, resetData } = React.useContext(BookingContext)
   const [currentPageNumber, setCurrentPageNumber] = React.useState(0)
-  const [maxSteps, setMaxSteps] = React.useState(6);
+  const maxSteps = 6
 
   let contentStyle = {
     display: "flex",
@@ -31,17 +31,19 @@ export default function AddOrEditBooking({handleProcessCompletion}) {
   }
 
   async function handleNavigation(forward){
-    if(! validate(currentPageNumber)){
-      return 
-    }
-    let canProceed = true
-    if(currentPageNumber === 3){
-      canProceed = await saveData()
-    }
-    let thisPageNum = currentPageNumber
-    thisPageNum = forward ? (thisPageNum == 3 ? thisPageNum+2 : thisPageNum+1) : thisPageNum == 5 ? thisPageNum-2 : thisPageNum-1
-    if(canProceed){
-      setCurrentPageNumber(thisPageNum)
+    if(validate(currentPageNumber)){
+      let canProceed = true
+      if(currentPageNumber === 3){
+        canProceed = await saveData()
+      }
+      
+      let thisPageNum = currentPageNumber
+      thisPageNum = forward ? (thisPageNum == 3 ? thisPageNum+2 : thisPageNum+1) : thisPageNum == 5 ? thisPageNum-2 : thisPageNum-1
+      if(canProceed){
+        setCurrentPageNumber(thisPageNum)
+      }
+      
+      
     }
   }
 

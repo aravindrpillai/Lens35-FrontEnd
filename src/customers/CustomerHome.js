@@ -58,15 +58,15 @@ export default function CustomerHome() {
   },[])
 
   async function fetchBookings(){
-    let response = await post(BOOKING_APIS.FETCH_BOOKINGS)
-    console.log(response)
-    if(response["status"] === true){
-      setBookings(response["data"])
-    }else{
-      setFlashMessage("error","Failed to fetch booking details.")
-      console.log("Failed to fetch booking details", response["messages"][0])
-      setBookings([])
-    }
+    // let response = await post(BOOKING_APIS.FETCH_BOOKINGS)
+    // console.log(response)
+    // if(response["status"] === true){
+    //   setBookings(response["data"])
+    // }else{
+    //   setFlashMessage("error","Failed to fetch booking details.")
+    //   console.log("Failed to fetch booking details", response["messages"][0])
+    //   setBookings([])
+    // }
   }
 
   async function handleProcessCompletion(status, payment_id){

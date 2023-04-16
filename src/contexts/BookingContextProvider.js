@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createContext } from "react";
-import { post } from "../util/Service";
+import { get, post } from "../util/Service";
 import {BOOKING_APIS} from "../util/Properties" 
 import { duration } from "moment";
 import { getDefaultBookingStartDate } from "../util/DateUtil";
@@ -33,9 +33,13 @@ export function BookingContextProvider({ children, booking_id=null }) {
   const [postalCode, setPostalCode] = useState("")
   const [city, setCity] = useState("")
   const [address, setAddress] = useState("")
-  const [photographer , setPhotographer] = React.useState(true)
-  const [videographer , setVideographer] = React.useState(false)
-  const [drone , setDrone] = React.useState(false)
+  
+  const [photographerCount , setPhotographerCount] = React.useState(0)
+  const [videographerCount , setVideographerCount] = React.useState(0)
+  const [droneCount , setDroneCount] = React.useState(0)
+
+  const [invoice , setInvoice] = React.useState(null)
+
   const [photographerPreference , setPhotographerPreference] = React.useState([])
   const [videographerPreference , setVideographerPreference] = React.useState([])
   const [paymentInformation , setPaymentInformation] = React.useState(null)
@@ -68,9 +72,9 @@ export function BookingContextProvider({ children, booking_id=null }) {
     setPostalCode("")
     setCity("")
     setAddress("")
-    setPhotographer(true)
-    setVideographer(false)
-    setDrone(false)
+    setPhotographerCount(0)
+    setVideographerCount(0)
+    setDroneCount(0)
     setPhotographerPreference([])
     setVideographerPreference([])
     setPaymentInformation(null)
@@ -88,33 +92,57 @@ export function BookingContextProvider({ children, booking_id=null }) {
       "booking_id": bookingID,
       "event" : event,
       "event_description" : eventDescription,
-      "booking_date" : start_date,
-      "booking_start_time" : start_time,
-      "booking_duration" : bookingDuration,
-      "booking_postal_code" : postalCode,
-      "booking_city" : city,
-      "booking_address" : address,
-      "photographer":photographer,
-      "videographer":videographer,
-      "drone":drone,
-      "preferred_photographers": [],
-      "preferred_videographers": []
-
+      "event_date" : start_date,
+      "event_start_time" : start_time,
+      "event_duration" : bookingDuration,
+      "event_postal_code" : postalCode,
+      "event_city" : city,
+      "event_address" : address
     }
-    var response = await post(BOOKING_APIS.UPDATE_BOOKING, request)
-    if(response["status"] === true){
-      setBookingID(response["data"]["booking_id"])
-      var response = await post(BOOKING_APIS.FETCH_INVOICE, { "booking_id": response["data"]["booking_id"] })
-      setPaymentInformation(response["data"])
+    var booking_response = await post(BOOKING_APIS.UPDATE_BOOKING, request)
+    if(booking_response["status"] === true){
+      let booking_id = booking_response["data"]["booking_id"]
+      setBookingID(booking_id)
+      let services_data = {
+        "booking_id": booking_id,
+        "photography": photographerCount,
+        "videography": videographerCount,
+        "drone_photography": droneCount,
+        "photo_editing": 0,
+        "video_editing": 0
+      }
+      var service_response = await post(BOOKING_APIS.ADD_SERVICES, services_data)
+      if(service_response["status"] === true){
+        var invoice = await get(BOOKING_APIS.FETCH_INVOICE.concat(booking_id).concat("/"))
+        if(invoice["status"] === true){
+          setInvoice(invoice["data"])
+        }else{
+          console.log("Failed to fetch invoice. "+invoice["message"])
+          setMessage("Failed to fetch invoice. "+invoice["message"])
+        }
+      }else{
+        console.log("Failed register the services. "+service_response["message"])
+        setMessage("Failed register the services. "+service_response["message"])
+      }
     }else{
-      console.log("Failed -- ", response["messages"][0])
+      console.log("Failed register the booking. "+booking_response["message"])
+      setMessage("Failed register the booking. "+booking_response["message"])
     }
+    
+    
+    // if(response["status"] === true){
+    //   setBookingID(response["data"]["booking_id"])
+    //   var response = await post(BOOKING_APIS.FETCH_INVOICE, { "booking_id": response["data"]["booking_id"] })
+    //   setPaymentInformation(response["data"])
+    // }else{
+    //   console.log("Failed -- ", response["messages"][0])
+    // }
     return true
   }
 
   async function fetchBooking(booking_id){
-    let response = await post(BOOKING_APIS.FETCH_BOOKING,{"booking_id":booking_id})
-    console.timeLog(response)
+    //let response = await post(BOOKING_APIS.FETCH_BOOKING,{"booking_id":booking_id})
+    //console.timeLog(response)
   }
 
 
@@ -142,18 +170,21 @@ export function BookingContextProvider({ children, booking_id=null }) {
 
     }
     if(pageNumber === 2){
+      if(address === null || address === ""){
+        setMessage("Please provide the event address")
+        return false
+      }
       if(postalCode === null || postalCode === ""){
         setMessage("Please provide the area postal code")
         return false
       }
       if(city === null || city === ""){
         setMessage("Please specify the city")
-        //TODO
-        //return false
+        return false
       }
     }
     if(pageNumber === 3){
-      if(!photographer && !videographer && !drone){
+      if(photographerCount < 1 && videographerCount < 1 && droneCount < 1){
         setMessage("Atleast one service must be selected to proceed.")
         return false
       }
@@ -172,7 +203,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
   useEffect((e) => {
     if(booking_id !== null){
       setBookingID(booking_id)
-      fetchBooking(booking_id)
+      //fetchBooking(booking_id)
     }    
   }, [booking_id]);
 
@@ -180,8 +211,10 @@ export function BookingContextProvider({ children, booking_id=null }) {
     <BookingContext.Provider
       value = {{
         saveData, resetData,
-        bookingID, paymentInformation,
         message, setMessage, validate,
+        
+
+        bookingID, paymentInformation,
         event, setEvent,
         eventDescription, setEventDescription,
         bookingStartDateAndTime, setBookingStartDateAndTime,
@@ -190,9 +223,12 @@ export function BookingContextProvider({ children, booking_id=null }) {
         city, setCity,
         address, setAddress,
 
-        photographer , setPhotographer,
-        videographer , setVideographer,
-        drone , setDrone,
+        photographerCount , setPhotographerCount,
+        videographerCount , setVideographerCount,
+        droneCount , setDroneCount,
+        
+        invoice , setInvoice,
+
         photographerPreference , setPhotographerPreference,
         videographerPreference , setVideographerPreference
       }}
