@@ -16,12 +16,22 @@ import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import ServicesModal from "./ServicesModal";
 import SensorOccupiedRoundedIcon from '@mui/icons-material/SensorOccupiedRounded';
 import Tooltip from '@mui/material/Tooltip';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function OpenBookings() {
   const [openServiceModal, setOpenServiceModal] = React.useState(false)
   const [servicesSelected, setServicesSelected] = React.useState([])
   const [bookingDate, setBookingDate] = useState(getDefaultBookingStartDate())
+  
   const [events, setEvents] = useState([])
+  const [preferred, setPreferred] = useState(true)
+  const [photography, setPhotography] = useState(true)
+  const [videography, setVideography] = useState(true)
+  const [drone, setDrone] = useState(true)
+  const [photoEditor, setPhotoEditor] = useState(true)
+  const [videoEditor, setVideoEditor] = useState(true)
+
+
 
   useEffect(e=>{
 
@@ -106,16 +116,17 @@ export default function OpenBookings() {
               </Select>
   
               <ServicesModal openModal={openServiceModal} handleModalOpen={handleModalOpen} serviceSelectionCallBack={serviceSelectionCallBack}/>
-              <Button variant="outlined" onClick={e=>{handleModalOpen(true)}}><SensorOccupiedRoundedIcon />&nbsp;&nbsp;Services&nbsp;({servicesSelected.length})</Button>
+              <Button variant="outlined" onClick={e=>{handleModalOpen(true)}}><SensorOccupiedRoundedIcon color={servicesSelected.length > 0 ? "primary" : "default"}/>&nbsp;&nbsp;Services&nbsp;({servicesSelected.length})</Button>
+              <Button variant="outlined" onClick={e=>{setPreferred(!preferred)}}><FavoriteIcon color={preferred ? "primary" : "default"}/>&nbsp;&nbsp;Preferred only</Button>
               
             </Stack>
   
             <Stack justifyContent={"space-between"} direction={"row"}>
-              <Tooltip title="Photography" placement="top" arrow><IconButton color="primary" ><CameraAltIcon /> </IconButton></Tooltip>
-              <Tooltip title="Videography" placement="top" arrow><IconButton color="primary" ><VideoCameraFrontIcon /> </IconButton></Tooltip>
-              <Tooltip title="Drone" placement="top" arrow><IconButton color="primary" ><LocalAirportIcon /> </IconButton></Tooltip>
-              <Tooltip title="Photo Editor" placement="top" arrow><IconButton color="primary" ><WallpaperIcon /> </IconButton></Tooltip>
-              <Tooltip title="Video Editor" placement="top" arrow><IconButton color="primary" ><TheatersIcon /> </IconButton></Tooltip>
+              <Tooltip title="Photography" placement="top" arrow><IconButton onClick={e=>{setPhotography(!photography)}} ><CameraAltIcon color={photography ? "primary" : "default"} /> </IconButton></Tooltip>
+              <Tooltip title="Videography" placement="top" arrow><IconButton onClick={e=>{setVideography(!videography)}}  ><VideoCameraFrontIcon color={videography ? "primary" : "default"} /> </IconButton></Tooltip>
+              <Tooltip title="Drone" placement="top" arrow><IconButton onClick={e=>{setDrone(!drone)}} ><LocalAirportIcon color={drone ? "primary" : "default"} /> </IconButton></Tooltip>
+              <Tooltip title="Photo Editor" placement="top" arrow><IconButton onClick={e=>{setPhotoEditor(!photoEditor)}}><WallpaperIcon color={photoEditor ? "primary" : "default"} /> </IconButton></Tooltip>
+              <Tooltip title="Video Editor" placement="top" arrow><IconButton onClick={e=>{setVideoEditor(!videoEditor)}} ><TheatersIcon color={videoEditor ? "primary" : "default"} /> </IconButton></Tooltip>
             </Stack>
           </Stack>
         </Paper>
