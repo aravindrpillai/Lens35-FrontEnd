@@ -10,7 +10,7 @@ import { post } from "../../util/Service";
 import {EMPLOYEE_APIS} from "../../util/Properties";
 import { AppContext } from "../../contexts/ContextProvider";
 import { useContext } from "react";
-import { handleFileEmployeeSpecificUpload } from "../../util/FileUpload";
+import { handleFileUpload } from "../../util/FileUpload";
 import Resizer from "react-image-file-resizer";
 
 function ImageTag({data}){
@@ -118,7 +118,7 @@ export default function ImageUpload({image_from_server}){
         }
         setUploading(true)
         const file = await resizeFile(imageObject);
-        let dp_file_name = await handleFileEmployeeSpecificUpload(file, "display_picture", (progress)=>{ console.log("Progress : ", progress) })
+        let dp_file_name = await handleFileUpload(file, "display_picture", (progress)=>{ console.log("Progress : ", progress) }, true)
         
         if(dp_file_name !== false){
             let response = await post(EMPLOYEE_APIS.UPDATE_EMPLOYEE_DP,{ "file_name": dp_file_name })

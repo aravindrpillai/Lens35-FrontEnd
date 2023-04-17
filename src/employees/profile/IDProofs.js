@@ -8,7 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import { Box } from '@mui/system';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { handleFileEmployeeSpecificUpload } from '../../util/FileUpload';
+import { handleFileUpload } from '../../util/FileUpload';
 
 export default function IDProofs({default_doc_type, default_doc_front_side, default_doc_back_side, modalCallBackHandler }) {
 
@@ -71,8 +71,8 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
 
 
     
-    let front_file_name = await handleFileEmployeeSpecificUpload(documentFrontSideFileObject, "id_proof_front", (progress)=>{ setBackUploadProgress(progress) })
-    let back_file_name = await handleFileEmployeeSpecificUpload(documentBackSideFileObject, "id_proof_back", (progress)=>{ setFrontUploadProgress(progress) })
+    let front_file_name = await handleFileUpload(documentFrontSideFileObject, "id_proof_front", (progress)=>{ setBackUploadProgress(progress) }, true)
+    let back_file_name = await handleFileUpload(documentBackSideFileObject, "id_proof_back", (progress)=>{ setFrontUploadProgress(progress) }, true)
     
     if(front_file_name && back_file_name){
       let data = {

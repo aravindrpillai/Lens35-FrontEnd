@@ -90,19 +90,18 @@ function EmployeeUIFrame(props) {
       <Divider />
       <List>
         {[
-          { text: "home", icon: "home" },
-          { text: "bookings", icon: "app_shortcut" },
-          { text: "history", icon: "book" },
-          { text: "profile", icon: "person" },
-          { text: "services", icon: "card_membership" },
-          { text: "upload", icon: "cloud" },
-          { text: "support", icon: "support_agent" },
+          { text: "home", url:"home", icon: "home" },
+          { text: "open bookings", url:"bookings/open", icon: "app_shortcut" },
+          { text: "my bookings", url:"bookings/my", icon: "app_shortcut" },
+          { text: "profile", url:"profile", icon: "person" },
+          { text: "upload", url:"upload", icon: "cloud" },
+          { text: "support", url:"support", icon: "support_agent" },
           
-        ].map(({ text, icon }, index) => (
+        ].map(({ text, url, icon }, index) => (
           <ListItem
             component={RouterLink}
-            selected={pathname === `../emp/${text}`}
-            to={`../emp/${text}`}
+            selected={pathname === `../emp/${url}`}
+            to={`../emp/${url}`}
             button
             key={text}
           >

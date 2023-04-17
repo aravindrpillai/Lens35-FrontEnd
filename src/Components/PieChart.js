@@ -22,19 +22,19 @@ function useOptions(theme) {
       {
         data: [
           {
-            name: "Truck",
+            name: "Open Bookings",
             color: theme.palette.primary.main,
             y: 61.41,
             sliced: true,
             selected: true,
           },
           {
-            name: "Lamborghini",
+            name: "Revenue",
             color: theme.palette.secondary.main,
             y: 11.84,
           },
           {
-            name: "Honda",
+            name: "Pending",
             color: theme.palette.error.main,
             y: 10.85,
           },

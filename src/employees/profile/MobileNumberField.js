@@ -11,9 +11,9 @@ import { AppContext } from "../../contexts/ContextProvider";
 import SendToMobileIcon from '@mui/icons-material/SendToMobile';
 import Timer from "../../Components/Timer";
 
-export default function MobileNumberField({mobile_number, setOpenModal, loadData}) {
+export default function MobileNumberField({mobile_number, setOpenModal, modalCallBackHandler}) {
   
-  const [countryCode, setCountryCode] = useState("+44-")
+  let countryCode = "+91-"
   const [mobileNumber, setMobileNumber] = React.useState( mobile_number === null || mobile_number ==="" ? "" : mobile_number);
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
   const [isOtpTimerRunning, setIsOtpTimerRunning] = useState(false)
@@ -36,7 +36,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, loadData
         mobile_number : mobileNumber,
         country_code : countryCode
       }
-      var otpResponse = await post(EMPLOYEE_APIS.OTP_REQUEST_SERVICE, request, false)
+      var otpResponse = await post(EMPLOYEE_APIS.FETCH_OTP_FOR_MOBILE_NO_UPDATE, request, false)
       if(otpResponse["status"] === true){
         setOtpStatus(true);
         setIsOtpTimerRunning(true)
@@ -62,9 +62,13 @@ export default function MobileNumberField({mobile_number, setOpenModal, loadData
       "mobile_number": mobileNumber, 
       "otp" : otp
     }
-    let response = await post(EMPLOYEE_APIS.UPDATE_EMPLOYEE_DATA, data)
+    let response = await post(EMPLOYEE_APIS.UPDATE_EMPLOYEE_MOBILE_NO, data)
     if(response["status"] === true){
-      loadData()
+      let token_data = response["data"]
+      window.sessionStorage.setItem("Employee-Token", token_data["Token"])
+      window.sessionStorage.setItem("Employee-Identifier", token_data["Identifier"])
+      window.sessionStorage.setItem("Employee-Device-Id", token_data["Device-Id"])
+      modalCallBackHandler("mobile_number", mobileNumber)
       setFlashMessage("success","Mobile Number updated successfully")
       setOpenModal(false)
     }else{

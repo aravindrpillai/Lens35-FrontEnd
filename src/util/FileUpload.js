@@ -1,6 +1,7 @@
 import { post } from './Service';
-import { EMPLOYEE_APIS, FILES_API } from './Properties';
+import { CUSTOMER_APIS, EMPLOYEE_APIS } from './Properties';
 import axios, {CancelToken, isCancel} from 'axios';
+
 
 /**
  * Function to handke the entire file upload
@@ -8,17 +9,18 @@ import axios, {CancelToken, isCancel} from 'axios';
  * @param {*} serviceId 
  * @returns 
  */
- async function handleFileEmployeeSpecificUpload(file, file_type, progressCallBack){
+async function handleFileUpload(file, file_type, progressCallBack, isEmployee){
     if(file === null || file === "") return false
     let body = {
-        "document_type": file_type, //display_picture or id_prood
+        "document_type": file_type, // [display_picture, id_proof_front, id_proof_back]
         "mime_type" : getFileMimeType(file)
     }
-    console.log("Uploading Employee DP", file)
-    let response = await post(EMPLOYEE_APIS.GET_PRESIGNED_URL_FOR_EMPLOYEE_FILE_UPLOAD, body)
+    let url = isEmployee ? EMPLOYEE_APIS.GET_PRESIGNED_URL_FOR_EMPLOYEE_FILE_UPLOAD : CUSTOMER_APIS.GET_PRESIGNED_URL_FOR_CUSTOMER_DP 
+    console.log("PRESIGNED URL : ", url)
+    let response = await post(url, body)
     
     
-    console.log("Presigned URL FOR DP response: ", response)
+    console.log("Presigned URL For File upload - response: ", response)
     if(response["status"] === true){
         let s3Response = response["data"]
         let s3ConnectionInfo = s3Response["connection_info"]
@@ -28,40 +30,6 @@ import axios, {CancelToken, isCancel} from 'axios';
         return file_name
     }else 
         return false
-}
-
-/**
- * Function to handke the entire file upload
- * @param {*} file 
- * @param {*} serviceId 
- * @returns 
- */
- async function handleFileUploadForService(file, serviceId, progressCallBack, cancelFileUpload){
-    if(file === null || file === ""){ 
-        console.log("Empty file... aaaa")
-        return false
-    }
-
-    let body = {
-        "service_id" : serviceId,
-        "file_name" : file.name,
-        "mime_type" : getFileMimeType(file),
-        "is_photo" : checkIfPhoto(file)
-    }
-    let uploadedToS3 = false
-    let response = await post(FILES_API.GET_FILEUPLOAD_PRESIGNED_URL, body)
-    if(response["status"] === true){
-        let s3Response = response["data"]
-        let s3ConnectionInfo = s3Response["connection_info"]
-        let presignedUrl = s3Response["url"]
-        uploadedToS3 = await uploadImageUsingPresignedURL(file, presignedUrl, s3ConnectionInfo, progressCallBack, cancelFileUpload)
-    }else 
-        return false
-  
-    //Send Acknodwledge
-    //the final status is the combined status of file upload and the metedata update in backend
-    let ackResponse = await post(FILES_API.ACKNODWLEDGE_FILE_UPLOAD, { "file_id" : response["data"]["file_id"], "uploaded" : uploadedToS3 })
-    return (uploadedToS3 && ackResponse["status"]) 
 }
 
 
@@ -125,4 +93,4 @@ function getFileMimeType(file){
     return (file.type !== null && file.type !== undefined && file.type !== "") ? file.type : "application/octet-stream"
 }
 
-export {handleFileUploadForService, handleFileEmployeeSpecificUpload}
+export {handleFileUpload}

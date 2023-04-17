@@ -49,25 +49,25 @@ export default function UploadSection() {
                     <SelectBookings selectedValue={selectedBooking} open={openBookingList} onClose={(newBooking)=>{setSelectedBooking(newBooking); setOpenBookingList(false)}} />
                     <div>
 
-                    <Button size="small" color="primary" variant="outlined" component="label">
-                        <DeleteIcon/>
-                        <span>&nbsp; Delete ({checkedFiles.length})</span>
-                    </Button>
-                    &nbsp;
-                    
-                    <Button size="small" color="primary" variant="outlined" component="label"  >
-                        <CheckBoxOutlineBlankIcon/>
-                        <CheckBoxIcon/>
-                        <span>&nbsp; {selectAllFiles ? "Unselect All" : "Select All" }</span>
-                    </Button>
-                    
-                    &nbsp;
-                    <Button size="small" color="primary" variant="outlined" component="label">
-                        <input hidden accept="image/*" multiple={true} type='file' onChange={(e)=>{loadFilesPostSelect(e.target.files)}}/>
-                        <CameraAltIcon/>
-                        <span>&nbsp; Upload Files</span>
-                    </Button>
-                    
+                        <Button size="small" color="primary" variant="outlined" component="label">
+                            <DeleteIcon/>
+                            <span>&nbsp; Delete ({checkedFiles.length})</span>
+                        </Button>
+                        &nbsp;
+                        
+                        <Button size="small" color="primary" variant="outlined" component="label"  >
+                            <CheckBoxOutlineBlankIcon/>
+                            <CheckBoxIcon/>
+                            <span>&nbsp; {selectAllFiles ? "Unselect All" : "Select All" }</span>
+                        </Button>
+                        
+                        &nbsp;
+                        <Button size="small" color="primary" variant="outlined" component="label">
+                            <input hidden accept="image/*" multiple={true} type='file' onChange={(e)=>{loadFilesPostSelect(e.target.files)}}/>
+                            <CameraAltIcon/>
+                            <span>&nbsp; Upload Files</span>
+                        </Button>
+                        
                     </div>
                 </Stack>
             </Grid>

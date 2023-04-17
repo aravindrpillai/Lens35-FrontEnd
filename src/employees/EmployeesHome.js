@@ -59,7 +59,7 @@ export default function EmployeesHome() {
               <SummaryCard title="Progress" component={<LineGraph />} />
             </Grid>
             <Grid item xs={12} md={12} lg={4}>
-              <SummaryCard title="By Vehicle" component={<PieChart />} />
+              <SummaryCard title="Booking Stat" component={<PieChart />} />
             </Grid>
           </Grid>
     </Content>

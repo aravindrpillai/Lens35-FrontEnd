@@ -12,7 +12,7 @@ import { FILES_API } from '../../util/Properties';
 import { post } from '../../util/Service';
 import ReplayIcon from '@mui/icons-material/Replay';
 
-export default function EachFile({_serviceID, _key, _file, callBackHandlerOnUpload}) {
+export default function EachFile({_serviceID, _key, _file}) {
 
     const [serviceID, setServiceID] = useState(null)
     const [key, setKey] = useState(null)
@@ -64,10 +64,15 @@ export default function EachFile({_serviceID, _key, _file, callBackHandlerOnUplo
             let s3ConnectionInfo = s3Response["connection_info"]
             let presignedUrl = s3Response["url"]
             let uploadedToS3 = await uploadImageUsingPresignedURL(file_0, presignedUrl, s3ConnectionInfo)
-            let ackResponse = await post(FILES_API.ACKNODWLEDGE_FILE_UPLOAD, { "file_id" : response["data"]["file_id"], "uploaded" : uploadedToS3 })
+            let ack_request = {
+                service_id : "12334",
+                mime_type : "image/jpeg",
+                file_name : "file_name.jpeg",
+                uploaded : true
+            }
+            let ackResponse = await post(FILES_API.ACKNODWLEDGE_FILE_UPLOAD, ack_request)
             uploaded = (uploadedToS3 && ackResponse["status"])         
         }
-        callBackHandlerOnUpload(key_0, file_0, uploaded)
     }
 
 

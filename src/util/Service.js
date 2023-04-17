@@ -137,7 +137,7 @@ async function getHeaders(usertype){
 async function getUserType(url){
     let url_after_domain = url.split(BASE_URL)
     let uri = url_after_domain[1].split("/")
-    let app_user = uri[1] == "bookings" ? uri[3] : url[1]
+    let app_user = uri[1] == "bookings" ? uri[3] : uri[1]
     console.log("App User :: ", app_user)
     return app_user
 }

@@ -9,11 +9,14 @@ const EMPLOYEE_APIS = {
     UPDATE_EMPLOYEE_BASIC_INFO : BASE_URL.concat("/employees/apis/profile/update/basic/"),
     UPDATE_EMPLOYEE_SERVICES : BASE_URL.concat("/employees/apis/profile/update/services/"),
     UPDATE_EMPLOYEE_BASE_LOCATION : BASE_URL.concat("/employees/apis/profile/update/baselocations/"),
-
+    FETCH_OTP_FOR_MOBILE_NO_UPDATE : BASE_URL.concat("/employees/apis/profile/fetch/mobilenumber/requestotp/"),
+    UPDATE_EMPLOYEE_MOBILE_NO : BASE_URL.concat("/employees/apis/profile/update/mobilenumber/"),
     GET_PRESIGNED_URL_FOR_EMPLOYEE_FILE_UPLOAD : BASE_URL.concat("/employees/apis/profile/fetch/presigned/url/"),
     UPDATE_EMPLOYEE_DP : BASE_URL.concat("/employees/apis/profile/update/profilepicture/"),
     UPDATE_EMPLOYEE_ID_PROOF : BASE_URL.concat("/employees/apis/profile/update/idproof/"),
     UPDATE_EMPLOYEE_PORTFOLIOS : BASE_URL.concat("/employees/apis/profile/update/portfolios/"),
+    
+    LIST_OPEN_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/bookings/list/"),
     
 
     //------------------ REMOVE BELOW
@@ -30,27 +33,30 @@ const EMPLOYEE_APIS = {
 }
 
 const FILES_API = {
-    GET_FILEUPLOAD_PRESIGNED_URL : BASE_URL.concat("/files/api/generate/presignedurl/for/uploading/"),
-    ACKNODWLEDGE_FILE_UPLOAD : BASE_URL.concat("/files/api/acknowledge/file/upload/"),
+    GET_FILEUPLOAD_PRESIGNED_URL : BASE_URL.concat("/bookings/apis/employees/bookings/fileupload/fetch/presignedurl/"),
+    ACKNODWLEDGE_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/bookings/fileupload/acknodwledge/"),
+
+    //---------------Deal the below later
     DELETE_FILE : BASE_URL.concat("/files/api/acknowledge/file/delete/"),
 }
 
 const CUSTOMER_APIS = {
     OTP_REQUEST_SERVICE : BASE_URL.concat("/customers/apis/generate/otp/"),
     OTP_GENERATE_TOKEN : BASE_URL.concat("/customers/apis/generate/token/"),
-    
-    
-    
-    FETCH_BOOKING : BASE_URL.concat("/bookings/api/fetch/booking/forcustomer/"),
+    FETCH_PROFILE_INFO : BASE_URL.concat("/customers/apis/profile/fetch/info/"),
+    UPDATE_CUSTOMER_BASIC_INFO : BASE_URL.concat("/customers/apis/profile/update/basicinfo/"),
+    FETCH_OTP_FOR_MOBILE_NO_UPDATE : BASE_URL.concat("/customers/apis/profile/fetch/mobilenumber/requestotp/"),
+    UPDATE_CUSTOMER_MOBILE_NO : BASE_URL.concat("/customers/apis/profile/update/mobilenumber/"),
+    GET_PRESIGNED_URL_FOR_CUSTOMER_DP : BASE_URL.concat("/customers/apis/profile/fetch/presigned/url/"),
+    UPDATE_CUSTOMER_PROFILE_PIC : BASE_URL.concat("/customers/apis/profile/update/profilepicture/"),
 }
 
 const BOOKING_APIS = {
     FETCH_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
-    FETCH_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/fetch/"), //bookig id at the end uri
+    FETCH_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/fetch/"), //pass booking id at the end of the url
     UPDATE_BOOKING : BASE_URL.concat("/bookings/apis/customers/booking/"),
     ADD_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/add/"),
     REMOVE_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/remove/"),
-    
     FETCH_INVOICE : BASE_URL.concat("/bookings/apis/customers/fetch/invoice/")
 }
 

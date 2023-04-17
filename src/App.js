@@ -12,7 +12,7 @@ import EmployeeNewBooking from "./employees/EmployeeNewBooking";
 import { CustomerSignIn } from "./customers/CustomerSignIn";
 import CustomerBookingHistory from "./customers/CustomerBookingHistory";
 import CustomerNewBooking from "./customers/bookings/CustomerNewBooking";
-import CustomerProfile from "./customers/CustomerProfile";
+import CustomerProfile from "./customers/profile/CustomerProfile";
 import CustomerSupport from "./customers/CustomerSupport";
 import { ContextProvider } from "./contexts/ContextProvider";
 import EmployeeCustomerSupport from "./employees/EmployeeCustomerSupport";
@@ -32,15 +32,15 @@ export default function App() {
                     <Routes>
                       <Route path="/emp/login" element={<EmployeeSignIn />} /> 
                       <Route path="/emp/profile" element={<EmployeeProfile />} />
-                      
-                      
-                      <Route path="/emp/services" element={<EmployeeServices />} />
+                      <Route path="/emp/upload" element={<FileUploadPage />} />
+
                       <Route path="/emp/bookings/open" element={<OpenBookings />} />
+                      
+                      
                       <Route path="/emp/bookings/active" element={<EmployeeNewBooking />} />
                       <Route path="/emp/bookings/history" element={<EmployeeBookingHistory />} />
                       <Route path="/emp/support" element={<EmployeeCustomerSupport />} />
                       <Route path="/emp/home" element={<EmployeesHome />} />
-                      <Route path="/emp/upload" element={<FileUploadPage />} /> 
                     </Routes>
                 </Router>
               </ContextProvider>
@@ -49,11 +49,10 @@ export default function App() {
                 <Router>
                     <Routes>
                       <Route path="/cust/login" element={<CustomerSignIn />} />
-                      <Route path="/cust/home" element={<CustomerHome />} />
                       <Route path="/cust/bookings" element={<CustomerNewBooking />} />
-                      
-
                       <Route path="/cust/profile" element={<CustomerProfile />} />
+                      
+                      <Route path="/cust/home" element={<CustomerHome />} />
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
