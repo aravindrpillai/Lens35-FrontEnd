@@ -14,8 +14,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Checkbox from '@mui/material/Checkbox';
 import Avatar from '@mui/material/Avatar';
-import { SERVICES } from '../../util/Constants';
+import { EVENTS } from '../../util/Constants';
 import { Stack } from '@mui/material';
+import { useEffect } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': { padding: theme.spacing(2) },
@@ -38,11 +39,13 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function ServicesModal({openModal, handleModalOpen, serviceSelectionCallBack}) {
+export default function ServicesModal({openModal, handleModalOpen, serviceSelectionCallBack, selectedEvents}) {
 
   const [checked, setChecked] = React.useState([])
   const [allChecked, setAllChecked] = React.useState(false)
   
+  useEffect(e=>{setChecked(selectedEvents)},[selectedEvents])
+
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value)
     const newChecked = [...checked]
@@ -57,7 +60,7 @@ export default function ServicesModal({openModal, handleModalOpen, serviceSelect
   function selectAllEventsHandler(){
     let s = []
     if(!allChecked){
-        SERVICES.forEach(service=>( s.push(service.type) ))
+      EVENTS.forEach(event=>( s.push(event.type) ))
     }
     setChecked(s)
     setAllChecked(!allChecked)
@@ -70,16 +73,16 @@ export default function ServicesModal({openModal, handleModalOpen, serviceSelect
         <DialogContent dividers>
           
             <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            {SERVICES.map((service) => {
-                const labelId = `checkbox-list-secondary-label-${service.type}`;
+            {EVENTS.map((event) => {
+                const labelId = `checkbox-list-secondary-label-${event.id}`;
                 return (
-                <ListItem key={service.type}
-                    onClick={handleToggle(service.type)}
-                    secondaryAction={ <Checkbox edge="end" checked={checked.indexOf(service.type) !== -1} /> } 
+                <ListItem key={event.id}
+                    onClick={handleToggle(event.type)}
+                    secondaryAction={ <Checkbox edge="end" checked={checked.indexOf(event.type) !== -1} /> } 
                     >
                     <ListItemButton>
-                        <ListItemAvatar> <Avatar src={"/event"+service.url} /> </ListItemAvatar>
-                        <ListItemText id={labelId} primary={service.title} />
+                        <ListItemAvatar> <Avatar src={event.url} /> </ListItemAvatar>
+                        <ListItemText id={labelId} primary={event.title} />
                     </ListItemButton>
                 </ListItem>
                 );

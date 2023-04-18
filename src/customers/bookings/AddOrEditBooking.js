@@ -10,10 +10,12 @@ import PaymentsPage from './PaymentsPage';
 import Services from './Services';
 import SelectEmployees from './SelectEmployees';
 import { BookingContext } from '../../contexts/BookingContextProvider';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function AddOrEditBooking({handleProcessCompletion}) {  
   const theme = useTheme();
-  const { saveData, message, validate, resetData } = React.useContext(BookingContext)
+  const { saveData, message, validate, resetData, loading, setLoading } = React.useContext(BookingContext)
   const [currentPageNumber, setCurrentPageNumber] = React.useState(0)
   const maxSteps = 6
 
@@ -59,6 +61,7 @@ export default function AddOrEditBooking({handleProcessCompletion}) {
 
   return (
     <React.Fragment>
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading} > <CircularProgress color="inherit" /> </Backdrop>
         <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
             { currentPageNumber === 0 && <span>Tell us about your event</span> }
             { currentPageNumber === 1 && <span>When do you need the booking?</span> }
@@ -81,12 +84,12 @@ export default function AddOrEditBooking({handleProcessCompletion}) {
         <br/>
         <MobileStepper variant="progress" steps={maxSteps} position="static" activeStep={currentPageNumber} sx={{ maxWidth: "100%", flexGrow: 1 }}
           nextButton={
-            <Button size="small" onClick={(e)=>{handleNavigation(true)}} disabled={currentPageNumber === (maxSteps-1)} >
+            <Button size="small" onClick={(e)=>{handleNavigation(true)}} disabled={currentPageNumber === (maxSteps-1) || loading} >
               Next {theme.direction === 'rtl' ? ( <KeyboardArrowLeft /> ) : ( <KeyboardArrowRight /> )}
             </Button>
           }
           backButton={
-            <Button size="small" onClick={(e)=>{handleNavigation(false)}} disabled={currentPageNumber === 0}>
+            <Button size="small" onClick={(e)=>{handleNavigation(false)}} disabled={currentPageNumber === 0 || loading}>
               {theme.direction === 'rtl' ? (<KeyboardArrowRight /> ) : ( <KeyboardArrowLeft /> )} Back
             </Button>
           }

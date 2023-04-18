@@ -53,3 +53,13 @@ export function getDefaultBookingStartDate(){
   let date = new Date()
   return date.getFullYear() + "-" +addZero(date.getMonth()+1) + "-" +addZero(date.getDate()) + "T" +addZero(date.getHours()+2) + ":" +addZero(date.getMinutes())
 }
+
+
+export function getTomorrowsDate(){
+  function addZero(val){
+    return val < 10 ? "0"+val : val
+   }
+  let today = new Date()
+  let tomorrow = (new Date(today.getTime() + (24 * 60 * 60 * 1000)))
+  return tomorrow.getFullYear() + "-" +addZero(tomorrow.getMonth()+1) + "-" +addZero(tomorrow.getDate())
+}

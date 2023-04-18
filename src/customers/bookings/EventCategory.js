@@ -4,14 +4,14 @@ import { CardActionArea, CardContent, CardMedia, Typography } from '@mui/materia
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Stack } from '@mui/system';
 import { BookingContext } from '../../contexts/BookingContextProvider';
-import { SERVICES } from '../../util/Constants';
+import { EVENTS } from '../../util/Constants';
 
 
 export default function EventCategory() {
 
     const { event, setEvent } = React.useContext(BookingContext)
 
-    const [data, setData] = React.useState(SERVICES)
+    const [data, setData] = React.useState(EVENTS)
         
     function updateSelectedEvent(type){
         let updated = []
@@ -30,7 +30,7 @@ export default function EventCategory() {
             <Grid key={d.type} item xs={6} md={6} lg={6} onClick={e=>{updateSelectedEvent(d.type)}}>
                 <Card sx={{ maxWidth: 345}}>
                     <CardActionArea>
-                        <CardMedia component="img" height="150" image={"/event"+d.url} />
+                        <CardMedia component="img" height="150" image={d.url} />
                         <CardContent >
                             <Typography gutterBottom variant="h6" component="div"> <Stack direction="row" justifyContent="space-between"> {d.title} 
                             {(d.type === event) && <CheckCircleIcon color="primary"/>}

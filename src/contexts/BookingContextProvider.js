@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { createContext } from "react";
 import { get, post } from "../util/Service";
 import {BOOKING_APIS} from "../util/Properties" 
 import { duration } from "moment";
 import { getDefaultBookingStartDate } from "../util/DateUtil";
+import { AppContext } from "./ContextProvider";
 
 export const BookingContext = createContext();
 
 
 export function BookingContextProvider({ children, booking_id=null }) {
   
+  const [loading, setLoading] = useState(false)
   //Private Variables - To see if the original value is changed or not.
   const [bookingID, setBookingID] = useState(null)
   const [eventHistory, setEventHistory] = useState(null)
@@ -81,6 +83,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
   }
 
   async function saveData(){
+    setLoading(true)
     let start_date = null
     let start_time = null
     if(bookingStartDateAndTime !== "" && bookingStartDateAndTime !== null){
@@ -129,14 +132,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
       setMessage("Failed register the booking. "+booking_response["message"])
     }
     
-    
-    // if(response["status"] === true){
-    //   setBookingID(response["data"]["booking_id"])
-    //   var response = await post(BOOKING_APIS.FETCH_INVOICE, { "booking_id": response["data"]["booking_id"] })
-    //   setPaymentInformation(response["data"])
-    // }else{
-    //   console.log("Failed -- ", response["messages"][0])
-    // }
+    setLoading(false)
     return true
   }
 
@@ -212,7 +208,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
       value = {{
         saveData, resetData,
         message, setMessage, validate,
-        
+        loading, setLoading,
 
         bookingID, paymentInformation,
         event, setEvent,
