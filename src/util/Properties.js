@@ -17,7 +17,7 @@ const EMPLOYEE_APIS = {
     UPDATE_EMPLOYEE_PORTFOLIOS : BASE_URL.concat("/employees/apis/profile/update/portfolios/"),
     
     LIST_OPEN_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/bookings/list/"),
-    
+    FETCH_BOOKING_INFO : BASE_URL.concat("/bookings/apis/employees/bookings/fetch/"), //Pass booking ID Here
 
     //------------------ REMOVE BELOW
     
@@ -52,12 +52,15 @@ const CUSTOMER_APIS = {
 }
 
 const BOOKING_APIS = {
-    FETCH_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
+    LIST_MY_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
     FETCH_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/fetch/"), //pass booking id at the end of the url
     UPDATE_BOOKING : BASE_URL.concat("/bookings/apis/customers/booking/"),
     ADD_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/add/"),
     REMOVE_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/remove/"),
-    FETCH_INVOICE : BASE_URL.concat("/bookings/apis/customers/fetch/invoice/")
+    FETCH_INVOICE : BASE_URL.concat("/bookings/apis/customers/fetch/invoice/"),
+
+    //Employees
+    
 }
 
 export {

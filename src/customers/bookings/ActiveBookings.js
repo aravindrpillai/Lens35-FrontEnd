@@ -14,14 +14,12 @@ import { BOOKING_APIS } from '../../util/Properties';
 import { get } from '../../util/Service';
 
 
-
-
 export default function ActiveBookings() {
 
   const [bookings, setBookings] = useState([])
 
   async function fetchBookings(){
-    var response = await get(BOOKING_APIS.FETCH_BOOKINGS)
+    var response = await get(BOOKING_APIS.LIST_MY_BOOKINGS)
     console.log("BOOKING RESPONSEc--- > ", response)
     if(response["status"] === true){
       setBookings(response["data"])

@@ -9,8 +9,6 @@ import UpcomingBookings from "./bookings/UpcomingBookings";
 import { Box, Modal } from "@mui/material";
 import { BookingContextProvider } from "../contexts/BookingContextProvider";
 import AddOrEditBooking from "./bookings/AddOrEditBooking";
-import { post } from "../util/Service";
-import { BOOKING_APIS } from "../util/Properties";
 import { AppContext } from "../contexts/ContextProvider";
 
 
@@ -54,25 +52,15 @@ export default function CustomerHome() {
   }
 
   useEffect(e=>{
-    fetchBookings()
+    
   },[])
 
-  async function fetchBookings(){
-    // let response = await post(BOOKING_APIS.FETCH_BOOKINGS)
-    // console.log(response)
-    // if(response["status"] === true){
-    //   setBookings(response["data"])
-    // }else{
-    //   setFlashMessage("error","Failed to fetch booking details.")
-    //   console.log("Failed to fetch booking details", response["messages"][0])
-    //   setBookings([])
-    // }
-  }
+
 
   async function handleProcessCompletion(status, payment_id){
     console.log("Reached at the final step : ", status, payment_id)
     setOpenEditModal(false)
-    await fetchBookings()
+    
     setFlashMessage("success","Your booking has been places successfully.")
   }
 

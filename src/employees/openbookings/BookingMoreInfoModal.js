@@ -11,15 +11,18 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Checkbox from '@mui/material/Checkbox';
-import Avatar from '@mui/material/Avatar';
-import { Stack } from '@mui/material';
+import { CircularProgress, Stack } from '@mui/material';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 import TheatersIcon from '@mui/icons-material/Theaters';
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
+import { get } from '../../util/Service';
+import { EMPLOYEE_APIS } from '../../util/Properties';
+import { AppContext } from '../../contexts/ContextProvider';
+import { useState } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': { padding: theme.spacing(2) },
@@ -29,7 +32,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 function BootstrapDialogTitle(props) {
   const { children, onClose, ...other } = props;
-
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
       {children}
@@ -43,6 +45,30 @@ function BootstrapDialogTitle(props) {
 }
 
 export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}) {
+  const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
+  
+  const [bookingData, setBookingData] = useState(null)
+
+  React.useEffect(eff=>{
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    if(isModalOpen){
+      loadBookingInfo()
+    }
+  },[booking, isModalOpen])
+
+  async function loadBookingInfo(){
+    clearFlashMessage()
+    setLoading(true)
+    let response = await get(EMPLOYEE_APIS.FETCH_BOOKING_INFO.concat(booking.booking_id))
+    console.log("------> SELECTED Booking Resp ----> ",response)
+    if(response["status"] === true){
+      setBookingData(response["data"])
+    }else{
+      setFlashMessage("error","Failed to load booking information. Please try again")
+    }
+    setLoading(false)
+  }
+
 
   return (
       <BootstrapDialog onClose={() => {modalHandle(false) }} open={isModalOpen} >
@@ -50,14 +76,23 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
         <DialogContent dividers>
           
             <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-            
-              <ListItem key={1} secondaryAction={ <Checkbox checked={false} /> }  >
-                  <ListItemButton>
-                      <IconButton> <CameraAltIcon /> </IconButton>
-                      <ListItemText primary={"Photography"} />
-                  </ListItemButton>
-              </ListItem>
-              
+              {
+                (bookingData === null || bookingData === undefined) &&
+                <CircularProgress />  
+              }
+              {
+              bookingData && bookingData.services.map(service=>(
+                <ListItem key={service.service_id} secondaryAction={ <>{service.employee !== null && <CheckCircleOutlineIcon/>} {service.employee === null && <Checkbox checked={false} />}</> }  >
+                    <ListItemButton>
+                        {service.service === "photography" && <><IconButton> <CameraAltIcon /> </IconButton><ListItemText primary="Photography" /></> }
+                        {service.service === "videography" && <><IconButton> <VideoCameraFrontIcon /> </IconButton><ListItemText primary="Videography" /></> }
+                        {service.service === "drone_photography" && <><IconButton> <LocalAirportIcon /> </IconButton><ListItemText primary="Drone Photography" /></> }
+                        {service.service === "photo_editor" && <><IconButton> <WallpaperIcon /> </IconButton><ListItemText primary="Photo Editor" /></> }
+                        {service.service === "video_editor" && <><IconButton> <TheatersIcon /> </IconButton><ListItemText primary="Video Editor" /></> }
+                    </ListItemButton>
+                </ListItem>
+              ))
+              }
 
             </List>
 
@@ -65,7 +100,6 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
         </DialogContent>
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button autoFocus > "Select All" </Button>
                 <Button autoFocus onClick={() => {modalHandle(false); }}> Confirm Booking </Button>
             </Stack>
         </DialogActions>
