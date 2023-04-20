@@ -17,8 +17,8 @@ import CustomerSupport from "./customers/CustomerSupport";
 import { ContextProvider } from "./contexts/ContextProvider";
 import EmployeeCustomerSupport from "./employees/EmployeeCustomerSupport";
 import FileUploadPage from "./employees/upload/FileUploadPage";
-import EmployeeServices from "./employees/services/EmployeeServices";
 import OpenBookings from "./employees/openbookings/OpenBookings";
+import { Welcome } from "./welcome/Welcome";
 
 export default function App() {
   
@@ -27,6 +27,8 @@ export default function App() {
     <React.Fragment>
      
         <ThemeProvider theme={currentTheme}>
+
+
               <ContextProvider>
                 <Router>
                     <Routes>
@@ -41,13 +43,8 @@ export default function App() {
                       <Route path="/emp/bookings/history" element={<EmployeeBookingHistory />} />
                       <Route path="/emp/support" element={<EmployeeCustomerSupport />} />
                       <Route path="/emp/home" element={<EmployeesHome />} />
-                    </Routes>
-                </Router>
-              </ContextProvider>
+           
 
-              <ContextProvider>
-                <Router>
-                    <Routes>
                       <Route path="/cust/login" element={<CustomerSignIn />} />
                       <Route path="/cust/bookings" element={<CustomerNewBooking />} />
                       <Route path="/cust/profile" element={<CustomerProfile />} />
@@ -56,9 +53,15 @@ export default function App() {
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
+                      
+                      
+                      <Route path="" element={<Welcome />} /> 
+                      
                     </Routes>
                 </Router>
               </ContextProvider>
+
+              
               
         </ThemeProvider>
     </React.Fragment>

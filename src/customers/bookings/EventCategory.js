@@ -27,7 +27,7 @@ export default function EventCategory() {
     <Grid container spacing={2} sx={{position:"relative "}}>
         {
         data.map(d=>(
-            <Grid key={d.type} item xs={6} md={6} lg={6} onClick={e=>{updateSelectedEvent(d.type)}}>
+            <Grid key={d.type} item xs={12} md={6} lg={6} onClick={e=>{updateSelectedEvent(d.type)}}>
                 <Card sx={{ maxWidth: 345}}>
                     <CardActionArea>
                         <CardMedia component="img" height="150" image={d.url} />
