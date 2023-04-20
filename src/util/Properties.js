@@ -18,6 +18,9 @@ const EMPLOYEE_APIS = {
     
     LIST_OPEN_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/bookings/list/"),
     FETCH_BOOKING_INFO : BASE_URL.concat("/bookings/apis/employees/bookings/fetch/"), //Pass booking ID Here
+    ACCEPT_BOOKING : BASE_URL.concat("/bookings/apis/employees/bookings/accept/"),
+    FETCH_BOOKING_WITH_PENDING_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/fetch/bookings/withpendingfileupload/"),
+    
 
     //------------------ REMOVE BELOW
     

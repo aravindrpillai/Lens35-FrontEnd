@@ -12,11 +12,19 @@ import EachFile from './EachFile';
 export default function UploadSection() {
 
     const [checkedFiles, setCheckedFiles] = useState([]) 
-    const [selectedBooking, setSelectedBooking] = useState("Select Booking") 
     const [openBookingList, setOpenBookingList] = useState(false) 
     const [selectAllFiles, setSelectAllFiles] = useState(false) 
     const [files, setFiles] = useState([]) 
-    
+    const [selectedBooking, setSelectedBooking] = React.useState(null)
+    const [selectedService, setSelectedService] = React.useState(null)
+  
+
+  function serviceSelectionCallBackHandler(booking, service){
+    setSelectedBooking(booking)
+    setSelectedService(service)
+    setOpenBookingList(false)
+  }
+
     async function loadFilesPostSelect(selectedFiles){
         let file = null;
         let fileArray = []
@@ -45,8 +53,10 @@ export default function UploadSection() {
         <Grid container spacing={2}>
             <Grid item xs={12} >
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }} >
-                    <Button variant="outlined" onClick={(e)=>setOpenBookingList(true)}> {selectedBooking} </Button>
-                    <SelectBookings selectedValue={selectedBooking} open={openBookingList} onClose={(newBooking)=>{setSelectedBooking(newBooking); setOpenBookingList(false)}} />
+                    <Button variant="outlined" onClick={(e)=>setOpenBookingList(true)}> {selectedService === null ? "Select Booking" : (selectedBooking.event+ " - " +selectedService.service)} </Button>
+                    <SelectBookings open={openBookingList} openHandler={setOpenBookingList} serviceSelectionCallBackHandler={serviceSelectionCallBackHandler} />
+                    
+                    {selectedService !== null &&
                     <div>
 
                         <Button size="small" color="primary" variant="outlined" component="label">
@@ -69,6 +79,7 @@ export default function UploadSection() {
                         </Button>
                         
                     </div>
+                    }
                 </Stack>
             </Grid>
 

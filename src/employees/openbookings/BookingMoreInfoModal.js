@@ -19,7 +19,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
 import TheatersIcon from '@mui/icons-material/Theaters';
 import WallpaperIcon from '@mui/icons-material/Wallpaper';
-import { get } from '../../util/Service';
+import { get, post } from '../../util/Service';
 import { EMPLOYEE_APIS } from '../../util/Properties';
 import { AppContext } from '../../contexts/ContextProvider';
 import { useState } from 'react';
@@ -48,6 +48,7 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
   const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
   
   const [bookingData, setBookingData] = useState(null)
+  const [selectedServices, setSelectedServices] = useState([])
 
   React.useEffect(eff=>{
     console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
@@ -59,14 +60,47 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
   async function loadBookingInfo(){
     clearFlashMessage()
     setLoading(true)
-    let response = await get(EMPLOYEE_APIS.FETCH_BOOKING_INFO.concat(booking.booking_id))
+    let response = await get(EMPLOYEE_APIS.FETCH_BOOKING_INFO.concat(booking.booking_id).concat("/"))
     console.log("------> SELECTED Booking Resp ----> ",response)
     if(response["status"] === true){
-      setBookingData(response["data"])
+      var res = response["data"]
+      res["selectedServices"] = []
+      setBookingData(res)
     }else{
       setFlashMessage("error","Failed to load booking information. Please try again")
     }
     setLoading(false)
+  }
+
+  async function confirmBooking(){
+    console.log(bookingData.selectedServices)
+    clearFlashMessage()
+    setLoading(true)
+
+    var data = {
+      "booking_id": bookingData.booking_id,
+      "service_id_list": bookingData.selectedServices
+    }
+    let response = await post(EMPLOYEE_APIS.ACCEPT_BOOKING,data)
+    console.log("------> ACCEPT Booking Resp ----> ",response)
+    if(response["status"] === true){
+      
+      setLoading(false)
+      modalHandle(false)
+    }else{
+      setFlashMessage("error","Failed to load booking information. Please try again")
+    }
+  }
+
+  function handleServiceSelection(service_id){
+    let s = bookingData
+    let indx = s.selectedServices.indexOf(service_id)
+    if(indx == -1){
+      s.selectedServices.push(service_id)
+    }else{
+      s.selectedServices.splice(indx, 1)
+    }
+    setBookingData(s)
   }
 
 
@@ -82,7 +116,7 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
               }
               {
               bookingData && bookingData.services.map(service=>(
-                <ListItem key={service.service_id} secondaryAction={ <>{service.employee !== null && <CheckCircleOutlineIcon/>} {service.employee === null && <Checkbox checked={false} />}</> }  >
+                <ListItem key={service.service_id} onClick={()=>{handleServiceSelection(service.service_id)}} secondaryAction={ <>{service.employee !== null && <CheckCircleOutlineIcon/>} {service.employee === null && <Checkbox checked={service.selectedServices && service.selectedServices.indexOf(service.service_id) != -1} />}</> }  >
                     <ListItemButton>
                         {service.service === "photography" && <><IconButton> <CameraAltIcon /> </IconButton><ListItemText primary="Photography" /></> }
                         {service.service === "videography" && <><IconButton> <VideoCameraFrontIcon /> </IconButton><ListItemText primary="Videography" /></> }
@@ -100,7 +134,7 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
         </DialogContent>
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button autoFocus onClick={() => {modalHandle(false); }}> Confirm Booking </Button>
+                <Button autoFocus onClick={confirmBooking}> Confirm Booking </Button>
             </Stack>
         </DialogActions>
       </BootstrapDialog>
