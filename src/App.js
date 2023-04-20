@@ -11,7 +11,7 @@ import { EmployeeSignIn } from "./employees/EmployeeSignIn";
 import EmployeeNewBooking from "./employees/EmployeeNewBooking";
 import { CustomerSignIn } from "./customers/CustomerSignIn";
 import CustomerBookingHistory from "./customers/CustomerBookingHistory";
-import CustomerNewBooking from "./customers/bookings/CustomerNewBooking";
+import CustomerNewBooking from "./customers/CustomerNewBooking";
 import CustomerProfile from "./customers/profile/CustomerProfile";
 import CustomerSupport from "./customers/CustomerSupport";
 import { ContextProvider } from "./contexts/ContextProvider";
@@ -35,7 +35,6 @@ export default function App() {
                       <Route path="/emp/login" element={<EmployeeSignIn />} /> 
                       <Route path="/emp/profile" element={<EmployeeProfile />} />
                       <Route path="/emp/upload" element={<FileUploadPage />} />
-
                       <Route path="/emp/bookings/open" element={<OpenBookings />} />
                       
                       
@@ -53,10 +52,7 @@ export default function App() {
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
-                      
-                      
                       <Route path="" element={<Welcome />} /> 
-                      
                     </Routes>
                 </Router>
               </ContextProvider>

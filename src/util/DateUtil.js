@@ -45,13 +45,14 @@ export function getDifferenceInMinutes(date) {
   return (new Date(date) - new Date())/(1000*60)
 }
 
-
 export function getDefaultBookingStartDate(){
-  function addZero(val){
-    return val < 10 ? "0"+val : val
-   }
-  let date = new Date()
-  return date.getFullYear() + "-" +addZero(date.getMonth()+1) + "-" +addZero(date.getDate()) + "T" +addZero(date.getHours()+2) + ":" +addZero(date.getMinutes())
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 
