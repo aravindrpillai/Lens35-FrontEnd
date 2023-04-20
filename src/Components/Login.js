@@ -15,13 +15,9 @@ export default function Login(props){
     const [otpStatus, setOtpStatus] = useState(false)
     const [isOtpTimerRunning, setIsOtpTimerRunning] = useState(false)
     const [message, setMessage] = useState(null)
-    
-    const [countryCode, setCountryCode] = useState("+91-")
+    let countryCode = "+91-"
     const [mobileNumber, setMobileNumber] = useState("7767991693")
     const [otp, setOTP] = useState("")
-    
-    //TODO - REMOVE
-    const [otpFromResponse, setOtpFromResponse] = useState(null)
 
     useEffect(e=>{
       const query = new URLSearchParams(window.location.search);
@@ -50,9 +46,8 @@ export default function Login(props){
         setOtpStatus(true);
         setIsOtpTimerRunning(true)
         setMessage("OTP successfully sent.")
-        setOtpFromResponse(otpResponse["data"]["otp_for_testing_purpose"])
+        setOTP(otpResponse["data"]["otp_for_testing_purpose"].toString()) //TODO- REMOVE this code
       }else{
-        setOtpFromResponse(otpResponse["messages"][0])
         setMessage(otpResponse["messages"][0])
         setOtpStatus(false);
       }
@@ -176,8 +171,6 @@ export default function Login(props){
                 <br/> { message && <span>{message}</span> }<br/><br/>
                 {otpStatus && <Button variant="contained" disableElevation color="primary" onClick = {validateOTPAndLogin} > Sign In </Button>}
             </FormControl>
-            <br/>
-            <span>OTP : {otpFromResponse}</span>
         </React.Fragment>
     )
 }
