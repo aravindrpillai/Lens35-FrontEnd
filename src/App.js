@@ -11,7 +11,6 @@ import { EmployeeSignIn } from "./employees/EmployeeSignIn";
 import EmployeeNewBooking from "./employees/EmployeeNewBooking";
 import { CustomerSignIn } from "./customers/CustomerSignIn";
 import CustomerBookingHistory from "./customers/CustomerBookingHistory";
-import CustomerNewBooking from "./customers/CustomerNewBooking";
 import CustomerProfile from "./customers/profile/CustomerProfile";
 import CustomerSupport from "./customers/CustomerSupport";
 import { ContextProvider } from "./contexts/ContextProvider";
@@ -19,6 +18,7 @@ import EmployeeCustomerSupport from "./employees/EmployeeCustomerSupport";
 import FileUploadPage from "./employees/upload/FileUploadPage";
 import OpenBookings from "./employees/openbookings/OpenBookings";
 import { Welcome } from "./welcome/Welcome";
+import CustomerBookings from "./customers/bookings/CustomerBookings";
 
 export default function App() {
   
@@ -27,8 +27,6 @@ export default function App() {
     <React.Fragment>
      
         <ThemeProvider theme={currentTheme}>
-
-
               <ContextProvider>
                 <Router>
                     <Routes>
@@ -45,7 +43,7 @@ export default function App() {
            
 
                       <Route path="/cust/login" element={<CustomerSignIn />} />
-                      <Route path="/cust/bookings" element={<CustomerNewBooking />} />
+                      <Route path="/cust/bookings" element={<CustomerBookings />} />
                       <Route path="/cust/profile" element={<CustomerProfile />} />
                       
                       <Route path="/cust/home" element={<CustomerHome />} />
@@ -56,9 +54,6 @@ export default function App() {
                     </Routes>
                 </Router>
               </ContextProvider>
-
-              
-              
         </ThemeProvider>
     </React.Fragment>
   );

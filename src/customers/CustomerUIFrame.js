@@ -92,8 +92,7 @@ function CustomerUIFrame(props) {
         {[
           { text: "home", icon: "home" },
           { text: "bookings", icon: "app_shortcut" },
-          { text: "history", icon: "book" },
-          { text: "profile", icon: "person" },
+           { text: "profile", icon: "person" },
           { text: "support", icon: "support_agent" }
 
         ].map(({ text, icon }, index) => (

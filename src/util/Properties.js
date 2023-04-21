@@ -55,7 +55,7 @@ const CUSTOMER_APIS = {
 }
 
 const BOOKING_APIS = {
-    LIST_MY_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
+    LIST_CUSTOMER_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
     FETCH_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/fetch/"), //pass booking id at the end of the url
     UPDATE_BOOKING : BASE_URL.concat("/bookings/apis/customers/booking/"),
     ADD_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/add/"),

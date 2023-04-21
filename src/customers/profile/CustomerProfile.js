@@ -115,15 +115,10 @@ export default function CustomerProfile() {
               <td><hr/></td>
               <td><hr/></td>
             </tr>
-            <tr>
-              <td><FormControlLabel onClick={handleSubscriptionChange} control={<Checkbox checked={subscribed} />} label="Subscribe For Updates" /></td>
-              <td></td>
-              <td></td>
-            </tr>
-
             
           </tbody>
         </table>
+        <FormControlLabel onClick={handleSubscriptionChange} control={<Checkbox checked={subscribed} />} label="Subscribe For Updates" />
         
       </React.Fragment>
     )
