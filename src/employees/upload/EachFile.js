@@ -136,7 +136,7 @@ export default function EachFile({_booking,_service, _key, _file}) {
 
 
     return (
-        <Grid item xs={3} key={_key}>
+        <Grid item xs={12} md={6} lg={3}  key={_key}>
             <Card sx={{ maxWidth: 345 }}>
                 <CardMedia sx={{opacity: uploadPercentage === 100 ? 1 : 0.4}} component="img" height="140" image={fileURL(_file)}  />
                 
