@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "./Properties";
 
 const SESSION_EXPIRED_MESSAGE = "Session Expired. Please login Again"
@@ -26,9 +25,9 @@ export async function post(url, requestBody = {}, auth_req=true) {
         //Unauthorised
         if(response.status === 401){
             if(usertype === "employees"){
-                window.location.assign("http://localhost:3000/emp/login?message="+SESSION_EXPIRED_MESSAGE)
+                window.location.assign("/emp/login?message="+SESSION_EXPIRED_MESSAGE)
             }else{
-                window.location.assign("http://localhost:3000/cust/login?message="+SESSION_EXPIRED_MESSAGE)
+                window.location.assign("/cust/login?message="+SESSION_EXPIRED_MESSAGE)
             }
         }
 
@@ -64,9 +63,9 @@ export async function post(url, requestBody = {}, auth_req=true) {
         //Unauthorised
         if(response.status === 401){
             if(usertype === "employees"){
-                window.location.assign("http://localhost:3000/emp/login?message="+SESSION_EXPIRED_MESSAGE)
+                window.location.assign("/emp/login?message="+SESSION_EXPIRED_MESSAGE)
             }else{
-                window.location.assign("http://localhost:3000/cust/login?message="+SESSION_EXPIRED_MESSAGE)
+                window.location.assign("/cust/login?message="+SESSION_EXPIRED_MESSAGE)
             }
         }        
         return json_response

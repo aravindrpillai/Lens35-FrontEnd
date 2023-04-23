@@ -12,24 +12,17 @@ import { FILES_API } from '../../util/Properties';
 import { post } from '../../util/Service';
 import ReplayIcon from '@mui/icons-material/Replay';
 
-export default function EachFile({_serviceID, _key, _file}) {
+export default function EachFile({_booking,_service, _key, _file}) {
 
-    const [serviceID, setServiceID] = useState(null)
-    const [key, setKey] = useState(null)
-    const [file, setFile] = useState(null)
     const [uploadPercentage, setUploadPercentage] = useState(0) 
     const [uploadCancelled, setUploadCancelled] = useState(false) 
     const cancelFileUpload = useRef(null)
 
     useEffect(e=>{
-        if(_file !== null && _key !== null && _serviceID !== null){
-            setKey(_key)
-            setFile(_file)
-            setServiceID(_serviceID)
-            
-            handleFileUpload(_key, _file, _serviceID)
+        if(_file !== null && _key !== null && _service !== null){
+            handleFileUpload(_key, _file)
         }
-    },[_key, _file, _serviceID])
+    },[_key, _file, _service])
 
     
     /**
@@ -49,10 +42,10 @@ export default function EachFile({_serviceID, _key, _file}) {
      * @param {*} service_id 
      * @returns 
      */
-    async function handleFileUpload(key_0, file_0, _serviceID_0){
+    async function handleFileUpload(key_0, file_0){
         if(file_0 === null || file_0 === "") return false
         let body = {
-            "service_id" : _serviceID_0,
+            "service_id" : _service.service_id,
             "file_name" : file_0.name,
             "mime_type" : (file_0.type !== null && file_0.type !== undefined && file_0.type !== "") ? file_0.type : "application/octet-stream",
             "is_photo" : ['image/jpeg', 'image/png'].includes(file_0.type)
@@ -65,9 +58,9 @@ export default function EachFile({_serviceID, _key, _file}) {
             let presignedUrl = s3Response["url"]
             let uploadedToS3 = await uploadImageUsingPresignedURL(file_0, presignedUrl, s3ConnectionInfo)
             let ack_request = {
-                service_id : "12334",
-                mime_type : "image/jpeg",
-                file_name : "file_name.jpeg",
+                service_id : _service.service_id,
+                mime_type : file_0.type,
+                file_name : file_0.name,
                 uploaded : true
             }
             let ackResponse = await post(FILES_API.ACKNODWLEDGE_FILE_UPLOAD, ack_request)
@@ -143,24 +136,24 @@ export default function EachFile({_serviceID, _key, _file}) {
 
 
     return (
-        <Grid item xs={3} key={key}>
+        <Grid item xs={3} key={_key}>
             <Card sx={{ maxWidth: 345 }}>
-                <CardMedia sx={{opacity: uploadPercentage === 100 ? 1 : 0.4}} component="img" height="140" image={fileURL(file)}  />
+                <CardMedia sx={{opacity: uploadPercentage === 100 ? 1 : 0.4}} component="img" height="140" image={fileURL(_file)}  />
                 
                 {uploadPercentage < 100 &&
                 <CardActions sx={{ justifyContent: "space-between" }} >
-                    <span>{file !== null ? file.name.split(".")[0] : ""}</span>                    
+                    <span>{_file !== null ? _file.name.split(".")[0] : ""}</span>                    
                     {!uploadCancelled && <CircularProgressWithLabel value={uploadPercentage} />}
                     {uploadCancelled && <font color="red" size="2">Cancelled</font>}
                     
                     {!uploadCancelled && <CancelIcon onClick={handleFileUploadCancel}/>}
-                    {uploadCancelled && <ReplayIcon onClick={()=>{handleFileUpload(_key, _file, _serviceID)}}/>}
+                    {uploadCancelled && <ReplayIcon onClick={()=>{handleFileUpload(_key, _file)}}/>}
                 </CardActions>
                 }
 
                 {uploadPercentage === 100 &&
                 <CardActions sx={{ justifyContent: "space-between" }} >
-                    <div><Checkbox checked={false} /><span>{file.name.split(".")[0]} &nbsp;</span></div>
+                    <div><Checkbox checked={false} /><span>{_file.name.split(".")[0]} &nbsp;</span></div>
                     <DeleteIcon size="small" onClick={deleteFile} />
                 </CardActions>
                 }

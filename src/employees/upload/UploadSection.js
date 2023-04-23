@@ -86,7 +86,8 @@ export default function UploadSection() {
             {files.map((file) => ( 
                 <EachFile 
                     key={file.key} 
-                    _serviceID={"11111-22222-33333-4444-55555"} 
+                    _booking={selectedBooking}
+                    _service={selectedService} 
                     _key={file.key}
                     _file={file.file}  />
             ))}
