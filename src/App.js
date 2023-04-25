@@ -19,6 +19,7 @@ import FileUploadPage from "./employees/upload/FileUploadPage";
 import OpenBookings from "./employees/openbookings/OpenBookings";
 import { Welcome } from "./welcome/Welcome";
 import CustomerBookings from "./customers/bookings/CustomerBookings";
+import { Welcome2 } from "./welcome/Welcome2";
 
 export default function App() {
   
@@ -50,7 +51,8 @@ export default function App() {
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
-                      <Route path="" element={<Welcome />} /> 
+                      {/* <Route path="" element={<Welcome />} />  */}
+                      <Route path="" element={<Welcome2 />} /> 
                     </Routes>
                 </Router>
               </ContextProvider>
