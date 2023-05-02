@@ -11,7 +11,7 @@ import DisabledByDefaultTwoToneIcon from '@mui/icons-material/DisabledByDefaultT
 export default function FullNameField({full_name, setOpenModal, modalCallBackHandler}){
     const [name, setName] = React.useState(full_name === null ? "" : full_name);
     const [nameError, setNameError] = React.useState(null);
-    const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
+    const { clearFlashMessage, setFlashMessage, setCustomerUserName } = useContext(AppContext)
   
     async function save(){
       clearFlashMessage()
@@ -24,6 +24,7 @@ export default function FullNameField({full_name, setOpenModal, modalCallBackHan
       }
       let response = await post(CUSTOMER_APIS.UPDATE_CUSTOMER_BASIC_INFO, data)
       if(response["status"] === true){
+        setCustomerUserName(name)
         modalCallBackHandler("full_name", name)
         setFlashMessage("success","Name updated successfully")
         setOpenModal(false)

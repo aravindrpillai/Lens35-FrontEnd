@@ -76,12 +76,12 @@ export default function ServicesComponent({is_photographer, is_videographer, is_
                     setVideoEditor(!selectAll) 
                     setSelectAll(!selectAll)
                 }}
-            /><font size="2">{selectAll ? "Unselect All" : "Select All"} </font></Typography>
-            {(photographer === false && videographer === false && dronePhotographer === false && videoEditor === false && photoEditor === false) && 
-            <Typography color={"textSecondary"} variant="h6" gutterBottom> <font size="2">**Your account will be inactive if no services are selected </font></Typography>
-            }
-           
+            /><font size="2">{selectAll ? "Unselect All" : "Select All"} </font></Typography>    
         </Stack>
+        {
+            (photographer === false && videographer === false && dronePhotographer === false && videoEditor === false && photoEditor === false) && 
+            <Typography color={"textSecondary"} variant="h6" gutterBottom> <font size="2">Atleast one service must be selected </font></Typography>
+        }
         <Grid container spacing={2}>
             <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setPhotographer(!photographer)}} checked={photographer}/>Still Photography</Typography> </Grid>
             <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setVideographer(!videographer)}} checked={videographer} />Videography</Typography> </Grid>

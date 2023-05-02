@@ -5,26 +5,18 @@ import { Grid } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import CustomerTheme from "./CustomerTheme";
 import { AppContext } from "../contexts/ContextProvider";
-
-
-function BookingButton(){
-  return (
-    <Button variant="contained" color="primary" onClick={onClickEvent} style={{float: 'right'}}>Hello</Button>
-  )
-}
-
-function onClickEvent(){
-  console.log("clicked...!!!!")
-}
+import { get } from "../util/Service";
+import { CUSTOMER_APIS } from "../util/Properties";
+import { useNavigate } from "react-router-dom";
 
 
 export default function CustomerHome() {
 
-  const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
+  const { clearFlashMessage, setFlashMessage, customerUserName, setCustomerUserName } = useContext(AppContext)
   const [openEditModal, setOpenEditModal] = React.useState(false)
-  const [openViewModal, setOpenViewModal] = React.useState(false)
   const [selectedBookingID, setSelectedBookingID] = React.useState(null)
   const [bookings, setBookings] = React.useState([])
+  const navigate = useNavigate()
 
   function openBookingModal(booking_id){
     console.log("BOOKING -- ID --FOR -- MODAL ---> ", booking_id)
@@ -33,25 +25,40 @@ export default function CustomerHome() {
     setOpenEditModal(true)
   }
 
+  function BookingButton(){
+    return (
+      <Button variant="contained" color="primary" onClick={()=>{navigate("../cust/bookings")}} style={{float: 'right'}}>Show Bookings</Button>
+    )
+  }
+
   useEffect(e=>{
-    
+    clearFlashMessage()
+    console.log("Starting")
+    async function loadHomeData(){
+      var resp = await get(CUSTOMER_APIS.FETCH_PROFILE_INFO)
+      if(resp["status"] === true){
+        const data = resp["data"]
+        if(data["full_name"] !== null){
+          setCustomerUserName(data["full_name"])
+        }else{
+          navigate("../cust/profile")
+        }
+      }else{
+        setFlashMessage("error","Failed to load page. "+resp["messages"][0])
+      }
+      console.log(resp)
+    }
+    loadHomeData()
   },[])
 
 
 
-  async function handleProcessCompletion(status, payment_id){
-    console.log("Reached at the final step : ", status, payment_id)
-    setOpenEditModal(false)
-    
-    setFlashMessage("success","Your booking has been places successfully.")
-  }
-
-  return (
+    return (
     <CustomerTheme>
       <Content>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={6}>
-            <SummaryCard title={"Welcome"} value={"RaghuRam Sharma "} />
+            <SummaryCard title={"Welcome"} value={customerUserName} />
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
             <SummaryCard title={"Upcoming Booking"} value={"12th Oct 2022 @ 3pm"} button={<BookingButton />} />

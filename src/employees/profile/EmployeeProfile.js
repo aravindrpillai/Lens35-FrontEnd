@@ -20,6 +20,7 @@ import BaseLocationField from "./BaseLocationField";
 import { Stack } from "@mui/system";
 import PortFolioField from "./PortFolioField";
 import ServicesComponent from "./ServicesComponent";
+import { Link } from "react-router-dom";
 
 
 export default function EmployeeProfile() {
@@ -27,15 +28,8 @@ export default function EmployeeProfile() {
   const [openModal, setOpenModal] = React.useState(false);
   const [modalTitle, setModalTitle] = React.useState(null);
   const [modelContent, setModalContent] = React.useState(null);
-  const [loading, setLoading] = React.useState(false)
   const [pageData, setPageData] = React.useState({})
 
-
-  function sliceUrl(url){
-    if(url.length > 30)
-      url = url.slice(0,30) + "......"
-    return url
-  }
 
   async function loadPageData(){
     let response = await get(EMPLOYEE_APIS.FETCH_EMPLOYEE_DATA)
@@ -43,6 +37,9 @@ export default function EmployeeProfile() {
       let respData = response["data"]
       console.log("RESP DAT : ", respData)
       setPageData(respData)
+      if(respData["is_draft"] === true){
+        setFlashMessage("warning","Please fill all the information to activate the account")
+      }
     }else{
       setFlashMessage("error","Failed to fetch data. Please try again.")  
     }
@@ -154,7 +151,9 @@ export default function EmployeeProfile() {
               <td>
                 <Stack direction="column" spacing={0} > 
                   {pageData["portfolios"] && pageData["portfolios"].map((portfolio) => (
-                    <li key={portfolio.name}>{portfolio.name}</li>
+                    <li key={portfolio.name}>
+                      <a href={portfolio.value} underline="hover" target="_blank" rel="noopener noreferrer">{portfolio.name}</a>
+                    </li>
                   ))}
                 </Stack>
               </td>

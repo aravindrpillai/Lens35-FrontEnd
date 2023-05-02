@@ -19,6 +19,8 @@ import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { AppContext } from "../contexts/ContextProvider";
+import { useContext } from "react";
 
 export const drawerWidth = 240;
 
@@ -66,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CustomerUIFrame(props) {
+  const { customerUserName } = useContext(AppContext)
   const { container } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -148,7 +151,7 @@ function CustomerUIFrame(props) {
             component={RouterLink}
             className={classes.logo}
           >
-            RaghuRam Sharma
+            {customerUserName}
           </Typography>
           <div style={{ flexGrow: 1 }}></div>
           <Badge overlap="rectangular" color="primary">

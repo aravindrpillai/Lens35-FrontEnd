@@ -31,7 +31,9 @@ export default function CustomerProfile() {
     let response = await get(CUSTOMER_APIS.FETCH_PROFILE_INFO)
     if(response["status"] === true){
       let respData = response["data"]
-      console.log("CUSTOMER PROFILE RESPONSE DATA : ", respData)
+      if(respData["full_name"] === null){
+        setFlashMessage("warning","Please update your details to use the application")
+      }
       setPageData(respData)
       setSubscribed(respData["subscribe_for_updates"])
     }else{

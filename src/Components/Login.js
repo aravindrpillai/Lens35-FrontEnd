@@ -34,7 +34,7 @@ export default function Login(props){
      */
     async function pushOTP(){
       setMessage(null);
-      setIsOtpTimerRunning(false);
+      setIsOtpTimerRunning(false)
       if(mobileNumber === null || mobileNumber === ""){
         setMessage("Mobile Number cannot be empty")
       }

@@ -17,9 +17,8 @@ import { ContextProvider } from "./contexts/ContextProvider";
 import EmployeeCustomerSupport from "./employees/EmployeeCustomerSupport";
 import FileUploadPage from "./employees/upload/FileUploadPage";
 import OpenBookings from "./employees/openbookings/OpenBookings";
-import { Welcome } from "./welcome/Welcome";
 import CustomerBookings from "./customers/bookings/CustomerBookings";
-import { Welcome2 } from "./welcome/Welcome2";
+import { Welcome } from "./welcome/Welcome";
 
 export default function App() {
   
@@ -51,8 +50,7 @@ export default function App() {
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
-                      {/* <Route path="" element={<Welcome />} />  */}
-                      <Route path="" element={<Welcome2 />} /> 
+                      <Route path="" element={<Welcome />} /> 
                     </Routes>
                 </Router>
               </ContextProvider>

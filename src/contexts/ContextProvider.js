@@ -7,7 +7,11 @@ export const currentDay = moment();
 
 export function ContextProvider({ children }) {
   
-  const [userData, setUserData] = useState(null);
+  //Username keeps the name of the logged in User.
+  const [customerUserName, setCustomerUserName] = useState(null)
+  const [employeeUserName, setEmployeeUserName] = useState(null)
+
+  const [userData, setUserData] = useState(null)
   const [message, setMessage] = React.useState(null)
   const [loading, setLoading] = React.useState(false)
   const [messageType, setMessageType] = React.useState("info") //success, info, warning, error
@@ -25,6 +29,8 @@ export function ContextProvider({ children }) {
   return (
     <AppContext.Provider
       value = {{
+        customerUserName, setCustomerUserName,
+        employeeUserName, setEmployeeUserName,
         userData, setUserData,
         message, setMessage,
         messageType, setMessageType,

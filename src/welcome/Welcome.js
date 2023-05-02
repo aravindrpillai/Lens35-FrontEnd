@@ -1,77 +1,82 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Copyright from "../Components/Copyright";
-import { useNavigate } from "react-router";
-import { Button } from "@material-ui/core";
-import { Stack } from "@mui/material";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-  },
-  image: {
-    backgroundImage: "url(../img/employee_login_page_bg.jpg)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor: theme.palette.type === "dark" ? theme.palette.grey[900] : theme.palette.grey[50],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    width: "100%",
-    paddingTop: "40px"
-  },
-  paper: {
-    margin: theme.spacing(8, 8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  }
-}));
-
 
 export function Welcome() {
-  const navigate = useNavigate()
-  const classes = useStyles()
- 
-  function navigationHandler(isCustomer){
-    if(isCustomer){
-        navigate("cust/login")
-    }else{
-        navigate("emp/login")
-    }
-  }
 
   return (
-    <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-      <Grid container justifyContent="center" className={classes.image}>
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
-          <Grid className={classes.paper}>
-            <Avatar className={classes.avatar}> <PhotoCameraIcon /> </Avatar>
-            <Typography component="h3" variant="h3"> Lens35 </Typography>
-            <Typography component="h5" variant="h5"> We frame your moments </Typography>    
-            <br/><br/>
+    <React.Fragment>
+        <head>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+        <link href="css/style.css" type="text/css" rel="stylesheet" />
+        <link href="css/responsive.css" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
+        </head>
+        <body>
+        <div class="hero_area">
+            <header class="header_section">
+            <div class="container-fluid">
+                <div class="row">
+                <div class="col-lg-11 offset-lg-1">
+                    <nav class="navbar navbar-expand-lg custom_nav-container ">
+                    <a class="navbar-brand" href="#">
+                        <img src="images/logo.png" alt="" />
+                        <span>Lens35</span>
+                    </a>
+                    </nav>
+                </div>
+                </div>
+            </div>
+            </header>
             
-            <Stack direction={"row"} justifyContent={"space-around"}>
-                <Button onClick={()=>navigationHandler(true)} variant="outlined" color="primary">Customers</Button>
-                <div>&nbsp;&nbsp;&nbsp;</div>
-                <Button onClick={()=>navigationHandler(false)} variant="outlined" color="primary">Employees</Button>
-            </Stack>
+            
+            <section class=" slider_section position-relative">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-5 offset-md-1 ">
+                        <div class="detail_box">
+                            <h1>Lens35</h1>
+                            <p>
+                                Whether you're looking to capture family portraits, wedding photos, or simply beautiful shots of your everyday life, our team is here to help you tell your story through the lens of our cameras.
+                                With our skilled photographers and top-of-the-line equipment, we are dedicated to creating stunning images that reflect the unique beauty and personality of each individual or occasion.
+                            </p>
+                            <div class="btn-box">
+                            <a href="/emp/login" class="btn-1">
+                                Photographers
+                            </a>
+                            <a href="/cust/login" class="btn-2">
+                                Customers
+                            </a>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-6 px-0">
+                        <div class="img-box">
+                            <img src="images/slider-img.jpg" alt="" />
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </section>
+        </div>
 
-            <br/><br/>
-            <Box mt={5}> <Copyright /> </Box>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
+
+        <section class="container-fluid footer_section">
+            <div class="container">
+            <p> <a href="http://aravindrpillai.com/">aravindrpillai.com ||</a> <a href="https://html.design/">HTML Design</a> </p>
+            </div>
+        </section>
+
+        
+
+        </body>
+
+    </React.Fragment>
+  )
 }

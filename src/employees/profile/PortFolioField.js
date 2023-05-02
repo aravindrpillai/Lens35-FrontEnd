@@ -7,7 +7,6 @@ import { post } from "../../util/Service";
 import {EMPLOYEE_APIS} from "../../util/Properties";
 import { AppContext } from "../../contexts/ContextProvider";
 import { useContext } from "react";
-import AddLinkIcon from '@mui/icons-material/AddLink';
 import { FormControl, FormHelperText } from "@mui/material";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Link } from "react-router-dom";
@@ -35,6 +34,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
 
       let portfoliosToSend = []
       portfolioList.forEach(url => {
+        console.log("URL : ",url)
         portfoliosToSend.push({
           "name" : extractDomainNameFromURL(url),
           "value" : url
@@ -90,7 +90,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
                 setNewValue("")
                 setPortfolioList(pListClone)
                }}>
-                <AddLinkIcon/>
+                Add
               </Button>
             }
           />
@@ -117,7 +117,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
             <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
                 <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
             </Button>&nbsp;
-            <Button onClick={save} variant="contained" color="primary"  disabled={false}>
+            <Button disabled={portfolioList.length < 1} onClick={save} variant="contained" color="primary">
               <CheckBoxTwoToneIcon /> &nbsp; Save
             </Button>
         </Stack>
