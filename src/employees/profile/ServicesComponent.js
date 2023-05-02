@@ -35,7 +35,36 @@ export default function ServicesComponent({is_photographer, is_videographer, is_
         setDronePhotographer(is_drone_photographer)
         setPhotoEditor(is_photo_editor)
         setVideoEditor(is_video_editor)
+        let selAll = false
+        if(is_photographer !== undefined && is_videographer !== undefined && is_drone_photographer !== undefined && is_photo_editor !== undefined && is_video_editor !== undefined){
+            selAll = (is_photographer && is_videographer && is_drone_photographer && is_photo_editor && is_video_editor)
+        }
+        setSelectAll(selAll)
     },[is_photographer, is_videographer, is_drone_photographer, is_photo_editor, is_video_editor])
+
+    function handleServiceSelection(service){
+        if(service === "photographer"){
+            setPhotographer(!photographer)
+            setSelectAll((!photographer) && videographer && dronePhotographer && photoEditor && videoEditor)
+        }
+        if(service === "videographer"){
+            setVideographer(!videographer)
+            setSelectAll(photographer && (!videographer) && dronePhotographer && photoEditor && videoEditor)
+        }
+        if(service === "drone_photographer"){
+            setDronePhotographer(!dronePhotographer)
+            setSelectAll(photographer && videographer && (!dronePhotographer) && photoEditor && videoEditor)
+        }
+        if(service === "photo_editor"){
+            setPhotoEditor(!photoEditor)
+            setSelectAll(photographer && videographer && dronePhotographer && (!photoEditor) && videoEditor)
+        }
+        if(service === "video_editor"){
+            setVideoEditor(!videoEditor)
+            setSelectAll(photographer && videographer && dronePhotographer && photoEditor && (!videoEditor))
+        }
+        
+    }
 
     function revertChanges(){
         setPhotographer(is_photographer)
@@ -76,6 +105,7 @@ export default function ServicesComponent({is_photographer, is_videographer, is_
                     setVideoEditor(!selectAll) 
                     setSelectAll(!selectAll)
                 }}
+                checked = {selectAll}
             /><font size="2">{selectAll ? "Unselect All" : "Select All"} </font></Typography>    
         </Stack>
         {
@@ -83,11 +113,11 @@ export default function ServicesComponent({is_photographer, is_videographer, is_
             <Typography color={"textSecondary"} variant="h6" gutterBottom> <font size="2">Atleast one service must be selected </font></Typography>
         }
         <Grid container spacing={2}>
-            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setPhotographer(!photographer)}} checked={photographer}/>Still Photography</Typography> </Grid>
-            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setVideographer(!videographer)}} checked={videographer} />Videography</Typography> </Grid>
-            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setDronePhotographer(!dronePhotographer)}} checked={dronePhotographer} />Drone Shoot</Typography> </Grid>
-            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setPhotoEditor(!photoEditor)}} checked={photoEditor} />Photo Editing</Typography> </Grid>
-            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{setVideoEditor(!videoEditor)}} checked={videoEditor} />Video Editing</Typography> </Grid>
+            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{handleServiceSelection("photographer")}} checked={photographer===undefined ? false : photographer}/>Still Photography</Typography> </Grid>
+            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{handleServiceSelection("videographer")}} checked={videographer===undefined ? false : videographer} />Videography</Typography> </Grid>
+            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{handleServiceSelection("drone_photographer")}} checked={dronePhotographer===undefined ? false : dronePhotographer} />Drone Shoot</Typography> </Grid>
+            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{handleServiceSelection("photo_editor")}} checked={photoEditor===undefined ? false : photoEditor} />Photo Editing</Typography> </Grid>
+            <Grid item xs={12} md={6} lg={2}>  <Typography><Checkbox onChange={e=>{handleServiceSelection("video_editor")}} checked={videoEditor===undefined ? false : videoEditor} />Video Editing</Typography> </Grid>
             <Grid item xs={12} md={6} lg={2}>  
                 {(photographer !== is_photographer || videographer !== is_videographer || dronePhotographer !== is_drone_photographer || videoEditor !== is_video_editor || photoEditor !== is_photo_editor) && 
                     <Stack direction={"row"} spacing={2} justifyContent={"space-evenly"}>

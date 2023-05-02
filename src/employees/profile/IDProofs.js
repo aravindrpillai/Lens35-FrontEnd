@@ -81,6 +81,8 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
         "back_file_name": back_file_name
       }
 
+      console.log("---> DOC DATA : ", data)
+
       let response = await post(EMPLOYEE_APIS.UPDATE_EMPLOYEE_ID_PROOF, data)
       console.log(response);
       if(response["status"] === true){
@@ -119,9 +121,13 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
     if(side === "front"){
       setDocumentFrontSide(URL.createObjectURL(file))
       setDocumentFrontSideFileObject(file)
+      setFrontUploadProgress(0)
+      setBackUploadProgress(0)
     }else{
       setDocumentBackSide(URL.createObjectURL(file))
       setDocumentBackSideFileObject(file)
+      setFrontUploadProgress(0)
+      setBackUploadProgress(0)
     }
   }
 
@@ -190,7 +196,7 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
           <span><center>{message}</center></span>
 
               <br/>
-              <Button disabled={!((documentType !== "none" && documentFrontSide !== null && documentBackSide !== null))} size="large" variant="outlined" component="label" onClick={e=>{uploadDocument()}}><SaveIcon/>&nbsp;Save</Button>
+              <Button disabled={(!((documentType !== "none" && documentFrontSide !== null && documentBackSide !== null))) || (frontUploadProgress+backUploadProgress > 0)} size="large" variant="outlined" component="label" onClick={e=>{uploadDocument()}}><SaveIcon/>&nbsp;Save</Button>
             </center>
         
       </TabContext>
