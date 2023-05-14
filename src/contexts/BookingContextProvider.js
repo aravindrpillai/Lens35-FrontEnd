@@ -35,6 +35,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
   const [message, setMessage] = useState(null)
 
   function resetData(){
+    console.log("Resetting Page Data...(Dont remove this statement) ")
     setBookingID(null)
     
     //Live fields
@@ -197,9 +198,9 @@ export function BookingContextProvider({ children, booking_id=null }) {
   }
 
   useEffect((e) => {
-    if(booking_id !== null){
+    resetData()
+    if(booking_id !== null && booking_id !== bookingID){
       console.log("Starting to load Booking with ID : ", booking_id)
-      resetData()
       setBookingID(booking_id)
       loadDataWithBookingID(booking_id)
     }    

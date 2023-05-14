@@ -96,7 +96,7 @@ export default function CustomerBookings() {
                   <MenuItem value={"history"}>History</MenuItem>
                 </Select>
             </Stack>
-            <Button variant="outlined" onClick={()=>{setNewBookingModalOpen(true)}}><CameraEnhanceIcon color="primary"/></Button>
+            <Button variant="outlined" onClick={()=>{setSelectedBookingID(null); setNewBookingModalOpen(true)}}><CameraEnhanceIcon color="primary"/></Button>
   
           </Stack>
         </Paper>
