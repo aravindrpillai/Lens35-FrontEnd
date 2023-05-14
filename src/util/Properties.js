@@ -1,4 +1,5 @@
 const BASE_URL = "http://ec2-54-209-198-222.compute-1.amazonaws.com:8080"
+//const BASE_URL = "http://localhost:8080"
 
 const POSTAL_CODE_SEARCH_API = "https://api.postalpincode.in/pincode/"
 
@@ -56,6 +57,8 @@ const CUSTOMER_APIS = {
 
 const BOOKING_APIS = {
     LIST_CUSTOMER_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
+    FETCH_BOOKINGS : BASE_URL.concat("/bookings/apis/customers/bookings/fetch/"),
+    FETCH_BOOKING_USING_ID : BASE_URL.concat("/bookings/apis/customers/booking/fetch/"), //pass booking id at the end of the url
     FETCH_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/fetch/"), //pass booking id at the end of the url
     UPDATE_BOOKING : BASE_URL.concat("/bookings/apis/customers/booking/"),
     ADD_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/add/"),

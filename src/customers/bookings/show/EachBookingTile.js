@@ -17,7 +17,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../../contexts/ContextProvider';
 import { EVENTS } from '../../../util/Constants';
 
-export default function EachBookingTile({booking}) {
+export default function EachBookingTile({booking, openBooking}) {
 
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
   const [bookingEvent, setBookingEvent] = useState()
@@ -82,8 +82,9 @@ export default function EachBookingTile({booking}) {
 
       </CardContent>
       <CardActions>
-        <Button size="small">Edit</Button>
+        <Button size="small" onClick={()=>{openBooking(booking.booking_id)}}>Edit</Button>
         <Button size="small">Cancel</Button>
+        
       </CardActions>
     </Card>
     }

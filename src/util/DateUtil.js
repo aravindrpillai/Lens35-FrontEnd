@@ -47,6 +47,18 @@ export function getDifferenceInMinutes(date) {
 
 export function getDefaultBookingStartDate(){
   const now = new Date();
+  const later = new Date(now.getTime());
+  later.setHours(later.getHours() + 4);//Adding 4 hours extra to the default booking start date
+  const year = later.getFullYear();
+  const month = String(later.getMonth() + 1).padStart(2, "0");
+  const day = String(later.getDate()).padStart(2, "0");
+  const hours = String(later.getHours()).padStart(2, "0"); 
+  const minutes = String(later.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+export function getTodaysDate(){
+  const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
   const day = String(now.getDate()).padStart(2, "0");

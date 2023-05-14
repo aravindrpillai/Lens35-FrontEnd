@@ -16,6 +16,7 @@ import EachBookingTile from "./show/EachBookingTile";
 export default function CustomerBookings() {
   const { clearFlashMessage, setFlashMessage, setLoading } = useContext(AppContext)
   const [bookingData, setBookingData] = useState([])
+  const [selectedBokingID, setSelectedBookingID] = useState(null)
   const [newBookingModalOpen, setNewBookingModalOpen] = useState(false)
   const [eventDate, setEventDate] = useState(getDefaultBookingStartDate().split("T")[0])
   const [bookingState, setBookingState] = useState("open")
@@ -42,13 +43,16 @@ export default function CustomerBookings() {
     fetchBookings()
   },[eventDate, bookingState])
 
-
+  function openBooking(bookingID){
+    setSelectedBookingID(bookingID)
+    setNewBookingModalOpen(true)
+  }
 
   return (
     <CustomerTheme>
       <Content>
-          <BookingContextProvider>
-            <NewBookingModal thisModalHandler={newBookingModalOpen} setThisModalHandler={setNewBookingModalOpen} />
+          <BookingContextProvider  booking_id={selectedBokingID}>
+            <NewBookingModal thisModalHandler={newBookingModalOpen} setThisModalHandler={setNewBookingModalOpen}/>
           </BookingContextProvider>
           <Grid container spacing={1}>
 
@@ -57,7 +61,7 @@ export default function CustomerBookings() {
             {
               bookingData.map(booking=>(
                 <Grid item xs={12} md={6} lg={3} key={booking.booking_id}>
-                  <EachBookingTile booking={booking}/>
+                  <EachBookingTile booking={booking} openBooking={openBooking}/>
                 </Grid>
               ))
             }

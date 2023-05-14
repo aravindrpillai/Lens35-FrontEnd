@@ -164,10 +164,44 @@ export function BookingContextProvider({ children, booking_id=null }) {
   }
 
 
+  async function loadDataWithBookingID(_bookingID){
+    setLoading(true)
+    var booking_response = await get(BOOKING_APIS.FETCH_BOOKING_USING_ID.concat(_bookingID+"/"))
+    console.log("FETCH RESPONSE : ", booking_response)
+    if(booking_response["status"] === true){
+      let data = booking_response["data"]
+      setEvent(data["event"])
+      setEventDescription(data["event_description"])
+      setBookingStartDateAndTime(data["event_date"]+"T"+data["event_start_time"])
+      setBookingDuration(data["event_duration"])
+      setPostalCode(data["event_postal_code"])
+      setCity(data["event_city"])
+      setAddress(data["event_address"])
+      let services = data["services"]
+      let pCount = (services === undefined || services === null) ? 0 : services.filter((s)=> {return s.service === "photography"}).length
+      let vCount = (services === undefined || services === null) ? 0 : services.filter((s)=> {return s.service ===  "videography"}).length
+      let dCount = (services === undefined || services === null) ? 0 : services.filter((s)=> {return s.service ===  "drone_photography"}).length
+      console.log("SERVICES ARRAY ---> ", services)
+      console.log("SERVICES ARRAY COUNTS 888888 ", pCount, vCount, dCount)
+      setPhotographerCount(pCount)
+      setVideographerCount(vCount)
+      setDroneCount(dCount)
+
+
+
+    }else{
+      console.log("Failed to pull booking. "+booking_response["message"])
+      setMessage("Failed to pull booking. "+booking_response["message"])
+    }
+    setLoading(false)
+  }
 
   useEffect((e) => {
     if(booking_id !== null){
+      console.log("Starting to load Booking with ID : ", booking_id)
+      resetData()
       setBookingID(booking_id)
+      loadDataWithBookingID(booking_id)
     }    
   }, [booking_id]);
 

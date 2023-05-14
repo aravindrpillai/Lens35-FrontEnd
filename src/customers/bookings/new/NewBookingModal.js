@@ -40,7 +40,6 @@ export default function NewBookingModal({thisModalHandler, setThisModalHandler})
   const [showPaymentPage, setShowPaymentPage] = useState(true)
   const { validate, message, saveData, loading } = React.useContext(BookingContext)
 
-
   async function handlePagination(isForward){
     if(! await validate(page)){ return }
     setShowPaymentPage(true)
