@@ -124,7 +124,7 @@ export default function EmployeeProfile() {
               <td> : {pageData["full_name"]}</td><td><Button onClick={(e)=>{editClickHandler("name")}}><EditTwoToneIcon/></Button></td>
             </tr>
             <tr>
-              <td>Email {pageData["email_id_verified"] ? "Yes":"no"}</td>
+              <td>Email </td>
               <td> : {pageData["email_id"]} 
               {
               (pageData["email_id"] !== null && pageData["email_id"] !== "") &&
