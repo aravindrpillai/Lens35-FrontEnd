@@ -1,5 +1,5 @@
-const BASE_URL = "http://ec2-54-209-198-222.compute-1.amazonaws.com:8080"
-//const BASE_URL = "http://localhost:8080"
+//const BASE_URL = "http://ec2-54-209-198-222.compute-1.amazonaws.com:8080"
+const BASE_URL = "http://localhost:8080"
 
 const POSTAL_CODE_SEARCH_API = "https://api.postalpincode.in/pincode/"
 
@@ -16,12 +16,13 @@ const EMPLOYEE_APIS = {
     UPDATE_EMPLOYEE_DP : BASE_URL.concat("/employees/apis/profile/update/profilepicture/"),
     UPDATE_EMPLOYEE_ID_PROOF : BASE_URL.concat("/employees/apis/profile/update/idproof/"),
     UPDATE_EMPLOYEE_PORTFOLIOS : BASE_URL.concat("/employees/apis/profile/update/portfolios/"),
+    VERIFY_EMAIL : BASE_URL.concat("/employees/apis/verify/email/"), //pass the token at the end
     
     LIST_OPEN_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/bookings/list/"),
     FETCH_BOOKING_INFO : BASE_URL.concat("/bookings/apis/employees/bookings/fetch/"), //Pass booking ID Here
     ACCEPT_BOOKING : BASE_URL.concat("/bookings/apis/employees/bookings/accept/"),
     FETCH_BOOKING_WITH_PENDING_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/fetch/bookings/withpendingfileupload/"),
-    
+   
 
     //------------------ REMOVE BELOW
     
@@ -53,6 +54,9 @@ const CUSTOMER_APIS = {
     UPDATE_CUSTOMER_MOBILE_NO : BASE_URL.concat("/customers/apis/profile/update/mobilenumber/"),
     GET_PRESIGNED_URL_FOR_CUSTOMER_DP : BASE_URL.concat("/customers/apis/profile/fetch/presigned/url/"),
     UPDATE_CUSTOMER_PROFILE_PIC : BASE_URL.concat("/customers/apis/profile/update/profilepicture/"),
+    VERIFY_EMAIL : BASE_URL.concat("/customers/apis/verify/email/"), //pass the token at the end
+
+    
 }
 
 const BOOKING_APIS = {

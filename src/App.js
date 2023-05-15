@@ -18,7 +18,8 @@ import EmployeeCustomerSupport from "./employees/EmployeeCustomerSupport";
 import FileUploadPage from "./employees/upload/FileUploadPage";
 import OpenBookings from "./employees/openbookings/OpenBookings";
 import CustomerBookings from "./customers/bookings/CustomerBookings";
-import { Welcome } from "./welcome/Welcome";
+import { Welcome } from "./common/Welcome";
+import EmailVerified from "./common/EmailVerified";
 
 export default function App() {
   
@@ -50,6 +51,7 @@ export default function App() {
                       <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
+                      <Route path="/verify/email" element={<EmailVerified />} /> 
                       <Route path="" element={<Welcome />} /> 
                     </Routes>
                 </Router>

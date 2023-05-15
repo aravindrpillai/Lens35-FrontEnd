@@ -12,6 +12,7 @@ import CustomerTheme from "../CustomerTheme";
 import NewBookingModal from "./new/NewBookingModal";
 import { BookingContextProvider } from "../../contexts/BookingContextProvider";
 import EachBookingTile from "./show/EachBookingTile";
+import BookingCancellModal from "./cancel/BookingCancellModal";
 
 export default function CustomerBookings() {
   const { clearFlashMessage, setFlashMessage, setLoading } = useContext(AppContext)
@@ -20,7 +21,10 @@ export default function CustomerBookings() {
   const [newBookingModalOpen, setNewBookingModalOpen] = useState(false)
   const [eventDate, setEventDate] = useState(getDefaultBookingStartDate().split("T")[0])
   const [bookingState, setBookingState] = useState("open")
-
+  
+  const [selectedBokingIDForCancellation, setSelectedBookingIDForCancellation] = useState(null)
+  const [cancellBookingModalOpen, setCancellBookingModalOpen] = useState(false)
+  
 
   useEffect(e=>{
     async function fetchBookings(){
@@ -48,12 +52,19 @@ export default function CustomerBookings() {
     setNewBookingModalOpen(true)
   }
 
+  function setCancellBookingModalOpenHandler(bookingID){
+    setSelectedBookingIDForCancellation(bookingID)
+    setCancellBookingModalOpen(true)
+  }
+
   return (
     <CustomerTheme>
       <Content>
           <BookingContextProvider  booking_id={selectedBokingID}>
             <NewBookingModal thisModalHandler={newBookingModalOpen} setThisModalHandler={setNewBookingModalOpen}/>
           </BookingContextProvider>
+          <BookingCancellModal bookingid={selectedBokingIDForCancellation} thisModalHandler={cancellBookingModalOpen} setThisModalHandler={setCancellBookingModalOpen}/>
+
           <Grid container spacing={1}>
 
             <Grid item xs={12} md={12} lg={12}><SearchBar /></Grid>
@@ -61,7 +72,7 @@ export default function CustomerBookings() {
             {
               bookingData.map(booking=>(
                 <Grid item xs={12} md={6} lg={3} key={booking.booking_id}>
-                  <EachBookingTile booking={booking} openBooking={openBooking}/>
+                  <EachBookingTile booking={booking} openBooking={openBooking} cancellBookingHandler={setCancellBookingModalOpenHandler}/>
                 </Grid>
               ))
             }

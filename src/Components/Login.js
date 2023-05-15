@@ -25,7 +25,6 @@ export default function Login(props){
       if(qMsg !== null && qMsg !== ""){
         setMessage(qMsg)
       }
-
     },[])
 
 

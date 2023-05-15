@@ -65,7 +65,7 @@ export default function NewBookingModal({thisModalHandler, setThisModalHandler})
 
   return (
       <React.Fragment>
-        <BootstrapDialog onClose={() => {setThisModalHandler(false) }} open={thisModalHandler} >
+        <BootstrapDialog open={thisModalHandler} >
           <BootstrapDialogTitle id="customized-dialog-title" onClose={() => {setThisModalHandler(false) }}> 
               {page === 1 && <>Tell us about your event</>}
               {page === 2 && <>When do you need the booking?</>}
