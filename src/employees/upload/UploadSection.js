@@ -65,7 +65,7 @@ export default function UploadSection() {
                         </Button>
                         &nbsp;
                         
-                        <Button size="small" color="primary" variant="outlined" component="label"  >
+                        <Button size="small" color="primary" variant="outlined" component="label" >
                             <CheckBoxOutlineBlankIcon/>
                             <CheckBoxIcon/>
                             <span>&nbsp; {selectAllFiles ? "Unselect All" : "Select All" }</span>

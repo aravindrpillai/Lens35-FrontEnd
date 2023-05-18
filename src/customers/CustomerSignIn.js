@@ -53,13 +53,14 @@ export function CustomerSignIn() {
       <Grid container justifyContent="center" className={classes.image}>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
           <Grid className={classes.paper}>
-            <Avatar className={classes.avatar}> <PhotoCameraIcon /> </Avatar>
+            <br/>
+            <img src="/img/logo_alone.png" height="70px" width="80px"/>
             <Typography component="h3" variant="h3"> Lens35 </Typography>
             <Typography component="h5" variant="h5"> Customer Portal </Typography>    
             <br/><br/>
             <Login postSuccessfullAuthenticationHandler = {postSuccessfullAuthenticationHandler} user_type={"customer"} />
             <br/><br/>
-            <Box mt={5}> <Copyright /> </Box>
+            <Copyright />
           </Grid>
         </Grid>
       </Grid>
