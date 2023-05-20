@@ -68,7 +68,10 @@ const BOOKING_APIS = {
     ADD_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/add/"),
     REMOVE_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/remove/"),
     FETCH_INVOICE : BASE_URL.concat("/bookings/apis/customers/fetch/invoice/"),
-
+    CALCULATE_CANCELLATION_COST : BASE_URL.concat("/bookings/apis/customers/calculate/cancellation/"),//pass booking id at the end of the url
+    CANCEL_BOOKING : BASE_URL.concat("/bookings/apis/customers/cancel/booking/")//pass booking id at the end of the url
+    
+    
     //Employees
     
 }

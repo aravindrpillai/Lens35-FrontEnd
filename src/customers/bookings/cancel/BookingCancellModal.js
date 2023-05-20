@@ -10,7 +10,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import CancellationOverview from './CancellationOverview';
 import CancellationConfirmation from './CancellationConfirmation';
-import { useEffect } from 'react';
+import { get } from '../../../util/Service';
+import { BOOKING_APIS } from '../../../util/Properties';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': { padding: theme.spacing(2) },
@@ -33,39 +34,49 @@ function BootstrapDialogTitle({ children, onClose, ...other }) {
 
 export default function BookingCancellModal({bookingid, thisModalHandler, setThisModalHandler}) {
   const [page, setPage] = useState(1)
-  const [showPaymentPage, setShowPaymentPage] = useState(true)
   const [message, setMessage] = useState(null)
+  const [cancellationInfo, setCancellationInfo] = useState(null)
   
   async function handlePagination(isForward){
     var newPageValue = (isForward ? page+1 : page-1)
     newPageValue = newPageValue < 1 ? 1 : (newPageValue > 2) ? 2 : newPageValue
     setPage(newPageValue)
   }
-
-  useEffect(e=>{
-    console.log("OPEN CANCELLATION MODAL - ----> ", bookingid)
-
+  
+  React.useEffect(e=>{
+      async function fetchBookingCancellationCost(){
+          var response = await get(BOOKING_APIS.CALCULATE_CANCELLATION_COST.concat(bookingid+"/"))
+          console.log(response)
+          if(response["status"] === true){
+              setCancellationInfo(response["data"])
+              setMessage(null)
+          }else{
+            console.log("Failed to fetch booking cancellation data", response["messages"])
+            setMessage(response["messages"])
+          }
+        }
+        fetchBookingCancellationCost()
   },[bookingid])
 
   return (
       <React.Fragment>
         <BootstrapDialog open={thisModalHandler} >
           <BootstrapDialogTitle id="customized-dialog-title" onClose={() => {setThisModalHandler(false) }}> 
-              {page === 1 && <>Are you sure?</>}
+              {page === 1 && <>Cancellation</>}
               {page === 2 && <>Confirmation</>}
           </BootstrapDialogTitle>
           
           <DialogContent dividers>
-            {page === 1 && <CancellationOverview />}
-            {page === 2 && <CancellationConfirmation/>}
+            {page === 1 && <CancellationOverview cancellationInfo={cancellationInfo} message={message} />}
+            {page === 2 && <CancellationConfirmation booking_id={bookingid}/>}
           </DialogContent>
-
+        
+        {message === null &&
           <DialogActions style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <Button disabled={page!==1} variant="contained" color="primary" onClick={()=>handlePagination(false)} autoFocus> {page===1 ? "Cancell" : "Back"} </Button>
-              <center>{message && <font color="red">{message}</font>}</center>
               <Button variant="contained" color="primary" onClick={()=>handlePagination(true)} autoFocus >  {page===1 ? "Confirm and Cancell" : "Close"} </Button>
           </DialogActions>
-
+        }
         </BootstrapDialog>
       </React.Fragment>
   )
