@@ -43,19 +43,20 @@ export default function BookingCancellModal({bookingid, thisModalHandler, setThi
     setPage(newPageValue)
   }
   
+
   React.useEffect(e=>{
       async function fetchBookingCancellationCost(){
-          var response = await get(BOOKING_APIS.CALCULATE_CANCELLATION_COST.concat(bookingid+"/"))
-          console.log(response)
-          if(response["status"] === true){
-              setCancellationInfo(response["data"])
-              setMessage(null)
-          }else{
-            console.log("Failed to fetch booking cancellation data", response["messages"])
-            setMessage(response["messages"])
-          }
+        setPage(1)  
+        var response = await get(BOOKING_APIS.CALCULATE_CANCELLATION_COST.concat(bookingid+"/"))
+        if(response["status"] === true){
+            setCancellationInfo(response["data"])
+            setMessage(null)
+        }else{
+          console.log("Failed to fetch booking cancellation data", response["messages"])
+          setMessage(response["messages"])
         }
-        fetchBookingCancellationCost()
+      }
+      fetchBookingCancellationCost()
   },[bookingid])
 
   return (

@@ -73,7 +73,7 @@ export default function OpenBookings() {
     if(response["status"] === true){
       setBookingData(response["data"])
     }else{
-      setFlashMessage("error","Failed to load booking information. Please try again")
+      setFlashMessage("error","Failed to load booking information. "+response["messages"])
     }
     setLoading(false)
   }

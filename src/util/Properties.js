@@ -18,7 +18,8 @@ const EMPLOYEE_APIS = {
     UPDATE_EMPLOYEE_PORTFOLIOS : BASE_URL.concat("/employees/apis/profile/update/portfolios/"),
     VERIFY_EMAIL : BASE_URL.concat("/employees/apis/verify/email/"), //pass the token at the end
     
-    LIST_OPEN_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/bookings/list/"),
+    LIST_OPEN_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/open/bookings/"),
+    LIST_MY_BOOKINGS : BASE_URL.concat("/bookings/apis/employees/my/bookings/"),
     FETCH_BOOKING_INFO : BASE_URL.concat("/bookings/apis/employees/bookings/fetch/"), //Pass booking ID Here
     ACCEPT_BOOKING : BASE_URL.concat("/bookings/apis/employees/bookings/accept/"),
     FETCH_BOOKING_WITH_PENDING_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/fetch/bookings/withpendingfileupload/"),

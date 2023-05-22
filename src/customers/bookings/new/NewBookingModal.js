@@ -43,7 +43,7 @@ export default function NewBookingModal({thisModalHandler, setThisModalHandler})
 
   React.useEffect(e=>{
     setPage(1)
-  },[bookingID])
+  },[thisModalHandler])
 
   async function handlePagination(isForward){
     if(! await validate(page)){ return }
