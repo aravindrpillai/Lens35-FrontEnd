@@ -48,7 +48,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
         setOpenModal(false)
       }else{
         setError("Failed to update portfolio")
-        console.log("Failed to update portfolio : ", response["message"][0])
+        console.log("Failed to update portfolio : ", response["messages"][0])
       }
     }
 

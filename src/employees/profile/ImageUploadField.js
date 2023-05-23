@@ -130,7 +130,7 @@ export default function ImageUpload({image_from_server}){
                 setFlashMessage("success","Profile picture updated successfully")
             }else{
                 setFlashMessage("error","Failed to update profile picture")
-                console.log("Failed to update Name : ", response["message"][0])
+                console.log("Failed to update Name : ", response["messages"][0])
             }
         }
         clearSelectedImage()

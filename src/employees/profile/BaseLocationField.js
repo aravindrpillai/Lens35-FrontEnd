@@ -43,7 +43,7 @@ export default function BaseLocationField({setOpenModal, base_location_city, bas
       setOpenModal(false)
     }else{
       setPostalCodeError("Failed to Update Base Location")
-      console.log("Failed to update base_location : ", response["message"][0])
+      console.log("Failed to update base_location : ", response["messages"][0])
     }
   }
 

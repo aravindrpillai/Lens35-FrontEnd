@@ -36,7 +36,8 @@ const rowsPerPageOptions = [5, 10, 20];
 
 export default function Transactions() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0])
+  const [enableDateFilter, setEnableDateFilter] = useState(false)
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -50,10 +51,10 @@ export default function Transactions() {
             Transactions
             </Typography>
             <Stack direction="row" justifyContent="right" alignItems='center' display='flex'>
-            <Checkbox defaultChecked />
+            <Checkbox checked={enableDateFilter} onClick={()=>{setEnableDateFilter(!enableDateFilter)}} />
             <TextField
                 margin="normal"
-                disabled={true}
+                disabled={!enableDateFilter}
                 required
                 autoFocus
                 type="date"

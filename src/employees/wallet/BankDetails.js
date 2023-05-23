@@ -5,26 +5,82 @@ import { Stack } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { useState } from "react";
+import { useEffect } from "react";
+import { EMPLOYEE_APIS } from "../../util/Properties";
+import {get, post} from "../../util/Service"
+import CustomAlert from "../../Components/CustomAlert";
 
 const useStyles = makeStyles((theme) => ({disabledTextField: {'& input': { color:'black' }}}));
 
 export default function BankDetails() {
   const classes = useStyles()
   const [editMode, setEditMode] = useState(false);
-  const [accountHolder, setAccountHolder] = useState(null)
-  const [bank, setBank] = useState(null)
-  const [branch, setBranch] = useState(null)
-  const [ifsc, setIfsc] = useState(null)
-  const [mobile, setMobile] = useState(null)
+  const [accountHolder, setAccountHolder] = useState("")
+  const [bank, setBank] = useState("")
+  const [branch, setBranch] = useState("")
+  const [ifsc, setIfsc] = useState("")
+  const [mobile, setMobile] = useState("")
+  const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState(null)
+
+  useEffect(e=>{
+    async function fetchBankInfo(){
+      setMessage(null)
+      let response = await get(EMPLOYEE_APIS.WALLET_FETCH_BANK_INFO)
+      console.log("BANK INFO FETCH --> ",response)
+      if(response["status"] === true){
+        let data = response["data"]
+        setAccountHolder(data.account_holder !== null ? data.account_holder : "")
+        setBank(data.bank !== null ? data.bank : "")
+        setBranch(data.branch !== null ? data.branch : "")
+        setIfsc(data.ifsc !== null ? data.ifsc : "")
+        setMobile(data.mobile_number !== null ? data.mobile_number : "")
+      }else{
+        setMessageType("error")
+        setMessage("Failed to fetch bank info. : ", response["messages"][0])
+        console.log("Failed to fetch bank info. : ", response["messages"][0])
+      }
+    }
+    fetchBankInfo()
+  },[])
+
+
+  async function handleEditClick(){
+    if(editMode){
+      setMessage(null)
+      let body = {
+        "bank": bank,
+        "branch": branch,
+        "ifsc": ifsc,
+        "account_holder": accountHolder,
+        "mobile_number": mobile
+      }
+      let response = await post(EMPLOYEE_APIS.WALLET_UPDATE_BANK_INFO, body)
+      if(response["status"] === true){
+        setMessageType("success")
+        setMessage("Successfully updated your bank datails.")
+        setEditMode(!editMode)
+      }else{
+        setMessageType("error")
+        setMessage("Failed to update bank info. "+ response["messages"][0])
+        console.log("Failed to update bank info. : ", response["messages"][0])
+      }
+    }else{
+      setEditMode(!editMode)
+    }
+    
+  }
 
   return (
     <React.Fragment>
 
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Typography color={"textSecondary"} variant="h5" gutterBottom> Bank Details</Typography>
-          <Button onClick={()=>{setEditMode(!editMode)}} variant={editMode? "contained" : "outlined" } color="primary">{editMode? "Save" : "Edit" }</Button>
+          <Button onClick={handleEditClick} variant={editMode? "contained" : "outlined" } color="primary">{editMode? "Save" : "Edit" }</Button>
         </Stack>
-        
+        {message !== null &&
+        <CustomAlert messageType={messageType} message={message}/>
+        }
         <React.Fragment>
           <br/>
           <TextField

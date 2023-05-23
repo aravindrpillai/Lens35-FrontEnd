@@ -33,7 +33,7 @@ export default function DateOfBirthField({dob, setOpenModal, loadData}) {
       setOpenModal(false)
     }else{
       setError("Failed to Update")
-      console.log("Failed to update date of birth : ", response["message"][0])
+      console.log("Failed to update date of birth : ", response["messages"][0])
     }
   }
 

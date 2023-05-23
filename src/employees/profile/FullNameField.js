@@ -30,7 +30,7 @@ export default function FullNameField({full_name, setOpenModal, modalCallBackHan
         setOpenModal(false)
       }else{
         setNameError("Failed to Update")
-        console.log("Failed to update Name : ", response["message"][0])
+        console.log("Failed to update Name : ", response["messages"][0])
       }
     }
 

@@ -42,7 +42,7 @@ export default function EmployeesWallet() {
                   <Typography color={"primary"} variant="h3"> Rs.7,859/- </Typography>
                 </Tooltip>
                 <Tooltip title="This is the amount which you will be receiving for the recently closed bookings" arrow>
-                  <Typography color={"secondary"} variant="h8"> Booking Balance : Rs.3,212/- </Typography>
+                  <Typography color={"secondary"} variant="h6"> Booking Balance : Rs.3,212/- </Typography>
                 </Tooltip>
                 
               </Paper>
@@ -57,7 +57,7 @@ export default function EmployeesWallet() {
                   <Typography color={"primary"} variant="h3">Rs.2,85,859/-</Typography>
                 </Tooltip>
                 <Tooltip title="Amount you have transferred to your bank account" arrow>
-                  <Typography color={"secondary"} variant="h8"> Total Transferred : Rs.1,42,786/- </Typography>
+                  <Typography color={"secondary"} variant="h6"> Total Transferred : Rs.1,42,786/- </Typography>
                 </Tooltip>
               </Paper>
             </Grid>
