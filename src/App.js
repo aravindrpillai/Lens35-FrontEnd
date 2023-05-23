@@ -21,6 +21,7 @@ import CustomerBookings from "./customers/bookings/CustomerBookings";
 import { Welcome } from "./common/Welcome";
 import EmailVerified from "./common/EmailVerified";
 import MyBookings from "./employees/mybookings/MyBookings";
+import EmployeesWallet from "./employees/wallet/EmployeesWallet";
 
 export default function App() {
   
@@ -37,6 +38,9 @@ export default function App() {
                       <Route path="/emp/upload" element={<FileUploadPage />} />
                       <Route path="/emp/bookings/open" element={<OpenBookings />} />
                       <Route path="/emp/bookings/my" element={<MyBookings />} />
+                      <Route path="/emp/wallet" element={<EmployeesWallet />} />
+
+                      
                       
                       
                       <Route path="/emp/support" element={<EmployeeCustomerSupport />} />

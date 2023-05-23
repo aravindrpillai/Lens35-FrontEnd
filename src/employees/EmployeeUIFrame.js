@@ -94,10 +94,11 @@ function EmployeeUIFrame(props) {
       <List>
         {[
           { text: "home", url:"home", icon: "home" },
-          { text: "open bookings", url:"bookings/open", icon: "app_shortcut" },
-          { text: "my bookings", url:"bookings/my", icon: "app_shortcut" },
+          { text: "open bookings", url:"bookings/open", icon: "cake" },
+          { text: "my bookings", url:"bookings/my", icon: "event_available" },
           { text: "profile", url:"profile", icon: "person" },
           { text: "upload", url:"upload", icon: "cloud" },
+          { text: "wallet", url:"wallet", icon: "currency_rupee" },
           { text: "support", url:"support", icon: "support_agent" },
           
         ].map(({ text, url, icon }, index) => (
