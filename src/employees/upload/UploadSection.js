@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,22 +8,68 @@ import { SelectBookings } from './SelectBookings';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import EachFile from './EachFile';
+import { get, post } from '../../util/Service';
+import { EMPLOYEE_APIS } from '../../util/Properties';
+import EachAlreadyUploadedFile from './EachAlreadyUploadedFile';
+import { AppContext } from '../../contexts/ContextProvider';
 
 export default function UploadSection() {
 
+    const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
     const [checkedFiles, setCheckedFiles] = useState([]) 
     const [openBookingList, setOpenBookingList] = useState(false) 
-    const [selectAllFiles, setSelectAllFiles] = useState(false) 
-    const [files, setFiles] = useState([]) 
+    const [newlyUploadingFiles, setNewlyUploadingFiles] = useState([]) 
+    const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState([]) 
     const [selectedBooking, setSelectedBooking] = React.useState(null)
     const [selectedService, setSelectedService] = React.useState(null)
   
+    useEffect(e=>{
+        clearFlashMessage()
+        async function loadUploadedFiles(){
+            let uploadedFiles = await get(EMPLOYEE_APIS.FETCH_UPLOADED_FILES_OF_SERVICE.concat(selectedService.service_id+"/"))
+            setAlreadyUploadedFiles(uploadedFiles["data"])
+        }
+        if(selectedService !== null && selectedService !== undefined){
+            loadUploadedFiles()
+        }
+    },[selectedService])
 
-  function serviceSelectionCallBackHandler(booking, service){
-    setSelectedBooking(booking)
-    setSelectedService(service)
-    setOpenBookingList(false)
-  }
+
+    function serviceSelectionCallBackHandler(booking, service){
+        setSelectedBooking(booking)
+        setSelectedService(service)
+        setNewlyUploadingFiles([])
+        setAlreadyUploadedFiles([])
+        setOpenBookingList(false)
+    }
+
+    async function deleteFiles(){
+        setLoading(true)
+        let body = { "file_ids" : checkedFiles} 
+        let response = await post(EMPLOYEE_APIS.DELETE_FILE, body)
+        if(response["status"] === true){
+            let newList = alreadyUploadedFiles.filter(f => !checkedFiles.includes(f.file_id))
+            setAlreadyUploadedFiles(newList)
+            setCheckedFiles([])
+            setFlashMessage("success", "Successfully deleted the files ") 
+        }else{
+            setFlashMessage("error", "Failed to delete the files "+response["messages"][0]) 
+        }
+        setLoading(false)
+    }
+
+
+
+
+    function selectAllHandler(){
+        if(checkedFiles.length > 0){
+            setCheckedFiles([])
+        }else{
+            let file_id_arr = []
+            alreadyUploadedFiles.forEach(e=>{file_id_arr.push(e.file_id)})
+            setCheckedFiles(file_id_arr)
+        }
+    }
 
     async function loadFilesPostSelect(selectedFiles){
         let file = null;
@@ -35,16 +81,22 @@ export default function UploadSection() {
                 file:file
             })
         }
-        setFiles(fileArray)
+        setNewlyUploadingFiles(fileArray)
+    }
+
+    
+
+    function successfullyUploadedHandler(file_data){
+        setAlreadyUploadedFiles(prvData => [...prvData, file_data])
     }
 
 
-    function handleCheckBoxClick(key, file){
-        if(checkedFiles.includes(file)){
-            let newCheckedFiles = checkedFiles.filter(eachFile => eachFile !== file)
+    function handleCheckBoxHandler(file_id){
+        if(checkedFiles.includes(file_id)){
+            let newCheckedFiles = checkedFiles.filter(eachFile => eachFile !== file_id)
             setCheckedFiles(newCheckedFiles)
         }else{
-            setCheckedFiles([...checkedFiles, file])
+            setCheckedFiles([...checkedFiles, file_id])
         }
     }
 
@@ -58,19 +110,20 @@ export default function UploadSection() {
                     
                     {selectedService !== null &&
                     <div>
-
-                        <Button size="small" color="primary" variant="outlined" component="label">
-                            <DeleteIcon/>
-                            <span>&nbsp; Delete ({checkedFiles.length})</span>
+                        {checkedFiles.length > 0 &&
+                        <Button size="small" color="primary" variant="outlined" component="label" onClick={deleteFiles}>
+                            <DeleteIcon/> <span>&nbsp; Delete ({checkedFiles.length})</span>
                         </Button>
+                        }
                         &nbsp;
-                        
-                        <Button size="small" color="primary" variant="outlined" component="label" >
-                            <CheckBoxOutlineBlankIcon/>
-                            <CheckBoxIcon/>
-                            <span>&nbsp; {selectAllFiles ? "Unselect All" : "Select All" }</span>
+
+                        {alreadyUploadedFiles.length > 0 &&
+                        <Button size="small" color="primary" variant="outlined" component="label" onClick={selectAllHandler}>
+                            {checkedFiles.length <= 0 && <CheckBoxOutlineBlankIcon/>}
+                            {checkedFiles.length > 0 && <CheckBoxIcon/>}
+                            <span>&nbsp; {checkedFiles.length > 0 ? "Unselect All" : "Select All" }</span>
                         </Button>
-                        
+                        }
                         &nbsp;
                         <Button size="small" color="primary" variant="outlined" component="label">
                             <input hidden accept="image/*" multiple={true} type='file' onChange={(e)=>{loadFilesPostSelect(e.target.files)}}/>
@@ -83,13 +136,25 @@ export default function UploadSection() {
                 </Stack>
             </Grid>
 
-            {files.map((file) => ( 
+            {newlyUploadingFiles.map((file) => ( 
                 <EachFile 
                     key={file.key} 
                     _booking={selectedBooking}
                     _service={selectedService} 
                     _key={file.key}
-                    _file={file.file}  />
+                    _file={file.file}  
+                    _successfullyUploadedHandler = {successfullyUploadedHandler}
+                    />
+            ))}
+
+            {alreadyUploadedFiles.map((file) => ( 
+                <EachAlreadyUploadedFile 
+                    key={file.file_id} 
+                    _key={file.file_name} 
+                    _file={file}
+                    _isChecked ={checkedFiles.includes(file.file_id)}
+                    _checkHandler = {handleCheckBoxHandler}
+                    />
             ))}
 
         </Grid>

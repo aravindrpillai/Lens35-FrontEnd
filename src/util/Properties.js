@@ -11,6 +11,7 @@ const EMPLOYEE_APIS = {
     UPDATE_EMPLOYEE_SERVICES : BASE_URL.concat("/employees/apis/profile/update/services/"),
     UPDATE_EMPLOYEE_BASE_LOCATION : BASE_URL.concat("/employees/apis/profile/update/baselocations/"),
     FETCH_OTP_FOR_MOBILE_NO_UPDATE : BASE_URL.concat("/employees/apis/profile/fetch/mobilenumber/requestotp/"),
+    
     UPDATE_EMPLOYEE_MOBILE_NO : BASE_URL.concat("/employees/apis/profile/update/mobilenumber/"),
     GET_PRESIGNED_URL_FOR_EMPLOYEE_FILE_UPLOAD : BASE_URL.concat("/employees/apis/profile/fetch/presigned/url/"),
     UPDATE_EMPLOYEE_DP : BASE_URL.concat("/employees/apis/profile/update/profilepicture/"),
@@ -26,26 +27,11 @@ const EMPLOYEE_APIS = {
     FETCH_BOOKING_INFO : BASE_URL.concat("/bookings/apis/employees/bookings/fetch/"), //Pass booking ID Here
     ACCEPT_BOOKING : BASE_URL.concat("/bookings/apis/employees/bookings/accept/"),
     FETCH_BOOKING_WITH_PENDING_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/fetch/bookings/withpendingfileupload/"),
-   
-    //------------------ REMOVE BELOW
-    
-    //FETCH_EMPLOYEE_IDPROOFS : BASE_URL.concat("/employees/api/fetch/employee/idproofs/"),
-    EMPLOYEE_FILE_UPLOAD : BASE_URL.concat("/employees/api/update/employee/upload/file/"),
-    //EMPLOYEE_FILE_DELETE : BASE_URL.concat("/employees/api/update/employee/delete/file/"),
-    
-    FETCH_EMPLOYEE_EXPERIENCE : BASE_URL.concat("/employees/api/fetch/employee/experience/"),
-    UPDATE_EMPLOYEE_EXPERIENCE : BASE_URL.concat("/employees/api/update/employee/experience/"),
-    DELETE_EMPLOYEE_EXPERIENCE : BASE_URL.concat("/employees/api/delete/employee/experience/"),
-    
-    EMPLOYEE_SPECIFIC_FILE_UPLOAD_PRESIGNED_URL : BASE_URL.concat("/employees/api/generate/presignedurl/"),
-}
+    FETCH_UPLOADED_FILES_OF_SERVICE : BASE_URL.concat("/bookings/apis/employees/bookings/fetch/uploadedfiles/"), //Pass booking ID Here
 
-const FILES_API = {
     GET_FILEUPLOAD_PRESIGNED_URL : BASE_URL.concat("/bookings/apis/employees/bookings/fileupload/fetch/presignedurl/"),
     ACKNODWLEDGE_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/bookings/fileupload/acknodwledge/"),
-
-    //---------------Deal the below later
-    DELETE_FILE : BASE_URL.concat("/files/api/acknowledge/file/delete/"),
+    DELETE_FILE : BASE_URL.concat("/bookings/apis/employees/bookings/file/delete/")
 }
 
 const CUSTOMER_APIS = {
@@ -74,16 +60,12 @@ const BOOKING_APIS = {
     CALCULATE_CANCELLATION_COST : BASE_URL.concat("/bookings/apis/customers/calculate/cancellation/"),//pass booking id at the end of the url
     CANCEL_BOOKING : BASE_URL.concat("/bookings/apis/customers/cancel/booking/")//pass booking id at the end of the url
     
-    
-    //Employees
-    
 }
 
 export {
     BASE_URL, 
     EMPLOYEE_APIS, 
-    CUSTOMER_APIS, 
-    FILES_API, 
+    CUSTOMER_APIS,
     POSTAL_CODE_SEARCH_API, 
     BOOKING_APIS
 }

@@ -6,13 +6,12 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';
 import CircularProgressWithLabel from '../../Components/CircularProgressWithLabel';
-import { Checkbox } from '@material-ui/core';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { FILES_API } from '../../util/Properties';
+import { EMPLOYEE_APIS } from '../../util/Properties';
 import { post } from '../../util/Service';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { generateUUID4 } from '../../util/UUID';
 
-export default function EachFile({_booking,_service, _key, _file}) {
+export default function EachFile({_booking,_service, _key, _file, _successfullyUploadedHandler}) {
 
     const [uploadPercentage, setUploadPercentage] = useState(0) 
     const [uploadCancelled, setUploadCancelled] = useState(false) 
@@ -44,27 +43,34 @@ export default function EachFile({_booking,_service, _key, _file}) {
      */
     async function handleFileUpload(key_0, file_0){
         if(file_0 === null || file_0 === "") return false
+        let file_id = generateUUID4()
+        let new_file_name = file_id+"."+file_0.name.split('.').pop()
         let body = {
             "service_id" : _service.service_id,
-            "file_name" : file_0.name,
+            "file_name" : new_file_name,
             "mime_type" : (file_0.type !== null && file_0.type !== undefined && file_0.type !== "") ? file_0.type : "application/octet-stream",
             "is_photo" : ['image/jpeg', 'image/png'].includes(file_0.type)
         }
         let uploaded = false
-        let response = await post(FILES_API.GET_FILEUPLOAD_PRESIGNED_URL, body)
+        let response = await post(EMPLOYEE_APIS.GET_FILEUPLOAD_PRESIGNED_URL, body)
         if(response["status"] === true){
             let s3Response = response["data"]
             let s3ConnectionInfo = s3Response["connection_info"]
             let presignedUrl = s3Response["url"]
+            
             let uploadedToS3 = await uploadImageUsingPresignedURL(file_0, presignedUrl, s3ConnectionInfo)
             let ack_request = {
                 service_id : _service.service_id,
                 mime_type : file_0.type,
                 file_name : file_0.name,
+                file_id : file_id,
                 uploaded : true
             }
-            let ackResponse = await post(FILES_API.ACKNODWLEDGE_FILE_UPLOAD, ack_request)
-            uploaded = (uploadedToS3 && ackResponse["status"])         
+            let ackResponse = await post(EMPLOYEE_APIS.ACKNODWLEDGE_FILE_UPLOAD, ack_request)
+            uploaded = (uploadedToS3 && ackResponse["status"])  
+            if(uploaded){
+                _successfullyUploadedHandler(ackResponse["data"])
+            }       
         }
     }
 
@@ -80,19 +86,7 @@ export default function EachFile({_booking,_service, _key, _file}) {
         }
     }
 
-    /**
-     * function to handle file delete
-     */
-    async function deleteFile(){
-        let body = {
-            "file_id_list" : ["1111-2222-33333-44444"]
-        } 
-        let response = await post(FILES_API.DELETE_FILE, body)
-        if(response["status"] === true){
-
-        }
-    }
-
+  
 
 
   
@@ -136,9 +130,11 @@ export default function EachFile({_booking,_service, _key, _file}) {
 
 
     return (
+        <React.Fragment>
+       {uploadPercentage < 100 &&
         <Grid item xs={12} md={6} lg={3}  key={_key}>
             <Card sx={{ maxWidth: 345 }}>
-                <CardMedia sx={{opacity: uploadPercentage === 100 ? 1 : 0.4}} component="img" height="140" image={fileURL(_file)}  />
+                <CardMedia sx={{opacity: 0.4}} component="img" height="140" image={fileURL(_file)}  />
                 
                 {uploadPercentage < 100 &&
                 <CardActions sx={{ justifyContent: "space-between" }} >
@@ -150,15 +146,9 @@ export default function EachFile({_booking,_service, _key, _file}) {
                     {uploadCancelled && <ReplayIcon onClick={()=>{handleFileUpload(_key, _file)}}/>}
                 </CardActions>
                 }
-
-                {uploadPercentage === 100 &&
-                <CardActions sx={{ justifyContent: "space-between" }} >
-                    <div><Checkbox checked={false} /><span>{_file.name.split(".")[0]} &nbsp;</span></div>
-                    <DeleteIcon size="small" onClick={deleteFile} />
-                </CardActions>
-                }
-
             </Card>
         </Grid>
+        }
+        </React.Fragment>
     )
 }
