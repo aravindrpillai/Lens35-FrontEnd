@@ -12,12 +12,16 @@ import { get, post } from '../../util/Service';
 import { EMPLOYEE_APIS } from '../../util/Properties';
 import EachAlreadyUploadedFile from './EachAlreadyUploadedFile';
 import { AppContext } from '../../contexts/ContextProvider';
+import SubmitAndLock from './SubmitAndLock';
+import ConfirmationModal from '../../Components/ConfirmationModal';
 
 export default function UploadSection() {
 
     const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
     const [checkedFiles, setCheckedFiles] = useState([]) 
     const [openBookingList, setOpenBookingList] = useState(false) 
+    const [openSubmitAndLock, setOpenSubmitAndLock] = useState(false)
+    const [openDeleteModal, setOpenDeleteModal] = useState(false) 
     const [newlyUploadingFiles, setNewlyUploadingFiles] = useState([]) 
     const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState([]) 
     const [selectedBooking, setSelectedBooking] = React.useState(null)
@@ -44,6 +48,7 @@ export default function UploadSection() {
     }
 
     async function deleteFiles(){
+        setOpenDeleteModal(false)
         setLoading(true)
         let body = { "file_ids" : checkedFiles} 
         let response = await post(EMPLOYEE_APIS.DELETE_FILE, body)
@@ -104,14 +109,28 @@ export default function UploadSection() {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >
+                <SelectBookings open={openBookingList} openHandler={setOpenBookingList} serviceSelectionCallBackHandler={serviceSelectionCallBackHandler} />
+                <SubmitAndLock open={openSubmitAndLock} openHandler={setOpenSubmitAndLock} />
+                <ConfirmationModal 
+                    open={openDeleteModal} 
+                    openHandler={setOpenDeleteModal} 
+                    confirmHandler={deleteFiles} 
+                    title={"Confirm Delete Action"} 
+                    content={"Please confirm if you want to delete the selected files."} />
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }} >
+                    <div>    
                     <Button variant="outlined" onClick={(e)=>setOpenBookingList(true)}> {selectedService === null ? "Select Booking" : (selectedBooking.event+ " - " +selectedService.service)} </Button>
-                    <SelectBookings open={openBookingList} openHandler={setOpenBookingList} serviceSelectionCallBackHandler={serviceSelectionCallBackHandler} />
+                    {selectedService !== null &&
+                        <>&nbsp;
+                        <Button variant="outlined" onClick={(e)=>setOpenSubmitAndLock(true)}> Lock & Submit </Button>
+                        </>
+                    }
+                    </div>
                     
                     {selectedService !== null &&
                     <div>
                         {checkedFiles.length > 0 &&
-                        <Button size="small" color="primary" variant="outlined" component="label" onClick={deleteFiles}>
+                        <Button size="small" color="primary" variant="outlined" component="label" onClick={()=>{setOpenDeleteModal(true)}}>
                             <DeleteIcon/> <span>&nbsp; Delete ({checkedFiles.length})</span>
                         </Button>
                         }

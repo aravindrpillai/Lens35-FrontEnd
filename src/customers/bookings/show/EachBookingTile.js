@@ -16,12 +16,15 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import { AppContext } from '../../../contexts/ContextProvider';
 import { EVENTS } from '../../../util/Constants';
+import { useNavigate } from 'react-router-dom';
 
 export default function EachBookingTile({booking, openBooking, cancellBookingHandler}) {
 
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
   const [bookingEvent, setBookingEvent] = useState()
   const [isDataLoaded, setIsDataLoaded] = useState(false)
+
+  const navigate = useNavigate() 
 
   useEffect(eff=>{
     let e = EVENTS.find(event => event.type === booking.event)
@@ -45,6 +48,10 @@ export default function EachBookingTile({booking, openBooking, cancellBookingHan
     }
   }, [booking])
 
+
+  function viewBooking(booking_id){
+    navigate("../cust/booking/"+booking_id)
+  }
 
   return (
     <React.Fragment>
@@ -84,7 +91,7 @@ export default function EachBookingTile({booking, openBooking, cancellBookingHan
       <CardActions>
         <Button size="small" onClick={()=>{openBooking(booking.booking_id)}}>Edit</Button>
         <Button size="small" onClick={()=>{cancellBookingHandler(booking.booking_id)}}>Cancel</Button>
-        
+        <Button size="small" onClick={()=>{viewBooking(booking.booking_id)}}>View</Button>        
       </CardActions>
     </Card>
     }

@@ -1,7 +1,5 @@
 import React from "react";
 import Content from "../Components/Content";
-import ExpensesTable from "../Components/ExpensesTable";
-import SummaryCard from "../Components/SummaryCard";
 import { Grid } from "@material-ui/core";
 import EmployeeTheme from "./EmployeeTheme";
 import Chat from "../Components/Chat";

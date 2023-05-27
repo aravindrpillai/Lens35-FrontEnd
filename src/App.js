@@ -5,12 +5,9 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "./theme";
 import CustomerHome from "./customers/CustomerHome";
 import EmployeesHome from "./employees/EmployeesHome";
-import EmployeeBookingHistory from "./employees/EmployeeBookingHistory";
 import EmployeeProfile from "./employees/profile/EmployeeProfile";
 import { EmployeeSignIn } from "./employees/EmployeeSignIn";
-import EmployeeNewBooking from "./employees/EmployeeNewBooking";
 import { CustomerSignIn } from "./customers/CustomerSignIn";
-import CustomerBookingHistory from "./customers/CustomerBookingHistory";
 import CustomerProfile from "./customers/profile/CustomerProfile";
 import CustomerSupport from "./customers/CustomerSupport";
 import { ContextProvider } from "./contexts/ContextProvider";
@@ -22,6 +19,7 @@ import { Welcome } from "./common/Welcome";
 import EmailVerified from "./common/EmailVerified";
 import MyBookings from "./employees/mybookings/MyBookings";
 import EmployeesWallet from "./employees/wallet/EmployeesWallet";
+import CustomerBooking from "./customers/bookings/booking/CustomerBooking";
 
 export default function App() {
   
@@ -48,11 +46,11 @@ export default function App() {
            
 
                       <Route path="/cust/login" element={<CustomerSignIn />} />
+                      <Route path="/cust/booking/:bookingId" element={<CustomerBooking />} />
                       <Route path="/cust/bookings" element={<CustomerBookings />} />
                       <Route path="/cust/profile" element={<CustomerProfile />} />
                       
                       <Route path="/cust/home" element={<CustomerHome />} />
-                      <Route path="/cust/history" element={<CustomerBookingHistory />} />
                       <Route path="/cust/support" element={<CustomerSupport />} />
                       
                       <Route path="/verify/email" element={<EmailVerified />} /> 
