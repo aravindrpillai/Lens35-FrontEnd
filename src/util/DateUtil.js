@@ -76,3 +76,13 @@ export function getTomorrowsDate(){
   let tomorrow = (new Date(today.getTime() + (24 * 60 * 60 * 1000)))
   return tomorrow.getFullYear() + "-" +addZero(tomorrow.getMonth()+1) + "-" +addZero(tomorrow.getDate())
 }
+
+
+export function getThisMonthAndYear(){
+  function addZero(val){
+    return val < 10 ? "0"+val : val
+   }
+  let today = new Date()
+  let tomorrow = (new Date(today.getTime() + (24 * 60 * 60 * 1000)))
+  return tomorrow.getFullYear() + "-" +addZero(tomorrow.getMonth()+1)
+}

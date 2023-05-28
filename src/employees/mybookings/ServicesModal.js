@@ -42,7 +42,7 @@ function BootstrapDialogTitle(props) {
 export default function ServicesModal({openModal, handleModalOpen, serviceSelectionCallBack, selectedEvents}) {
 
   const [checked, setChecked] = React.useState([])
-  const [allChecked, setAllChecked] = React.useState(false)
+  const [allChecked, setAllChecked] = React.useState(true)
   
   useEffect(e=>{setChecked(selectedEvents)},[selectedEvents])
 

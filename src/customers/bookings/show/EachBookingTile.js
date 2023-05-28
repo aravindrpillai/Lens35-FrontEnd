@@ -91,7 +91,7 @@ export default function EachBookingTile({booking, openBooking, cancellBookingHan
       <CardActions>
         <Button size="small" onClick={()=>{openBooking(booking.booking_id)}}>Edit</Button>
         <Button size="small" onClick={()=>{cancellBookingHandler(booking.booking_id)}}>Cancel</Button>
-        <Button size="small" onClick={()=>{viewBooking(booking.booking_id)}}>View</Button>        
+        <Button size="small" onClick={()=>{viewBooking(booking.booking_id)}}>Gallery</Button>        
       </CardActions>
     </Card>
     }

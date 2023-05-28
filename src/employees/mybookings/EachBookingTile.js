@@ -90,7 +90,7 @@ export default function EachBookingTile({booking}) {
         <br/>
         <Typography variant="body2" color="text.secondary">{bookingEvent.event_date} @ {bookingEvent.event_start_time} for {bookingEvent.event_duration} Hours</Typography>
 
-        <Typography variant="body2" color="text.secondary">{bookingEvent.distance} from your location (show in map)</Typography>
+        <Typography variant="body2" color="text.secondary">{bookingEvent.distance} from your location</Typography>
       </CardContent>
       <CardActions>
         <Button size="small">Contact</Button>

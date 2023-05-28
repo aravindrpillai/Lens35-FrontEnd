@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import Content from "../../Components/Content";
-import { Button, Grid, IconButton, MenuItem, Paper, Select, TextField } from "@material-ui/core";
+import { Button, Grid, IconButton, Paper, TextField } from "@material-ui/core";
 import EmployeeTheme from "../EmployeeTheme";
 import { useEffect } from "react";
 import { EMPLOYEE_APIS } from "../../util/Properties";
 import { post } from "../../util/Service";
 import EachBookingTile from "./EachBookingTile";
-import { getTomorrowsDate } from "../../util/DateUtil";
+import { getThisMonthAndYear } from "../../util/DateUtil";
 import { Stack } from "@mui/material";
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
@@ -16,7 +16,6 @@ import WallpaperIcon from '@mui/icons-material/Wallpaper';
 import ServicesModal from "./ServicesModal";
 import SensorOccupiedRoundedIcon from '@mui/icons-material/SensorOccupiedRounded';
 import Tooltip from '@mui/material/Tooltip';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { ALL_EVENT_TYPES } from "../../util/Constants";
 import { AppContext } from "../../contexts/ContextProvider";
 
@@ -24,11 +23,9 @@ import { AppContext } from "../../contexts/ContextProvider";
 export default function MyBookings() {
   const { clearFlashMessage, setFlashMessage, setLoading } = useContext(AppContext)
   const [openServiceModal, setOpenServiceModal] = React.useState(false)
-  
   const [bookingData, setBookingData] = useState([])
-
   const [eventsSelected, setEventsSelected] = React.useState(ALL_EVENT_TYPES)
-  const [bookingDate, setBookingDate] = useState(getTomorrowsDate())
+  const [bookingDate, setBookingDate] = useState(getThisMonthAndYear())
   const [distanceRange, setDistanceRange] = useState(10)
   const [preferred, setPreferred] = useState(false)
   const [photography, setPhotography] = useState(true)
@@ -39,7 +36,6 @@ export default function MyBookings() {
 
 
   useEffect(e=>{
-    console.log("done-----------------------------2222222222222222")
     loadOpenBookings()
   },[eventsSelected, bookingDate, preferred, photography, videography, drone, photoEditor, videoEditor, distanceRange])
 
@@ -49,22 +45,18 @@ export default function MyBookings() {
     setOpenServiceModal(open)
   }
 
-
-  function prepareRequestPayload(){
-    return {
+  async function loadOpenBookings(){
+    clearFlashMessage()
+    setLoading(true)
+    let body = {
       "event_date": bookingDate,
       "photography" : photography,
       "videography" : videography,
       "drone_photography" : drone,
       "photo_editing" : photoEditor,
-      "video_editing" : videoEditor
+      "video_editing" : videoEditor,
+      "events":eventsSelected
     }
-  }
-
-  async function loadOpenBookings(){
-    clearFlashMessage()
-    setLoading(true)
-    let body = prepareRequestPayload()
     let response = await post(EMPLOYEE_APIS.LIST_MY_BOOKINGS, body)
     console.log("------> Booking Resp ----> ",response)
     if(response["status"] === true){
@@ -108,9 +100,9 @@ export default function MyBookings() {
           <Stack justifyContent={"space-between"} direction={"row"}>
             <Stack justifyContent={"space-between"} direction={"row"}>
               <TextField variant="outlined"
-                label="Event Date"
-                type="date"
-                onChange={(e) => { setBookingDate(e.target.value) }}
+                label="Event Month"
+                type="month"
+                onChange={(e) => { console.log(e.target.value); setBookingDate(e.target.value) }}
                 value={bookingDate}
                 InputLabelProps={{ shrink: true }}
               />

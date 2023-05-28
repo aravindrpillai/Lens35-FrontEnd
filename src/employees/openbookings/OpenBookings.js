@@ -39,7 +39,6 @@ export default function OpenBookings() {
 
 
   useEffect(e=>{
-    console.log("done-----------------------------2222222222222222")
     loadOpenBookings()
   },[eventsSelected, bookingDate, preferred, photography, videography, drone, photoEditor, videoEditor, distanceRange])
 
@@ -49,9 +48,10 @@ export default function OpenBookings() {
     setOpenServiceModal(open)
   }
 
-
-  function prepareRequestPayload(){
-    return {
+  async function loadOpenBookings(){
+    clearFlashMessage()
+    setLoading(true)
+    let body = {
       "events":eventsSelected,
       "preferred" : preferred,
       "distance_range":distanceRange,
@@ -60,14 +60,9 @@ export default function OpenBookings() {
       "videography" : videography,
       "drone_photography" : drone,
       "photo_editing" : photoEditor,
-      "video_editing" : videoEditor
+      "video_editing" : videoEditor,
+      "events" : eventsSelected
     }
-  }
-
-  async function loadOpenBookings(){
-    clearFlashMessage()
-    setLoading(true)
-    let body = prepareRequestPayload()
     let response = await post(EMPLOYEE_APIS.LIST_OPEN_BOOKINGS, body)
     console.log("------> Booking Resp ----> ",response)
     if(response["status"] === true){

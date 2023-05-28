@@ -48,10 +48,8 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
   const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
   
   const [bookingData, setBookingData] = useState(null)
-  const [selectedServices, setSelectedServices] = useState([])
 
   React.useEffect(eff=>{
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     if(isModalOpen){
       loadBookingInfo()
     }
