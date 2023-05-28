@@ -134,7 +134,8 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
         </DialogContent>
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button autoFocus onClick={confirmBooking}> Confirm Booking </Button>
+                <Button autoFocus onClick={confirmBooking}> Cancel Booking </Button>
+                <Button autoFocus onClick={confirmBooking}> Save Changes </Button>
             </Stack>
         </DialogActions>
       </BootstrapDialog>

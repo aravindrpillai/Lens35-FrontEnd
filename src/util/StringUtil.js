@@ -28,5 +28,49 @@ function extractDomainNameFromURL(url) {
   }
 
   
+  function formatEventName(event_code){
+    switch(event_code.toLowerCase()){
+      case "wedding": return "Wedding"
+      case "engagement": return "Engagement"
+      case "family": return "Family"
+      case "party": return "Party"
+      case "portrait": return "Portrait"
+      case "event": return "Event"
+      case "maternity": return "Maternity"
+      case "real_estate": return "Real Estate"
+      case "graduation": return "Graduation"
+      case "team_and_office": return "Team and office"
+      case "product": return "Product"
+      case "modelling": return "Modelling"
+      case "food": return "Food"
+      case "vehicles": return "Vehicles"
+      case "baby": return "Baby"
+      case "kids": return "Kids"
+      case "sport": return "Sport"
+      case "pet": return "Pet"
+      case "religious": return "Religious"
+      case "short_film": return "Short Film"
+      case "other": return "Other"
+      default : return "--Unknown-Event--"
+    }
+  }
 
-export {capitalizeFirstCharacter, isNotEmpty, extractDomainNameFromURL}
+  
+  function formatServiceName(service_code){
+    switch(service_code.toLowerCase()){
+      case "photographer" : return "Photographer"
+      case "videographer" : return "Videographger"
+      case "drone_photographer" : return "Drone Photographer"
+      case "photo_editor" : return "Photo Editor" 
+      case "video_editor" : return "Video Editor"
+      //Actual values are as follows
+      case "photography" : return "Photography"
+      case "videography" : return "Videography"
+      case "drone_photography" : return "Drone Photography"
+      case "photo_editing" : return "Photo Editing" 
+      case "video_editing" : return "Video Editing"
+      default : return "--Unknown-Service--"
+    }
+  }
+
+export {capitalizeFirstCharacter, isNotEmpty, extractDomainNameFromURL, formatEventName, formatServiceName}

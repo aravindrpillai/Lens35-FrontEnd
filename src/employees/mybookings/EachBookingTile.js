@@ -50,13 +50,13 @@ export default function EachBookingTile({booking}) {
 
   return (
     <React.Fragment>
+      <BookingMoreInfoModal isModalOpen={openBookingMoreInfoModal} modalHandle={setOpenBookingMoreInfoModal} booking={bookingEvent} />
     {!isDataLoaded &&  
       <Card sx={{ maxWidth: 345 }}>Loading...</Card>  
     }
     {
     isDataLoaded &&
     <Card sx={{ maxWidth: 345 }}>
-      <BookingMoreInfoModal isModalOpen={openBookingMoreInfoModal} modalHandle={setOpenBookingMoreInfoModal} booking={bookingEvent} />
       <CardMedia component="img" height="140" image={bookingEvent.url} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" justifyContent={"space-between"} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -93,9 +93,9 @@ export default function EachBookingTile({booking}) {
         <Typography variant="body2" color="text.secondary">{bookingEvent.distance} from your location (show in map)</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={e=>{setOpenBookingMoreInfoModal(true)}}>Accept</Button>
         <Button size="small">Contact</Button>
-        <Button size="small">Ignore</Button>
+        <Button size="small">Maps</Button>
+        <Button size="small" onClick={e=>{setOpenBookingMoreInfoModal(true)}}>Modify</Button>
       </CardActions>
     </Card>
     }

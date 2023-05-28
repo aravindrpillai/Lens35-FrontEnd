@@ -31,7 +31,8 @@ const EMPLOYEE_APIS = {
 
     GET_FILEUPLOAD_PRESIGNED_URL : BASE_URL.concat("/bookings/apis/employees/bookings/fileupload/fetch/presignedurl/"),
     ACKNODWLEDGE_FILE_UPLOAD : BASE_URL.concat("/bookings/apis/employees/bookings/fileupload/acknodwledge/"),
-    DELETE_FILE : BASE_URL.concat("/bookings/apis/employees/bookings/file/delete/")
+    DELETE_FILE : BASE_URL.concat("/bookings/apis/employees/bookings/file/delete/"),
+    LOCK_AND_SUBMIT_SERVICE : BASE_URL.concat("/bookings/apis/employees/bookings/services/lock/") //Pass service ID at the end
 }
 
 const CUSTOMER_APIS = {
@@ -56,7 +57,6 @@ const BOOKING_APIS = {
     FETCH_UPLOADED_FILES : BASE_URL.concat("/bookings/apis/customers/services/fetch/files/"), //pass the service id at the end
     UPDATE_BOOKING : BASE_URL.concat("/bookings/apis/customers/booking/"),
     ADD_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/add/"),
-    REMOVE_SERVICES : BASE_URL.concat("/bookings/apis/customers/services/remove/"),
     FETCH_INVOICE : BASE_URL.concat("/bookings/apis/customers/fetch/invoice/"),
     CALCULATE_CANCELLATION_COST : BASE_URL.concat("/bookings/apis/customers/calculate/cancellation/"),//pass booking id at the end of the url
     CANCEL_BOOKING : BASE_URL.concat("/bookings/apis/customers/cancel/booking/")//pass booking id at the end of the url

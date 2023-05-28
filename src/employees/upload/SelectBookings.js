@@ -9,10 +9,12 @@ import Collapse from '@mui/material/Collapse';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
 import { AppContext } from '../../contexts/ContextProvider';
 import { EMPLOYEE_APIS } from '../../util/Properties';
 import { get } from '../../util/Service';
+import { formatServiceName, formatEventName } from '../../util/StringUtil';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export function SelectBookings({ open, openHandler, serviceSelectionCallBackHandler }) {
 
@@ -48,17 +50,37 @@ export function SelectBookings({ open, openHandler, serviceSelectionCallBackHand
 
   return (
     <Dialog onClose={()=>{openHandler(false)}} open={open}>
-      <DialogTitle>Select Booking</DialogTitle>
+      <DialogTitle>Select A Service</DialogTitle>
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} component="nav" >
           {bookings && bookings.map(booking=>(
             <React.Fragment key={booking.booking_id}>
             <ListItemButton onClick={()=>{handleBookingExpandionClick(booking.booking_id)}}>
-              <ListItemIcon><InboxIcon /> </ListItemIcon> <ListItemText primary={booking.event+" on "+booking.event_date} /> {openBooking === booking.booking_id ? <ExpandLess /> : <ExpandMore />}
+              <ListItemIcon><InboxIcon /> 
+                </ListItemIcon> 
+                <ListItemText
+                  primary={
+                    <div style={{ whiteSpace: 'pre-line' }}>
+                      <font size="2">
+                        <b>{formatEventName(booking.event)}</b> on {booking.event_date} 
+                        <br/>By {booking.customer_name}
+                        <br/>at&nbsp;{booking.event_address}
+                      </font>
+                    </div>
+                  }
+                />
+                {openBooking === booking.booking_id ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={openBooking === booking.booking_id} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {booking.services && booking.services.map(service=>(
-                  <ListItemButton  onClick={()=>{handleServiceSelection(booking, service)}} key={service.service_id} sx={{ pl: 4 }}> <ListItemIcon> <StarBorder /> </ListItemIcon><ListItemText primary={service.service} /></ListItemButton>
+                  <ListItemButton  onClick={()=>{handleServiceSelection(booking, service)}} key={service.service_id} sx={{ pl: 4 }}> 
+                    <ListItemIcon> 
+                    {!service.closed && <RadioButtonCheckedIcon/>}  
+                    {service.closed && <CheckCircleIcon style={{ color: "green" }}/>}  
+                    </ListItemIcon>
+                    <ListItemText primary={formatServiceName(service.service)}/>
+                    </ListItemButton>
+                    
                 ))}
               </List>
             </Collapse>

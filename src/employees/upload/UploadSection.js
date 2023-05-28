@@ -14,6 +14,7 @@ import EachAlreadyUploadedFile from './EachAlreadyUploadedFile';
 import { AppContext } from '../../contexts/ContextProvider';
 import SubmitAndLock from './SubmitAndLock';
 import ConfirmationModal from '../../Components/ConfirmationModal';
+import { formatEventName, formatServiceName } from '../../util/StringUtil';
 
 export default function UploadSection() {
 
@@ -26,12 +27,15 @@ export default function UploadSection() {
     const [alreadyUploadedFiles, setAlreadyUploadedFiles] = useState([]) 
     const [selectedBooking, setSelectedBooking] = React.useState(null)
     const [selectedService, setSelectedService] = React.useState(null)
+    const [isServiceClosed, setIsServiceClosed] = React.useState(false)
   
     useEffect(e=>{
-        clearFlashMessage()
+        
         async function loadUploadedFiles(){
+            setLoading(true)
             let uploadedFiles = await get(EMPLOYEE_APIS.FETCH_UPLOADED_FILES_OF_SERVICE.concat(selectedService.service_id+"/"))
             setAlreadyUploadedFiles(uploadedFiles["data"])
+            setLoading(false)
         }
         if(selectedService !== null && selectedService !== undefined){
             loadUploadedFiles()
@@ -40,6 +44,13 @@ export default function UploadSection() {
 
 
     function serviceSelectionCallBackHandler(booking, service){
+        if(service.closed){
+            setIsServiceClosed(true)
+            setFlashMessage("info", "This service is locked and submitted to the customer. No further updates can be done on this service.")
+        }else{
+            clearFlashMessage()
+            setIsServiceClosed(false)
+        }
         setSelectedBooking(booking)
         setSelectedService(service)
         setNewlyUploadingFiles([])
@@ -105,29 +116,39 @@ export default function UploadSection() {
         }
     }
 
+    function lockCallBackHandler(closed){
+        setIsServiceClosed(closed)
+    }
+
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} >
                 <SelectBookings open={openBookingList} openHandler={setOpenBookingList} serviceSelectionCallBackHandler={serviceSelectionCallBackHandler} />
-                <SubmitAndLock open={openSubmitAndLock} openHandler={setOpenSubmitAndLock} />
-                <ConfirmationModal 
+                {
+                    selectedService &&
+                    <SubmitAndLock open={openSubmitAndLock} openHandler={setOpenSubmitAndLock} service_id={selectedService.service_id} callBackHandler={lockCallBackHandler}/>
+                }
+
+                {selectedService !== null &&  isServiceClosed!==true &&
+                    <ConfirmationModal 
                     open={openDeleteModal} 
                     openHandler={setOpenDeleteModal} 
                     confirmHandler={deleteFiles} 
                     title={"Confirm Delete Action"} 
                     content={"Please confirm if you want to delete the selected files."} />
+                }
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }} >
                     <div>    
-                    <Button variant="outlined" onClick={(e)=>setOpenBookingList(true)}> {selectedService === null ? "Select Booking" : (selectedBooking.event+ " - " +selectedService.service)} </Button>
-                    {selectedService !== null &&
+                    <Button variant="outlined" onClick={(e)=>setOpenBookingList(true)}> {selectedService === null ? "Select Booking" : (formatEventName(selectedBooking.event)+ " on "+selectedBooking.event_date+" (" +formatServiceName(selectedService.service)+")")} </Button>
+                    {selectedService !== null && isServiceClosed!==true &&
                         <>&nbsp;
                         <Button variant="outlined" onClick={(e)=>setOpenSubmitAndLock(true)}> Lock & Submit </Button>
                         </>
                     }
                     </div>
                     
-                    {selectedService !== null &&
+                    {selectedService !== null && isServiceClosed!==true &&
                     <div>
                         {checkedFiles.length > 0 &&
                         <Button size="small" color="primary" variant="outlined" component="label" onClick={()=>{setOpenDeleteModal(true)}}>
@@ -171,6 +192,7 @@ export default function UploadSection() {
                     key={file.file_id} 
                     _key={file.file_name} 
                     _file={file}
+                    _isSubmitted ={selectedService.closed}
                     _isChecked ={checkedFiles.includes(file.file_id)}
                     _checkHandler = {handleCheckBoxHandler}
                     />

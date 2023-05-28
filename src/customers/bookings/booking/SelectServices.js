@@ -10,6 +10,7 @@ import { AppContext } from '../../../contexts/ContextProvider';
 import { BOOKING_APIS } from '../../../util/Properties';
 import { get } from '../../../util/Service';
 import { useState } from 'react';
+import { formatServiceName } from '../../../util/StringUtil';
 
 export function SelectServices({ open, openHandler, booking_id, selectedServiceHandler }) {
 
@@ -40,13 +41,13 @@ export function SelectServices({ open, openHandler, booking_id, selectedServiceH
             <ListItemButton key={service.service_id} onClick={()=>{selectedServiceHandler(service)}}>
               <ListItemIcon><InboxIcon /> </ListItemIcon> 
               {service.closed &&
-              <ListItemText primary={service.service+" by "+service.employee.full_name} />
+              <ListItemText primary={formatServiceName(service.service)+" by "+service.employee.full_name} />
               }
               {service.employee !== null && !service.closed &&
-              <ListItemText primary={service.service+" by "+service.employee.full_name+" (Not Closed)"} />
+              <ListItemText primary={formatServiceName(service.service)+" by "+service.employee.full_name+" (Not Closed)"} />
               }
               {service.employee === null &&
-              <ListItemText primary={service.service+" (Not Accepted) "} />
+              <ListItemText primary={formatServiceName(service.service)+" (Not Accepted) "} />
               }
               
             </ListItemButton>

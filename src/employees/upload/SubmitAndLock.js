@@ -9,6 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Stack } from '@mui/material';
 import { Typography } from '@material-ui/core';
+import { EMPLOYEE_APIS } from '../../util/Properties';
+import { AppContext } from '../../contexts/ContextProvider';
+import { get } from '../../util/Service';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': { padding: theme.spacing(2) },
@@ -31,7 +34,25 @@ function BootstrapDialogTitle(props) {
   )
 }
 
-export default function SubmitAndLock({open, openHandler}) {
+export default function SubmitAndLock({open, openHandler, service_id, callBackHandler}) {
+  const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
+  
+  async function lock(){
+    clearFlashMessage()
+    setLoading(true)
+    let response = await get(EMPLOYEE_APIS.LOCK_AND_SUBMIT_SERVICE+service_id+"/")
+    if(response["status"] === true){
+        setFlashMessage("success","Service is locked. We will inform the customer about the update post processing the files.")
+        callBackHandler(true)
+    }else{
+        setFlashMessage("error",response["messages"][0])
+        callBackHandler(false)
+    }
+    setLoading(false)
+    openHandler(false)
+  }
+
+
   return (
       <BootstrapDialog onClose={() => {openHandler(false) }} open={open} >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={() => {openHandler(false) }}> Confirm Action</BootstrapDialogTitle>
@@ -43,8 +64,8 @@ export default function SubmitAndLock({open, openHandler}) {
         </DialogContent>
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button autoFocus >Cancel</Button>
-                <Button autoFocus >Submit and Lock</Button>
+                <Button autoFocus onClick={()=>{openHandler(false)}}>Cancel</Button>
+                <Button autoFocus onClick={lock}>Submit and Lock</Button>
             </Stack>
         </DialogActions>
       </BootstrapDialog>
