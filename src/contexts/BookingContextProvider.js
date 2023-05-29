@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createContext } from "react";
 import { get, post } from "../util/Service";
-import {BOOKING_APIS} from "../util/Properties" 
+import {CUSTOMER_APIS} from "../util/Properties" 
 import { getDefaultBookingStartDate } from "../util/DateUtil";
 
 
@@ -74,7 +74,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
       "event_city" : city,
       "event_address" : address
     }
-    var booking_response = await post(BOOKING_APIS.UPDATE_BOOKING, request)
+    var booking_response = await post(CUSTOMER_APIS.UPDATE_BOOKING, request)
     if(booking_response["status"] === true){
       let booking_id = booking_response["data"]["booking_id"]
       setBookingID(booking_id)
@@ -86,9 +86,9 @@ export function BookingContextProvider({ children, booking_id=null }) {
         "photo_editing": 0,
         "video_editing": 0
       }
-      var service_response = await post(BOOKING_APIS.ADD_SERVICES, services_data)
+      var service_response = await post(CUSTOMER_APIS.ADD_SERVICES, services_data)
       if(service_response["status"] === true){
-        var invoice = await get(BOOKING_APIS.FETCH_INVOICE.concat(booking_id).concat("/"))
+        var invoice = await get(CUSTOMER_APIS.FETCH_INVOICE.concat(booking_id).concat("/"))
         if(invoice["status"] === true){
           setInvoice(invoice["data"])
           setLoading(false)
@@ -167,7 +167,7 @@ export function BookingContextProvider({ children, booking_id=null }) {
 
   async function loadDataWithBookingID(_bookingID){
     setLoading(true)
-    var booking_response = await get(BOOKING_APIS.FETCH_BOOKING_USING_ID.concat(_bookingID+"/"))
+    var booking_response = await get(CUSTOMER_APIS.FETCH_BOOKING_USING_ID.concat(_bookingID+"/"))
     console.log("FETCH RESPONSE : ", booking_response)
     if(booking_response["status"] === true){
       let data = booking_response["data"]

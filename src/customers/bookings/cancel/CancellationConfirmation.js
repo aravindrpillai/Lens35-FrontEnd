@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Grid } from '@material-ui/core';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
-import { BOOKING_APIS } from '../../../util/Properties';
+import { CUSTOMER_APIS } from '../../../util/Properties';
 import { get } from '../../../util/Service';
 
 export default function CancellationConfirmation({booking_id}) {  
@@ -11,7 +11,7 @@ export default function CancellationConfirmation({booking_id}) {
   useEffect(e=>{
     async function cancelBooking(){
       setMessage("Cancelling, Please wait..!")
-      var response = await get(BOOKING_APIS.CANCEL_BOOKING.concat(booking_id+"/"))
+      var response = await get(CUSTOMER_APIS.CANCEL_BOOKING.concat(booking_id+"/"))
       console.log(response)
       if(response["status"] === true){
           setMessage("Your booking has been cancelled!")

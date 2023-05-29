@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import Content from "../../Components/Content";
 import { Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
 import { useEffect } from "react";
-import { BOOKING_APIS } from "../../util/Properties";
+import { CUSTOMER_APIS } from "../../util/Properties";
 import { post } from "../../util/Service";
 import { getThisMonthAndYear } from "../../util/DateUtil";
 import { Stack } from "@mui/material";
@@ -29,7 +29,7 @@ export default function CustomerBookings() {
     async function fetchBookings(){
       setLoading(true)
       clearFlashMessage()
-      var response = await post(BOOKING_APIS.LIST_CUSTOMER_BOOKINGS, { "event_date" : eventDate })
+      var response = await post(CUSTOMER_APIS.LIST_CUSTOMER_BOOKINGS, { "event_date" : eventDate })
       console.log(response)
       if(response["status"] === true){
         setBookingData(response["data"])

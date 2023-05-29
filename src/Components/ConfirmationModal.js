@@ -31,7 +31,7 @@ function BootstrapDialogTitle(props) {
   )
 }
 
-export default function ConfirmationModal({open, openHandler, confirmHandler, title, content}) {
+export default function ConfirmationModal({open, openHandler, confirmHandler, title, content, confirmButtonLabel="Confirm"}) {
   return (
       <BootstrapDialog onClose={() => {openHandler(false) }} open={open} >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={() => {openHandler(false) }}> {title} </BootstrapDialogTitle>
@@ -43,7 +43,7 @@ export default function ConfirmationModal({open, openHandler, confirmHandler, ti
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>
                 <Button onClick={()=>{openHandler(false)}} autoFocus >Cancel</Button>
-                <Button onClick={confirmHandler} autoFocus >Confirm</Button>
+                <Button onClick={confirmHandler} autoFocus >{confirmButtonLabel}</Button>
             </Stack>
         </DialogActions>
       </BootstrapDialog>

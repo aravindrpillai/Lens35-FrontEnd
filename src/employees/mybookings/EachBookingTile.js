@@ -17,9 +17,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { AppContext } from '../../contexts/ContextProvider';
-import BookingMoreInfoModal from './BookingMoreInfoModal';
+import ModifyBookingModal from './ModifyBookingModal';
 
-export default function EachBookingTile({booking}) {
+export default function EachBookingTile({booking, bookingUpdateCallBackHandler}) {
 
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
   const [bookingEvent, setBookingEvent] = useState()
@@ -47,16 +47,20 @@ export default function EachBookingTile({booking}) {
     }
   }, [booking])
 
+  function callBackHandler(){
+    bookingUpdateCallBackHandler()
+  }
 
   return (
     <React.Fragment>
-      <BookingMoreInfoModal isModalOpen={openBookingMoreInfoModal} modalHandle={setOpenBookingMoreInfoModal} booking={bookingEvent} />
+      
     {!isDataLoaded &&  
       <Card sx={{ maxWidth: 345 }}>Loading...</Card>  
     }
     {
     isDataLoaded &&
     <Card sx={{ maxWidth: 345 }}>
+      <ModifyBookingModal isModalOpen={openBookingMoreInfoModal} modalHandle={setOpenBookingMoreInfoModal} booking_id={bookingEvent.booking_id} callBackHandler={callBackHandler}/>
       <CardMedia component="img" height="140" image={bookingEvent.url} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" justifyContent={"space-between"} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

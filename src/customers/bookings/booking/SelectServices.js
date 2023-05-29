@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { AppContext } from '../../../contexts/ContextProvider';
-import { BOOKING_APIS } from '../../../util/Properties';
+import { CUSTOMER_APIS } from '../../../util/Properties';
 import { get } from '../../../util/Service';
 import { useState } from 'react';
 import { formatServiceName } from '../../../util/StringUtil';
@@ -20,7 +20,7 @@ export function SelectServices({ open, openHandler, booking_id, selectedServiceH
 
   async function loadServices(){
     setLoading(true)
-    let response = await get(BOOKING_APIS.FETCH_SERVICES+booking_id+"/")
+    let response = await get(CUSTOMER_APIS.FETCH_SERVICES+booking_id+"/")
     if(response["status"] === true){
         setServices(response["data"])
     }else{

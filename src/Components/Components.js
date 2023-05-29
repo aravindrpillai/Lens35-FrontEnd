@@ -6,7 +6,6 @@ import Content from "../Components/Content";
 import Buttons from "./Buttons/Buttons";
 import ButtonGroup from "./ButtonGroup/ButtonGroup";
 import CheckboxLabels from "./Checkbox/Checkbox";
-import FloatingButton from "./FloatingButton/FloatingButton";
 import RadioButton from "./RadioButtons/RadioButton";
 import Selects from "./Select/Select";
 import Sliders from "./Slider/Slider";

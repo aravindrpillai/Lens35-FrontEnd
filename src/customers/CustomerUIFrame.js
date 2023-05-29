@@ -14,13 +14,15 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { AppContext } from "../contexts/ContextProvider";
 import { useContext } from "react";
+import ConfirmationModal from "../Components/ConfirmationModal";
+import { useState } from "react";
 
 export const drawerWidth = 240;
 
@@ -72,13 +74,24 @@ function CustomerUIFrame(props) {
   const { container } = props;
   const classes = useStyles();
   const theme = useTheme();
+  const navigate = useNavigate()
   const { pathname } = useLocation();
   const isHome = false; // pathname === "/";
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [logout, setLogout] = useState(false)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
+  }
+
+  
+  function logoutHandler(){
+    window.sessionStorage.setItem("Customer-Token", null)
+    window.sessionStorage.setItem("Customer-Identifier", null)
+    window.sessionStorage.setItem("Customer-Device-Id", null)
+    setLogout(false)
+    navigate("/")
+  }
 
   /* Modifying the source code from the template example to use the react router pathname hook to set
   selected prop and to use the react router component prop */
@@ -120,6 +133,8 @@ function CustomerUIFrame(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
+      <ConfirmationModal open={logout} openHandler={setLogout} confirmHandler={logoutHandler} title={"Confirm Action"} content={"Thank you for using our services. Remember, we'll be here whenever you're ready to return. Have a fantastic day!" } confirmButtonLabel={"Logout"}/>
+      
       <div
         style={{
           height: "64px",
@@ -155,7 +170,7 @@ function CustomerUIFrame(props) {
           </Typography>
           <div style={{ flexGrow: 1 }}></div>
           <Badge overlap="rectangular" color="primary">
-            <ExitToAppIcon />
+          <IconButton onClick={()=>{setLogout(true)}}><ExitToAppIcon  /></IconButton>
           </Badge>
           <IconButton
             color="inherit"

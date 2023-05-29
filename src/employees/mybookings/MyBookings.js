@@ -71,6 +71,11 @@ export default function MyBookings() {
     setEventsSelected(services)
   }
 
+  function bookingUpdateCallBackHander(){
+    loadOpenBookings()
+    setFlashMessage("success","Successfully updated the booking")
+  }
+
 
   return (
     <EmployeeTheme>
@@ -85,7 +90,7 @@ export default function MyBookings() {
             {
               bookingData.map(booking=>(
                 <Grid item xs={12} md={6} lg={3} key={booking.booking_id}>
-                  <EachBookingTile booking={booking}/>
+                  <EachBookingTile booking={booking} bookingUpdateCallBackHandler={bookingUpdateCallBackHander}/>
                 </Grid>
               ))
             } 

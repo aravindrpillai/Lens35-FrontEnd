@@ -9,7 +9,7 @@ import { AppContext } from "../../../contexts/ContextProvider";
 import { useState } from "react";
 import EachFile from "./EachFile";
 import { SelectServices } from "./SelectServices";
-import { BOOKING_APIS } from "../../../util/Properties";
+import { CUSTOMER_APIS } from "../../../util/Properties";
 import { get } from "../../../util/Service";
 
 
@@ -26,7 +26,7 @@ export default function CustomerBooking() {
     clearFlashMessage()
     async function loadFiles(){
       setLoading(true)
-      let response = await get(BOOKING_APIS.FETCH_UPLOADED_FILES+selectedService.service_id+"/")
+      let response = await get(CUSTOMER_APIS.FETCH_UPLOADED_FILES+selectedService.service_id+"/")
       if(response["status"] === true){
           setFiles(response["data"])
       }else{

@@ -11,9 +11,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Checkbox from '@mui/material/Checkbox';
-import { CircularProgress, Stack } from '@mui/material';
+import { CircularProgress, Stack, Typography } from '@mui/material';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
@@ -23,6 +22,7 @@ import { get, post } from '../../util/Service';
 import { EMPLOYEE_APIS } from '../../util/Properties';
 import { AppContext } from '../../contexts/ContextProvider';
 import { useState } from 'react';
+import ConfirmationModal from '../../Components/ConfirmationModal';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': { padding: theme.spacing(2) },
@@ -44,77 +44,114 @@ function BootstrapDialogTitle(props) {
   );
 }
 
-export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}) {
+export default function ModifyBookingModal({isModalOpen, modalHandle, booking_id, callBackHandler}) {
   const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
   
-  const [bookingData, setBookingData] = useState(null)
+  const [services, setServices] = useState(null)
+  const [selectedServices, setSelectedServices] = useState([])
+  const [removedServices, setRemovedServices] = useState([])
+  const [openConfirmation, setOpenConfirmation] = useState(false)
 
   React.useEffect(eff=>{
     if(isModalOpen){
       loadBookingInfo()
     }
-  },[booking, isModalOpen])
+  },[booking_id, isModalOpen])
 
   async function loadBookingInfo(){
     clearFlashMessage()
     setLoading(true)
-    let response = await get(EMPLOYEE_APIS.FETCH_BOOKING_INFO.concat(booking.booking_id).concat("/"))
+    let response = await get(EMPLOYEE_APIS.LIST_SERVICES_OPEN_FOR_UPDATE.concat(booking_id).concat("/"))
     console.log("------> SELECTED Booking Resp ----> ",response)
     if(response["status"] === true){
-      var res = response["data"]
-      res["selectedServices"] = []
-      setBookingData(res)
+      let ss = [];
+      response.data.forEach(s => {
+        if(!s.is_still_open){
+          ss.push(s.service_id)
+        }
+      })
+      setSelectedServices(ss)
+      setServices(response["data"])
     }else{
       setFlashMessage("error","Failed to load booking information. Please try again")
     }
     setLoading(false)
   }
 
-  async function confirmBooking(){
-    console.log(bookingData.selectedServices)
-    clearFlashMessage()
-    setLoading(true)
 
-    var data = {
-      "booking_id": bookingData.booking_id,
-      "service_id_list": bookingData.selectedServices
+  async function cancellConfirmHandler(){
+    setLoading(true)
+    let data = {
+      "booking_id": booking_id,
+      "service_ids": selectedServices
     }
-    let response = await post(EMPLOYEE_APIS.ACCEPT_BOOKING,data)
-    console.log("------> ACCEPT Booking Resp ----> ",response)
+    let response = await post(EMPLOYEE_APIS.MODIFY_MY_BOOKING, data)
+    console.log("------> MODIFY Booking Resp ----> ",response)
     if(response["status"] === true){
-      
-      setLoading(false)
-      modalHandle(false)
+      callBackHandler()
     }else{
-      setFlashMessage("error","Failed to load booking information. Please try again")
+      setFlashMessage("error","Failed to modify booking. Please try again")
     }
+    loadBookingInfo()
+    modalHandle(false)
+    setOpenConfirmation(false)
+    setLoading(false)
   }
 
   function handleServiceSelection(service_id){
-    let s = bookingData
-    let indx = s.selectedServices.indexOf(service_id)
+    let ss = selectedServices
+    let indx = ss.indexOf(service_id)
     if(indx == -1){
-      s.selectedServices.push(service_id)
+      ss.push(service_id)
     }else{
-      s.selectedServices.splice(indx, 1)
+      ss.splice(indx, 1)
     }
-    setBookingData(s)
+    setSelectedServices(ss)
+
+    var my_services = services.filter(obj => obj.is_still_open === false).map(obj => obj.service);
+    var my_new_services = []
+    ss.forEach(s=>{
+      let sev = services.filter(obj => obj.service_id === s)
+      if(sev.length > 0){
+        my_new_services.push(sev[0].service)
+      }
+    })
+
+    let removed_services = my_services.filter(item => !my_new_services.includes(item));
+    setRemovedServices(removed_services)
   }
 
+  function proceedHandler(){
+    if(removedServices.length > 0){
+      setOpenConfirmation(true)
+    }else{
+      cancellConfirmHandler()
+    }
+  }
 
   return (
       <BootstrapDialog onClose={() => {modalHandle(false) }} open={isModalOpen} >
+        <ConfirmationModal 
+          open={openConfirmation} 
+          openHandler={setOpenConfirmation} 
+          confirmHandler={cancellConfirmHandler} 
+          title={"Confirm Action"} 
+          content={
+            <font color="red">
+            Note: Cancelling approved booking will affect your rating.<br/>
+            You have removed <b>{removedServices.length}</b> service(s) costing you <b>Rs.{removedServices.length*200}/-</b><br/>
+            This amount will be debitted from you next pay out. 
+            </font>
+            } 
+          confirmButtonLabel="Update"/>
         <BootstrapDialogTitle onClose={() => {modalHandle(false) }}> Select Services </BootstrapDialogTitle>
         <DialogContent dividers>
           
             <List dense sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+              { (services === null || services === undefined) && <CircularProgress />  }
               {
-                (bookingData === null || bookingData === undefined) &&
-                <CircularProgress />  
-              }
-              {
-              bookingData && bookingData.services.map(service=>(
-                <ListItem key={service.service_id} onClick={()=>{handleServiceSelection(service.service_id)}} secondaryAction={ <>{service.employee !== null && <CheckCircleOutlineIcon/>} {service.employee === null && <Checkbox checked={service.selectedServices && service.selectedServices.indexOf(service.service_id) != -1} />}</> }  >
+              services && services.map(service=>(
+                <ListItem key={service.service_id} onClick={()=>{handleServiceSelection(service.service_id)}} secondaryAction={ <Checkbox defaultChecked={!service.is_still_open} value={selectedServices.indexOf(service.service_id) !== -1}/> }  >
                     <ListItemButton>
                         {service.service === "photography" && <><IconButton> <CameraAltIcon /> </IconButton><ListItemText primary="Photography" /></> }
                         {service.service === "videography" && <><IconButton> <VideoCameraFrontIcon /> </IconButton><ListItemText primary="Videography" /></> }
@@ -127,13 +164,24 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
               }
 
             </List>
-
-
+            
+            {removedServices && removedServices.length > 0 &&
+            <React.Fragment>
+              <hr/>
+              <Typography variant='5'>
+                <font color="red">
+                Note: Cancelling approved booking will affect your rating.<br/>
+                You have removed <b>{removedServices.length}</b> service(s) costing you <b>Rs.{removedServices.length*200}/-</b><br/>
+                This amount will be debitted from you next pay out. 
+                </font>
+              </Typography>
+            </React.Fragment>
+            }
         </DialogContent>
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <Button autoFocus onClick={confirmBooking}> Cancel Booking </Button>
-                <Button autoFocus onClick={confirmBooking}> Save Changes </Button>
+                <Button autoFocus onClick={()=>{setOpenConfirmation(false); modalHandle(false);}}> Ignore </Button>
+                <Button autoFocus onClick={proceedHandler}> Proceed </Button>
             </Stack>
         </DialogActions>
       </BootstrapDialog>

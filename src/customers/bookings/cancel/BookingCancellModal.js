@@ -11,7 +11,7 @@ import { useState } from 'react';
 import CancellationOverview from './CancellationOverview';
 import CancellationConfirmation from './CancellationConfirmation';
 import { get } from '../../../util/Service';
-import { BOOKING_APIS } from '../../../util/Properties';
+import { CUSTOMER_APIS } from '../../../util/Properties';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': { padding: theme.spacing(2) },
@@ -47,7 +47,7 @@ export default function BookingCancellModal({bookingid, thisModalHandler, setThi
   React.useEffect(e=>{
       async function fetchBookingCancellationCost(){
         setPage(1)  
-        var response = await get(BOOKING_APIS.CALCULATE_CANCELLATION_COST.concat(bookingid+"/"))
+        var response = await get(CUSTOMER_APIS.CALCULATE_CANCELLATION_COST.concat(bookingid+"/"))
         if(response["status"] === true){
             setCancellationInfo(response["data"])
             setMessage(null)
