@@ -13,7 +13,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Checkbox from '@mui/material/Checkbox';
-import { CircularProgress, Stack } from '@mui/material';
+import { CircularProgress, Stack, Typography } from '@mui/material';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LocalAirportIcon from '@mui/icons-material/LocalAirport';
@@ -48,7 +48,8 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
   const { clearFlashMessage, setFlashMessage, setLoading } = React.useContext(AppContext)
   
   const [bookingData, setBookingData] = useState(null)
-
+  const [message, setMessage] = useState(null)
+  
   React.useEffect(eff=>{
     if(isModalOpen){
       loadBookingInfo()
@@ -57,8 +58,9 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
 
   async function loadBookingInfo(){
     clearFlashMessage()
+    setMessage(null)
     setLoading(true)
-    let response = await get(EMPLOYEE_APIS.FETCH_BOOKING_INFO.concat(booking.booking_id).concat("/"))
+    let response = await get(EMPLOYEE_APIS.FETCH_SERVICES_OF_BOOKING.concat(booking.booking_id).concat("/"))
     console.log("------> SELECTED Booking Resp ----> ",response)
     if(response["status"] === true){
       var res = response["data"]
@@ -82,12 +84,11 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
     let response = await post(EMPLOYEE_APIS.ACCEPT_BOOKING,data)
     console.log("------> ACCEPT Booking Resp ----> ",response)
     if(response["status"] === true){
-      
-      setLoading(false)
       modalHandle(false)
     }else{
-      setFlashMessage("error","Failed to load booking information. Please try again")
+      setMessage(response["messages"][0])
     }
+    setLoading(false)
   }
 
   function handleServiceSelection(service_id){
@@ -114,7 +115,18 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
               }
               {
               bookingData && bookingData.services.map(service=>(
-                <ListItem key={service.service_id} onClick={()=>{handleServiceSelection(service.service_id)}} secondaryAction={ <>{service.employee !== null && <CheckCircleOutlineIcon/>} {service.employee === null && <Checkbox checked={service.selectedServices && service.selectedServices.indexOf(service.service_id) != -1} />}</> }  >
+                <ListItem 
+                key={service.service_id} 
+                onClick={()=>{handleServiceSelection(service.service_id)}} 
+                secondaryAction={ 
+                  <>
+                    {service.employee !== null && <CheckCircleOutlineIcon/>} 
+                    {
+                      service.employee === null && service.does_this_employee_offer_this_service && 
+                      <Checkbox checked={service.selectedServices && service.selectedServices.indexOf(service.service_id) != -1} />
+                    }
+                  </> 
+                }  >
                     <ListItemButton>
                         {service.service === "photography" && <><IconButton> <CameraAltIcon /> </IconButton><ListItemText primary="Photography" /></> }
                         {service.service === "videography" && <><IconButton> <VideoCameraFrontIcon /> </IconButton><ListItemText primary="Videography" /></> }
@@ -127,8 +139,11 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
               }
 
             </List>
-
-
+              {message && 
+              <Typography variant='h7'>
+                <font color="red">{message}</font>
+              </Typography>
+              }
         </DialogContent>
         <DialogActions>
             <Stack direction={"row"} justifyContent={"space-between"}>

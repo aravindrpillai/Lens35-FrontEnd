@@ -20,7 +20,6 @@ import BaseLocationField from "./BaseLocationField";
 import { Stack } from "@mui/system";
 import PortFolioField from "./PortFolioField";
 import ServicesComponent from "./ServicesComponent";
-import { Link } from "react-router-dom";
 
 
 export default function EmployeeProfile() {

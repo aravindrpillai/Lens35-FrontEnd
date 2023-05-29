@@ -25,6 +25,7 @@ const EMPLOYEE_APIS = {
 
     //Open Bookings
     LIST_OPEN_BOOKINGS : BASE_URL.concat("/employees/apis/openbookings/list/all/"),
+    FETCH_SERVICES_OF_BOOKING : BASE_URL.concat("/employees/apis/openbookings/fetch/services/"), //Pass booking ID Here
     ACCEPT_BOOKING : BASE_URL.concat("/employees/apis/openbookings/accept/service/"),
     
     //MY Bookings
@@ -33,7 +34,6 @@ const EMPLOYEE_APIS = {
     MODIFY_MY_BOOKING : BASE_URL.concat("/employees/apis/mybookings/update/booking/"),
 
     //File Upload:
-    FETCH_BOOKING_INFO : BASE_URL.concat("/employees/apis/fileupload/fetch/bookings/"), //Pass booking ID Here
     FETCH_BOOKING_WITH_PENDING_FILE_UPLOAD : BASE_URL.concat("/employees/apis/fileupload/fetch/bookings/withpendingfileupload/"),
     GET_FILEUPLOAD_PRESIGNED_URL : BASE_URL.concat("/employees/apis/fileupload/generate/presignedurl/"),    
     ACKNODWLEDGE_FILE_UPLOAD : BASE_URL.concat("/employees/apis/fileupload/acknodwledge/"),

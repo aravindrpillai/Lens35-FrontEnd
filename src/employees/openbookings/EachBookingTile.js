@@ -18,6 +18,8 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import { AppContext } from '../../contexts/ContextProvider';
 import BookingMoreInfoModal from './BookingMoreInfoModal';
+import MapsModal from '../../Components/MapsModal';
+import AlertModal from '../../Components/AlertModal';
 
 export default function EachBookingTile({booking}) {
 
@@ -25,6 +27,9 @@ export default function EachBookingTile({booking}) {
   const [bookingEvent, setBookingEvent] = useState()
   const [isDataLoaded, setIsDataLoaded] = useState(false)
   const [openBookingMoreInfoModal, setOpenBookingMoreInfoModal] = useState(false)
+  const [openMaps, setOpenMaps] = useState(false)
+  const [openContactModal, setOpenContactModal] = useState(false)
+  const [contactInfo, setContactInfo] = useState("")
 
   useEffect(eff=>{
     let e = EVENTS.find(event => event.type === booking.event)
@@ -41,6 +46,7 @@ export default function EachBookingTile({booking}) {
         event_duration:booking.event_duration,
         distance:booking.distance
       }
+      setContactInfo(booking.customer_name+": "+booking.customer_contact)
       setBookingEvent(data)
       setIsDataLoaded(true)
       clearFlashMessage()
@@ -57,6 +63,9 @@ export default function EachBookingTile({booking}) {
     isDataLoaded &&
     <Card sx={{ maxWidth: 345 }}>
       <BookingMoreInfoModal isModalOpen={openBookingMoreInfoModal} modalHandle={setOpenBookingMoreInfoModal} booking={bookingEvent} />
+      <MapsModal open={openMaps} openHandler={setOpenMaps}/>
+      <AlertModal open={openContactModal} openHandler={setOpenContactModal} title={"Contact Info"} content={contactInfo}/>
+
       <CardMedia component="img" height="140" image={bookingEvent.url} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" justifyContent={"space-between"} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -90,12 +99,12 @@ export default function EachBookingTile({booking}) {
         <br/>
         <Typography variant="body2" color="text.secondary">{bookingEvent.event_date} @ {bookingEvent.event_start_time} for {bookingEvent.event_duration} Hours</Typography>
 
-        <Typography variant="body2" color="text.secondary">{bookingEvent.distance} from your location (show in map)</Typography>
+        <Typography variant="body2" color="text.secondary">{bookingEvent.distance} from your location.</Typography>
       </CardContent>
       <CardActions>
+        <Button size="small" onClick={()=>{setOpenContactModal(true)}}>Contact</Button>
+        <Button size="small" onClick={()=>{setOpenMaps(true)}}>Map</Button>
         <Button size="small" onClick={e=>{setOpenBookingMoreInfoModal(true)}}>Accept</Button>
-        <Button size="small">Contact</Button>
-        <Button size="small">Ignore</Button>
       </CardActions>
     </Card>
     }
