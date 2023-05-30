@@ -31,17 +31,17 @@ export default function EmployeePreference() {
     function updateSelection(selectedEmployeeID){
         let employees = []
         data.forEach(function (employee, i) {
-            if(employee.employee_id == selectedEmployeeID){
+            if(employee.employee_id === selectedEmployeeID){
                 if(filter === "videographers"){
                     if(videographerPreference.includes(selectedEmployeeID)){
-                        setVideographerPreference(videographerPreference.filter(pref=> pref != selectedEmployeeID))
+                        setVideographerPreference(videographerPreference.filter(pref=> pref !== selectedEmployeeID))
                     }else{
                         setPhotographerPreference([...photographerPreference, selectedEmployeeID])
                     }
                 }
                 if(filter === "photographers"){
                     if(photographerPreference.includes(selectedEmployeeID)){
-                        setPhotographerPreference(photographerPreference.filter(pref=> pref != selectedEmployeeID))
+                        setPhotographerPreference(photographerPreference.filter(pref=> pref !== selectedEmployeeID))
                     }else{
                         setPhotographerPreference([...photographerPreference, selectedEmployeeID])
                     }

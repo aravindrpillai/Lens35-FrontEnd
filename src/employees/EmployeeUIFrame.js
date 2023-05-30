@@ -98,7 +98,7 @@ function EmployeeUIFrame(props) {
     <div>
       <div className={classes.toolbar} >
         <br/>
-        &nbsp;&nbsp;&nbsp;<img src="/img/logo.png" height="40px" width={"90%"}/>
+        &nbsp;&nbsp;&nbsp;<img alt="Lens35" src="/img/logo.png" height="40px" width={"90%"}/>
       </div>
       
       <Divider />

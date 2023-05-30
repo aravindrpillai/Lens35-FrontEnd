@@ -26,8 +26,6 @@ export default function MyBookings() {
   const [bookingData, setBookingData] = useState([])
   const [eventsSelected, setEventsSelected] = React.useState(ALL_EVENT_TYPES)
   const [bookingDate, setBookingDate] = useState(getThisMonthAndYear())
-  const [distanceRange, setDistanceRange] = useState(10)
-  const [preferred, setPreferred] = useState(false)
   const [photography, setPhotography] = useState(true)
   const [videography, setVideography] = useState(true)
   const [drone, setDrone] = useState(true)
@@ -37,7 +35,7 @@ export default function MyBookings() {
 
   useEffect(e=>{
     loadOpenBookings()
-  },[eventsSelected, bookingDate, preferred, photography, videography, drone, photoEditor, videoEditor, distanceRange])
+  },[eventsSelected, bookingDate, photography, videography, drone, photoEditor, videoEditor])
 
   
 

@@ -63,6 +63,7 @@ export default function EmployeeProfile() {
       case "passport": return "Passport"
       case "driving_licence": return "Driving License"
       case "voters_id": return "Voters ID"
+      default: return "--UNKNOWN-DOCUMENT-TYPE--"
     }
   }
 
@@ -107,7 +108,8 @@ export default function EmployeeProfile() {
         setModalTitle("Portfolios")
         setModalContent(<PortFolioField portfolios={pageData["portfolios"]} setOpenModal={setOpenModal} modalCallBackHandler={modalCallBackHandler}/>)
         break
-
+      default: 
+        console.log("Invalid type")
         
     }
   }

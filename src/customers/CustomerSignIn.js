@@ -51,7 +51,7 @@ export function CustomerSignIn() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
           <Grid className={classes.paper}>
             <br/>
-            <img src="/img/logo_alone.png" height="70px" width="80px"/>
+            <img alt="Lens35" src="/img/logo_alone.png" height="70px" width="80px"/>
             <Typography component="h3" variant="h3"> Lens35 </Typography>
             <Typography component="h5" variant="h5"> Customer Portal </Typography>    
             <br/><br/>

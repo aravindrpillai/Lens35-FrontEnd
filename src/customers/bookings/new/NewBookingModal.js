@@ -38,7 +38,7 @@ function BootstrapDialogTitle({ children, onClose, ...other }) {
 export default function NewBookingModal({thisModalHandler, setThisModalHandler}) {
   const [page, setPage] = useState(1)
   const [showPaymentPage, setShowPaymentPage] = useState(true)
-  const { validate, message, saveData, bookingID } = React.useContext(BookingContext)
+  const { validate, message, saveData } = React.useContext(BookingContext)
 
 
   React.useEffect(e=>{

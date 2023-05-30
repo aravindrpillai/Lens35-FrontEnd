@@ -94,7 +94,7 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
   function handleServiceSelection(service_id){
     let s = bookingData
     let indx = s.selectedServices.indexOf(service_id)
-    if(indx == -1){
+    if(indx === -1){
       s.selectedServices.push(service_id)
     }else{
       s.selectedServices.splice(indx, 1)
@@ -123,7 +123,7 @@ export default function BookingMoreInfoModal({isModalOpen, modalHandle, booking}
                     {service.employee !== null && <CheckCircleOutlineIcon/>} 
                     {
                       service.employee === null && service.does_this_employee_offer_this_service && 
-                      <Checkbox checked={service.selectedServices && service.selectedServices.indexOf(service.service_id) != -1} />
+                      <Checkbox checked={service.selectedServices && service.selectedServices.indexOf(service.service_id) !== -1} />
                     }
                   </> 
                 }  >

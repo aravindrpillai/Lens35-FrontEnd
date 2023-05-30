@@ -18,7 +18,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export function SelectBookings({ open, openHandler, serviceSelectionCallBackHandler }) {
 
-  const { setFlashMessage, setLoading } = React.useContext(AppContext)
+  const { setFlashMessage } = React.useContext(AppContext)
 
   const [bookings, setBookings] = React.useState([])
   const [openBooking, setOpenBooking] = React.useState(null)

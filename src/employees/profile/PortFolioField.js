@@ -104,7 +104,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
             <Stack direction={"row"} spacing={2} justifyContent="space-between">
               <Link href="#">{sliceUrl(portfolio)}</Link>
               <RemoveCircleOutlineIcon onClick={(e)=>{
-                setPortfolioList(portfolioList.filter((pf, i2)=> i!=i2))
+                setPortfolioList(portfolioList.filter((pf, i2)=> i!==i2))
               }}/>
             </Stack>
           </div>

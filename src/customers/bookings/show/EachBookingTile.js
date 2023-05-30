@@ -42,6 +42,7 @@ export default function EachBookingTile({booking, openBooking, cancellBookingHan
         event_duration:booking.event_duration,
         services : [...new Set(booking.services.map((service) => { return service.service }))]
       }
+
       setBookingEvent(data)
       setIsDataLoaded(true)
       clearFlashMessage()
@@ -74,11 +75,11 @@ export default function EachBookingTile({booking, openBooking, cancellBookingHan
           {
             bookingEvent.services.map(service=>(
               <div key={service}>
-              {(service == "photography") && <Tooltip key={"p"+service} title="Photography" placement="top" arrow><><CameraAltIcon/>&nbsp;</></Tooltip>}
-              {(service == "videography") && <Tooltip key={"v"+service} title="Videography" placement="top" arrow><><VideoCameraFrontIcon/>&nbsp;</></Tooltip>}
-              {(service == "drone_photography") && <Tooltip key={"d"+service} title="Drone Photography" placement="top" arrow><><LocalAirportIcon/>&nbsp;</></Tooltip>}
-              {(service == "photo_editor") && <Tooltip key={"pe"+service} title="Photo Editing" placement="top" arrow><><WallpaperIcon/>&nbsp;</></Tooltip>}
-              {(service == "video_editor") && <Tooltip key={"ve"+service} title="Video Editing" placement="top" arrow><><TheatersIcon/>&nbsp;</></Tooltip>}
+              {(service === "photography") && <Tooltip key={"p"+service} title="Photography" placement="top" arrow><><CameraAltIcon/>&nbsp;</></Tooltip>}
+              {(service === "videography") && <Tooltip key={"v"+service} title="Videography" placement="top" arrow><><VideoCameraFrontIcon/>&nbsp;</></Tooltip>}
+              {(service === "drone_photography") && <Tooltip key={"d"+service} title="Drone Photography" placement="top" arrow><><LocalAirportIcon/>&nbsp;</></Tooltip>}
+              {(service === "photo_editor") && <Tooltip key={"pe"+service} title="Photo Editing" placement="top" arrow><><WallpaperIcon/>&nbsp;</></Tooltip>}
+              {(service === "video_editor") && <Tooltip key={"ve"+service} title="Video Editing" placement="top" arrow><><TheatersIcon/>&nbsp;</></Tooltip>}
               </div>
             ))
           }
@@ -89,9 +90,20 @@ export default function EachBookingTile({booking, openBooking, cancellBookingHan
 
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={()=>{openBooking(booking.booking_id)}}>Edit</Button>
-        <Button size="small" onClick={()=>{cancellBookingHandler(booking.booking_id)}}>Cancel</Button>
-        <Button size="small" onClick={()=>{viewBooking(booking.booking_id)}}>Gallery</Button>        
+        <Button size="small" 
+        disabled={(new Date(bookingEvent.event_date).setHours(0, 0, 0, 0) <= new Date().setHours(0, 0, 0, 0))}
+        onClick={()=>{openBooking(booking.booking_id)}}>Edit</Button>
+        
+        <Button size="small" 
+        disabled={(new Date(bookingEvent.event_date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0))} 
+        onClick={()=>{cancellBookingHandler(booking.booking_id)}}>Cancel</Button>
+        
+        <Button size="small" 
+        disabled={(new Date(bookingEvent.event_date).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0))}
+        onClick={()=>{viewBooking(booking.booking_id)}}>Gallery</Button>        
+        
+
+
       </CardActions>
     </Card>
     }

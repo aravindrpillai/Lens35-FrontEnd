@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Chip, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import { Button, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { Stack } from '@mui/system';
 import { BookingContext } from '../../../contexts/BookingContextProvider';
 import Accordion from '@mui/material/Accordion';

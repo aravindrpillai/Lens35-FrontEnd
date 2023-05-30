@@ -23,7 +23,7 @@ import CustomerBooking from "./customers/bookings/booking/CustomerBooking";
 
 export default function App() {
   
-  const [currentTheme, setCurrentTheme] = useTheme();
+  const [currentTheme] = useTheme();
   return (
     <React.Fragment>
      

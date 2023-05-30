@@ -75,14 +75,6 @@ async function uploadImageUsingPresignedURL(file, preSignedUrl, s3ConnectionInfo
 }
 
 
-/**
- * Function to check if the file is a photo or not
- * @param  file 
- * @returns 
- */
-function checkIfPhoto(file){
-    return ['image/jpeg', 'image/png'].includes(file.type)
-}
 
 /**
  * Functio to get the mime type of file

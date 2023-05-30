@@ -101,7 +101,7 @@ export default function ModifyBookingModal({isModalOpen, modalHandle, booking_id
   function handleServiceSelection(service_id){
     let ss = selectedServices
     let indx = ss.indexOf(service_id)
-    if(indx == -1){
+    if(indx === -1){
       ss.push(service_id)
     }else{
       ss.splice(indx, 1)

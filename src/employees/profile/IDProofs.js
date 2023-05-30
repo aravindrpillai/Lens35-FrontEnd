@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Card, CardActions, CardMedia, FormControl, MenuItem, Select, Stack, Tab } from '@mui/material';
+import { Button, Card, CardActions, CardMedia, FormControl, MenuItem, Select, Tab } from '@mui/material';
 import { post } from '../../util/Service';
 import { EMPLOYEE_APIS } from '../../util/Properties';
 import { AppContext } from '../../contexts/ContextProvider';
@@ -12,7 +12,7 @@ import { handleFileUpload } from '../../util/FileUpload';
 
 export default function IDProofs({default_doc_type, default_doc_front_side, default_doc_back_side, modalCallBackHandler }) {
 
-  const { clearFlashMessage, setFlashMessage } = React.useContext(AppContext)
+  const { clearFlashMessage } = React.useContext(AppContext)
   const [message, setMessage] = React.useState(null)
   const [uploading, setUploading] = React.useState(false)
   const [frontUploadProgress, setFrontUploadProgress] = React.useState(0)
@@ -68,8 +68,6 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
       return
     }
     setUploading(true)
-
-
     
     let front_file_name = await handleFileUpload(documentFrontSideFileObject, "id_proof_front", (progress)=>{ setBackUploadProgress(progress) }, true)
     let back_file_name = await handleFileUpload(documentBackSideFileObject, "id_proof_back", (progress)=>{ setFrontUploadProgress(progress) }, true)
@@ -80,8 +78,6 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
         "front_file_name": front_file_name,
         "back_file_name": back_file_name
       }
-
-      console.log("---> DOC DATA : ", data)
 
       let response = await post(EMPLOYEE_APIS.UPDATE_EMPLOYEE_ID_PROOF, data)
       console.log(response);
@@ -149,7 +145,7 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
       <TabContext value={isFrontSide ? '1' : '2'}>
         
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={(e, v) => { setIsFrontSide(v == '1') }} >
+          <TabList onChange={(e, v) => { setIsFrontSide(v === '1') }} >
             <Tab label="Front Page" value="1" />
             <Tab label="Back Page" value="2" />
           </TabList>

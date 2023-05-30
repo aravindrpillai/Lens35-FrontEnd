@@ -60,8 +60,7 @@ export default function OpenBookings() {
       "videography" : videography,
       "drone_photography" : drone,
       "photo_editing" : photoEditor,
-      "video_editing" : videoEditor,
-      "events" : eventsSelected
+      "video_editing" : videoEditor
     }
     let response = await post(EMPLOYEE_APIS.LIST_OPEN_BOOKINGS, body)
     console.log("------> Booking Resp ----> ",response)
