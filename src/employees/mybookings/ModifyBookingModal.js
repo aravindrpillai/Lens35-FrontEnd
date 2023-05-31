@@ -151,7 +151,13 @@ export default function ModifyBookingModal({isModalOpen, modalHandle, booking_id
               { (services === null || services === undefined) && <CircularProgress />  }
               {
               services && services.map(service=>(
-                <ListItem key={service.service_id} onClick={()=>{handleServiceSelection(service.service_id)}} secondaryAction={ <Checkbox defaultChecked={!service.is_still_open} value={selectedServices.indexOf(service.service_id) !== -1}/> }  >
+                <ListItem key={service.service_id} onClick={()=>{handleServiceSelection(service.service_id)}} 
+                  secondaryAction={ 
+                  <Checkbox 
+                    disabled={!service.does_this_employee_offer_this_service}
+                    defaultChecked={!service.is_still_open} 
+                    value={selectedServices.indexOf(service.service_id) !== -1}/> 
+                  }>
                     <ListItemButton>
                         {service.service === "photography" && <><IconButton> <CameraAltIcon /> </IconButton><ListItemText primary="Photography" /></> }
                         {service.service === "videography" && <><IconButton> <VideoCameraFrontIcon /> </IconButton><ListItemText primary="Videography" /></> }

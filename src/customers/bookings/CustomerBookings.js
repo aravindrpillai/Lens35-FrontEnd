@@ -66,7 +66,7 @@ export default function CustomerBookings() {
             
             {
               bookingData.map(booking=>(
-                <Grid item xs={12} md={6} lg={3} key={booking.booking_id}>
+                <Grid item xs={12} md={4} lg={3} key={booking.booking_id}>
                   <EachBookingTile booking={booking} openBooking={openBooking} cancellBookingHandler={setCancellBookingModalOpenHandler}/>
                 </Grid>
               ))
