@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import {EMPLOYEE_APIS} from "../util/Properties";
 import { get } from "../util/Service";
 import { useNavigate } from "react-router";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import { AppContext } from "../contexts/ContextProvider";
 import { useContext } from "react";
 
@@ -53,7 +53,7 @@ export default function EmployeesHome() {
       <Alert onClose={() => {}}>Please complete the registartion <a href="#">here</a> . Your account is still inactive</Alert>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={6}>
-              <SummaryCard title={"Welcome"} value={employeeUserName} />
+              <SummaryCard title={"Welcome"} value={employeeUserName === null ? <CircularProgress /> : employeeUserName} />
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
               <SummaryCard title={"Upcoming Booking Details"} value={"12th Oct 2022 @ 3pm"} button={<BookingButton />} />

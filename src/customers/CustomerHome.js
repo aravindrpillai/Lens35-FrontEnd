@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Content from "../Components/Content";
 import SummaryCard from "../Components/SummaryCard";
-import { Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import { Button } from "@material-ui/core";
 import CustomerTheme from "./CustomerTheme";
 import { AppContext } from "../contexts/ContextProvider";
@@ -58,7 +58,7 @@ export default function CustomerHome() {
       <Content>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={6}>
-            <SummaryCard title={"Welcome"} value={customerUserName} />
+            <SummaryCard title={"Welcome"} value={customerUserName === null ? <CircularProgress /> : customerUserName} />
           </Grid>
           <Grid item xs={12} md={6} lg={6}>
             <SummaryCard title={"Upcoming Booking"} value={"12th Oct 2022 @ 3pm"} button={<BookingButton />} />
