@@ -19,9 +19,11 @@ export default function DateOfBirthField({dob, setOpenModal, loadData}) {
   const [value, setValue] = React.useState( dayjs(dob === null || dob ==="" ? new Date() : dob) );
   const [error, setError] = React.useState(null);
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
+  const [updating, setUpdating] = React.useState(false)
 
   async function save(){
     clearFlashMessage()
+    setUpdating(true)
     if(value === null || value === ""){
       setError("Date of birth cannot be empty")
       return
@@ -35,6 +37,7 @@ export default function DateOfBirthField({dob, setOpenModal, loadData}) {
       setError("Failed to Update")
       console.log("Failed to update date of birth : ", response["messages"][0])
     }
+    setUpdating(false)
   }
 
 
@@ -53,10 +56,10 @@ export default function DateOfBirthField({dob, setOpenModal, loadData}) {
       <br/><br/>
 
         <Stack direction="row" spacing={2}>
-            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
+            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} disabled={updating}>
                 <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
             </Button>
-            <Button onClick={save} variant="contained" color="primary" disabled={dob === value}>
+            <Button onClick={save} variant="contained" color="primary" disabled={dob === value || updating} >
               <CheckBoxTwoToneIcon /> &nbsp; Save
             </Button>
         </Stack>

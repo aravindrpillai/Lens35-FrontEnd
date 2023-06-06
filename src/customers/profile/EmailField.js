@@ -14,9 +14,11 @@ export default function EmailField({email, setOpenModal, modalCallBackHandler}) 
   const [value, setValue] = React.useState( email === null || email ==="" ? "" : email);
   const [error, setError] = React.useState(null);
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
+  const [updating, setUpdating] = React.useState(false)
 
   async function save(){
     clearFlashMessage()
+    setUpdating(true)
     if(value === null || value === ""){
       setError("Email cannot be empty")
       return
@@ -30,6 +32,7 @@ export default function EmailField({email, setOpenModal, modalCallBackHandler}) 
       setError("Failed: "+response["messages"][0])
       console.log("Failed to update email : ", response["messages"][0])
     }
+    setUpdating(false)
   }
 
   return (
@@ -46,10 +49,10 @@ export default function EmailField({email, setOpenModal, modalCallBackHandler}) 
       <br/><br/>
 
       <Stack direction="row" spacing={2}>
-          <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
+          <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} disabled={updating} >
               <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
           </Button>
-          <Button onClick={save} variant="contained" color="primary" disabled={email.toUpperCase() === value.toUpperCase()}>
+          <Button onClick={save} variant="contained" color="primary" disabled={updating || email.toUpperCase() === value.toUpperCase()}>
               <CheckBoxTwoToneIcon /> &nbsp; Save</Button>
       </Stack>
      

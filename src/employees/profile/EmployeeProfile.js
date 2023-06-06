@@ -29,7 +29,6 @@ export default function EmployeeProfile() {
   const [modelContent, setModalContent] = React.useState(null);
   const [pageData, setPageData] = React.useState({})
 
-
   async function loadPageData(){
     let response = await get(EMPLOYEE_APIS.FETCH_EMPLOYEE_DATA)
     if(response["status"] === true){
@@ -101,7 +100,12 @@ export default function EmployeeProfile() {
       case "id_proof": 
         setOpenModal(true);
         setModalTitle("ID Proof")
-        setModalContent(<IDProofs default_doc_type={pageData["id_proof_type"]} default_doc_front_side={pageData["id_proof_front"]} default_doc_back_side={pageData["id_proof_back"]} modalCallBackHandler={modalCallBackHandler}/>)
+        setModalContent(<IDProofs default_doc_type={pageData["id_proof_type"]} 
+        default_doc_front_side={pageData["id_proof_front"]} 
+        default_doc_back_side={pageData["id_proof_back"]} 
+        modalCallBackHandler={modalCallBackHandler}
+        modalHandler={setOpenModal}
+        />)
         break
       case "portfolio": 
         setOpenModal(true);

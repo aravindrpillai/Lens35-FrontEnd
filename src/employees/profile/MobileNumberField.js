@@ -20,6 +20,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
   const [otpStatus, setOtpStatus] = useState(false)
   const [message, setMessage] = useState(null)
   const [otp, setOTP] = useState("")
+  const [updating, setUpdating] = React.useState(false)
 
     /**
    * Function to push OTP
@@ -27,6 +28,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
     async function pushOTP(){
       console.log("Pushing OTP......");
       setMessage(null);
+      setUpdating(true)
       setIsOtpTimerRunning(false);
       if(mobileNumber === null || mobileNumber === ""){
         setMessage("Mobile Number cannot be empty")
@@ -45,6 +47,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
         setMessage(otpResponse["messages"][0])
         setOtpStatus(false);
       }
+      setUpdating(false)
     }
 
   function otpTimeUpCallBackHandler(){
@@ -54,6 +57,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
   
   async function save(){
     clearFlashMessage()
+    setUpdating(true)
     if(mobileNumber === null || mobileNumber === ""){
       setMessage("Mobile Number cannot be empty")
       return
@@ -75,6 +79,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
       setMessage("Failed: "+response["messages"][0])
       console.log("Failed to update mobile number : ", response["messages"][0])
     }
+    setUpdating(false)
   }
 
   return (
@@ -95,7 +100,7 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
           endAdornment={
             <Button 
               variant="contained" disableElevation color="primary"
-              onClick={pushOTP} disabled = {isOtpTimerRunning || mobile_number === mobileNumber}
+              onClick={pushOTP} disabled = {isOtpTimerRunning || mobile_number === mobileNumber || updating}
               >
               <SendToMobileIcon/>&nbsp;&nbsp;
               {
@@ -129,10 +134,10 @@ export default function MobileNumberField({mobile_number, setOpenModal, modalCal
       {
       otpStatus &&
       <Stack direction="row" spacing={2}>
-          <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
+          <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} disabled={updating}>
               <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
           </Button>
-          <Button onClick={save} variant="contained" color="primary" >
+          <Button onClick={save} variant="contained" color="primary" disabled={updating}>
               <CheckBoxTwoToneIcon /> &nbsp; Save</Button>
       </Stack>
      }

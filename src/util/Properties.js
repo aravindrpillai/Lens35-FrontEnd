@@ -1,5 +1,5 @@
-const BASE_URL = "http://ec2-54-209-198-222.compute-1.amazonaws.com:8080"
-//const BASE_URL = "http://localhost:8080"
+//const BASE_URL = "http://ec2-54-209-198-222.compute-1.amazonaws.com:8080"
+const BASE_URL = "http://localhost:8080"
 
 const POSTAL_CODE_SEARCH_API = "https://api.postalpincode.in/pincode/"
 

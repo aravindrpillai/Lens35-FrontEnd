@@ -17,7 +17,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
     const [error, setError] = React.useState(null);
     const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
     const [newValue, setNewValue] = useState(null)
-
+    const [updating, setUpdating] = React.useState(false)
 
     useEffect(e=>{
       let pfList = []
@@ -31,7 +31,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
     
     async function save(){
       clearFlashMessage()
-
+      setUpdating(true)
       let portfoliosToSend = []
       portfolioList.forEach(url => {
         console.log("URL : ",url)
@@ -50,6 +50,7 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
         setError("Failed to update portfolio")
         console.log("Failed to update portfolio : ", response["messages"][0])
       }
+      setUpdating(false)
     }
 
     function isValidURL(string) {
@@ -114,10 +115,10 @@ export default function PortFolioField({portfolios, setOpenModal, modalCallBackH
 
         <span>{error}</span>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
+            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} disabled={updating} >
                 <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
             </Button>&nbsp;
-            <Button disabled={portfolioList.length < 1} onClick={save} variant="contained" color="primary">
+            <Button disabled={portfolioList.length < 1 || updating} onClick={save} variant="contained" color="primary">
               <CheckBoxTwoToneIcon /> &nbsp; Save
             </Button>
         </Stack>

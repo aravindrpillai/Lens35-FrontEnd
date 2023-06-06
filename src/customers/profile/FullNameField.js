@@ -12,9 +12,11 @@ export default function FullNameField({full_name, setOpenModal, modalCallBackHan
     const [name, setName] = React.useState(full_name === null ? "" : full_name);
     const [nameError, setNameError] = React.useState(null);
     const { clearFlashMessage, setFlashMessage, setCustomerUserName } = useContext(AppContext)
+    const [updating, setUpdating] = React.useState(false)
   
     async function save(){
       clearFlashMessage()
+      setUpdating(true)
       if(name.length < 3){
         setNameError("Name must be atleast 3 chars in lenght")
         return
@@ -32,6 +34,7 @@ export default function FullNameField({full_name, setOpenModal, modalCallBackHan
         setNameError("Failed to Update")
         console.log("Failed to update Name : ", response["messages"][0])
       }
+      setUpdating(false)
     }
 
     return (
@@ -48,10 +51,10 @@ export default function FullNameField({full_name, setOpenModal, modalCallBackHan
         <br/><br/>
 
         <Stack direction="row" spacing={2}>
-            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
+            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} disabled={updating}>
                 <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
             </Button>
-            <Button onClick={save} variant="contained" color="primary"  disabled={full_name === name}>
+            <Button onClick={save} variant="contained" color="primary"  disabled={updating || full_name === name}>
                 <CheckBoxTwoToneIcon /> &nbsp; Save</Button>
         </Stack>
        

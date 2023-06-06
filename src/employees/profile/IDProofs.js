@@ -10,7 +10,7 @@ import { Box } from '@mui/system';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { handleFileUpload } from '../../util/FileUpload';
 
-export default function IDProofs({default_doc_type, default_doc_front_side, default_doc_back_side, modalCallBackHandler }) {
+export default function IDProofs({default_doc_type, default_doc_front_side, default_doc_back_side, modalCallBackHandler, modalHandler }) {
 
   const { clearFlashMessage } = React.useContext(AppContext)
   const [message, setMessage] = React.useState(null)
@@ -91,10 +91,8 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
     }else{
       setMessage("Failed to update ID Proof.")
     }
-
     setUploading(false)
     return
-   
   }
 
   function removeSelectedPicture(side){
@@ -187,12 +185,13 @@ export default function IDProofs({default_doc_type, default_doc_front_side, defa
 
         <center>
           {frontUploadProgress+backUploadProgress > 0 &&
-          <span><center>Uploading : {((frontUploadProgress+backUploadProgress)/2)}</center></span>
+          <span><center>Uploading : {((frontUploadProgress+backUploadProgress)/2)}%</center></span>
           }
           <span><center>{message}</center></span>
 
               <br/>
               <Button disabled={(!((documentType !== "none" && documentFrontSide !== null && documentBackSide !== null))) || (frontUploadProgress+backUploadProgress > 0)} size="large" variant="outlined" component="label" onClick={e=>{uploadDocument()}}><SaveIcon/>&nbsp;Save</Button>
+              <Button disabled={uploading} size="large" variant="outlined" component="label" onClick={e=>{modalHandler(false)}}><SaveIcon/>&nbsp;Close</Button>
             </center>
         
       </TabContext>

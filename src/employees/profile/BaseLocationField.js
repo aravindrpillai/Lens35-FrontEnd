@@ -16,6 +16,7 @@ export default function BaseLocationField({setOpenModal, base_location_city, bas
   const [cityList, setCityList] = React.useState([]);
   const [selectedCity, setSelectedCity] = React.useState(null);
   const [loading, setLoading] = React.useState(false)
+  const [updating, setUpdating] = React.useState(false)
   const { clearFlashMessage, setFlashMessage } = useContext(AppContext)
 
   useEffect(e=>{
@@ -26,6 +27,7 @@ export default function BaseLocationField({setOpenModal, base_location_city, bas
 
   async function save(){
     clearFlashMessage()
+    setUpdating(true)
     if(postalCode === null || postalCode === "" || selectedCity === "" || selectedCity === null){
       setPostalCodeError("Pincode and city are mandatory")
       return
@@ -45,6 +47,7 @@ export default function BaseLocationField({setOpenModal, base_location_city, bas
       setPostalCodeError("Failed to Update Base Location")
       console.log("Failed to update base_location : ", response["messages"][0])
     }
+    setUpdating(false)
   }
 
   useEffect((e)=>{
@@ -111,10 +114,10 @@ export default function BaseLocationField({setOpenModal, base_location_city, bas
       <br/><br/>
 
         <Stack direction="row" spacing={2}>
-            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} >
+            <Button variant="outlined" onClick={(e)=>{setOpenModal(false)}} disabled={updating}>
                 <DisabledByDefaultTwoToneIcon /> &nbsp; Cancel
             </Button>
-            <Button onClick={save} variant="contained" color="primary"  disabled={false}>
+            <Button onClick={save} variant="contained" color="primary"  disabled={updating}>
                 <CheckBoxTwoToneIcon /> &nbsp; Save</Button>
         </Stack>
     </React.Fragment>
