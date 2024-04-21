@@ -21,14 +21,12 @@ export function BookingContextProvider({ children, booking_id=null }) {
   const [city, setCity] = useState("")
   const [address, setAddress] = useState("")
   
-  const [photographerCount , setPhotographerCount] = React.useState(0)
-  const [videographerCount , setVideographerCount] = React.useState(0)
-  const [droneCount , setDroneCount] = React.useState(0)
+  const [photographerSelected , setPhotographerSelected] = React.useState(false)
+  const [videographerSelected , setVideographerSelected] = React.useState(false)
+  const [droneSelected , setDroneSelected] = React.useState(false)
 
   const [invoice , setInvoice] = React.useState(null)
 
-  const [photographerPreference , setPhotographerPreference] = React.useState([])
-  const [videographerPreference , setVideographerPreference] = React.useState([])
   const [paymentInformation , setPaymentInformation] = React.useState(null)
   
   //Common variables
@@ -46,11 +44,9 @@ export function BookingContextProvider({ children, booking_id=null }) {
     setPostalCode("")
     setCity("")
     setAddress("")
-    setPhotographerCount(0)
-    setVideographerCount(0)
-    setDroneCount(0)
-    setPhotographerPreference([])
-    setVideographerPreference([])
+    setPhotographerSelected(false)
+    setVideographerSelected(false)
+    setDroneSelected(false)
     setPaymentInformation(null)
   }
 
@@ -80,11 +76,9 @@ export function BookingContextProvider({ children, booking_id=null }) {
       setBookingID(booking_id)
       let services_data = {
         "booking_id": booking_id,
-        "photography": photographerCount,
-        "videography": videographerCount,
-        "drone_photography": droneCount,
-        "photo_editing": 0,
-        "video_editing": 0
+        "photography": photographerSelected,
+        "videography": videographerSelected,
+        "drone": droneSelected,
       }
       var service_response = await post(CUSTOMER_APIS.ADD_SERVICES, services_data)
       if(service_response["status"] === true){
@@ -153,13 +147,11 @@ export function BookingContextProvider({ children, booking_id=null }) {
       }
     }
     if(pageNumber === 4){
-      if(photographerCount < 1 && videographerCount < 1 && droneCount < 1){
+      if(photographerSelected != true && videographerSelected != true && droneSelected !== true){
         setMessage("Atleast one service must be selected to proceed.")
         return false
       }
     }
-
-    console.log("Preference -- > ",photographerPreference)
 
     return true
   }
@@ -179,14 +171,10 @@ export function BookingContextProvider({ children, booking_id=null }) {
       setCity(data["event_city"])
       setAddress(data["event_address"])
       let services = data["services"]
-      let pCount = (services === undefined || services === null) ? 0 : services.filter((s)=> {return s.service === "photography"}).length
-      let vCount = (services === undefined || services === null) ? 0 : services.filter((s)=> {return s.service ===  "videography"}).length
-      let dCount = (services === undefined || services === null) ? 0 : services.filter((s)=> {return s.service ===  "drone_photography"}).length
       console.log("SERVICES ARRAY ---> ", services)
-      console.log("SERVICES ARRAY COUNTS 888888 ", pCount, vCount, dCount)
-      setPhotographerCount(pCount)
-      setVideographerCount(vCount)
-      setDroneCount(dCount)
+      setPhotographerSelected(services["photographer"])
+      setVideographerSelected(services["videographer"])
+      setDroneSelected(services["drone"])
 
 
 
@@ -222,14 +210,11 @@ export function BookingContextProvider({ children, booking_id=null }) {
         city, setCity,
         address, setAddress,
 
-        photographerCount , setPhotographerCount,
-        videographerCount , setVideographerCount,
-        droneCount , setDroneCount,
+        photographerSelected , setPhotographerSelected,
+        videographerSelected , setVideographerSelected,
+        droneSelected , setDroneSelected,
         
-        invoice , setInvoice,
-
-        photographerPreference , setPhotographerPreference,
-        videographerPreference , setVideographerPreference
+        invoice , setInvoice
       }}
     >
       {children}

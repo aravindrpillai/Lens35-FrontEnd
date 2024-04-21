@@ -38,8 +38,37 @@ function BootstrapDialogTitle({ children, onClose, ...other }) {
 export default function NewBookingModal({thisModalHandler, setThisModalHandler}) {
   const [page, setPage] = useState(1)
   const [showPaymentPage, setShowPaymentPage] = useState(true)
-  const { validate, message, saveData } = React.useContext(BookingContext)
+  const { invoice , postalCode, city, address, validate, message, saveData } = React.useContext(BookingContext)
 
+
+  function makePayment(){
+    var options = {
+      key:"rzp_test_c4w59vSC1YHIcl",
+      key_secret:"9sRizYLMgqyKnzfueelu3kg4",
+      amount:(invoice.outstanding_amount*100),
+      currency:"INR",
+      name:"Service App",
+      description:"",
+      handler:function(response){
+        console.log("Payment Response : ",response)
+      },
+      prefill:{
+        name: "Deepu Chandran",
+        email: "info@serviceapp.com",
+        contact: "9447020535"
+      },
+      notes:{
+        address:(address+", "+city+", "+postalCode)
+      },
+      theme:{
+        color:"#3399cc"
+      }
+    }
+    
+    var pay = new window.Razorpay(options);
+    pay.open()
+  }
+ 
 
   React.useEffect(e=>{
     setPage(1)
@@ -92,7 +121,8 @@ export default function NewBookingModal({thisModalHandler, setThisModalHandler})
           <DialogActions style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <Button disabled={page<=1} variant="contained" color="primary" onClick={()=>handlePagination(false)} autoFocus> Back </Button>
               <center>{message && <font color="red">{message}</font>}</center>
-              <Button disabled={page>=6 || !showPaymentPage} variant="contained" color="primary" onClick={()=>handlePagination(true)} autoFocus > Next </Button>
+              {page < 6 && <Button disabled={page>=6 || !showPaymentPage} variant="contained" color="primary" onClick={()=>handlePagination(true)} autoFocus > Next </Button>}
+              {page === 6 && <Button variant="contained" color="primary" onClick={makePayment} autoFocus > Pay Rs.{invoice.outstanding_amount} </Button>}
           </DialogActions>
 
         </BootstrapDialog>

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Button, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { Stack } from '@mui/system';
+import { Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { BookingContext } from '../../../contexts/BookingContextProvider';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -8,40 +7,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function EventPayment({handleProcessCompletion}) {  
-  const { invoice , postalCode, city, address } = React.useContext(BookingContext)
+export default function EventPayment() {  
+  const { invoice } = React.useContext(BookingContext)
   const [openAccordian, setOpenAccordian] = React.useState(null);
 
-  function makePayment(){
-    var options = {
-      key:"rzp_test_c4w59vSC1YHIcl",
-      key_secret:"9sRizYLMgqyKnzfueelu3kg4",
-      amount:(invoice.outstanding_amount*100),
-      currency:"INR",
-      name:"Service App",
-      description:"",
-      handler:function(response){
-        console.log("Payment Response : ",response)
-        handleProcessCompletion(true, response)
-        //alert(response.razorpay_payment_id)
-      },
-      prefill:{
-        name: "Deepu Chandran",
-        email: "info@serviceapp.com",
-        contact: "9447020535"
-      },
-      notes:{
-        address:(address+", "+city+", "+postalCode)
-      },
-      theme:{
-        color:"#3399cc"
-      }
-    }
-    
-    var pay = new window.Razorpay(options);
-    pay.open()
-  }
- 
   return (
     <Grid container spacing={2}>
         <Grid item xs={12} md={12} lg={12}>
@@ -71,12 +40,6 @@ export default function EventPayment({handleProcessCompletion}) {
                     </Accordion>
                   ))
                 }
-            <br/>
-            <Stack direction="row" justifyContent={"space-around"}>
-              <span></span>
-              <Button variant='outlined' onClick={makePayment}>Pay Rs.{invoice.outstanding_amount}</Button>
-              
-            </Stack>
             
         </Grid>
     </Grid>
